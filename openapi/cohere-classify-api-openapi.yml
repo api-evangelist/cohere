@@ -1,0 +1,216 @@
+openapi: 3.1.0
+info:
+  title: Cohere Classify API
+  description: >-
+    The Cohere Classify API performs text classification by assigning labels
+    to input text based on provided examples. It can be used for sentiment
+    analysis, content moderation, topic categorization, and other
+    classification tasks. Developers provide a set of labeled examples along
+    with texts to classify, and the API returns predicted labels with
+    confidence scores for each input. Note that this is a v1 endpoint.
+  version: '1.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Classify API Documentation
+  url: https://docs.cohere.com/reference/classify
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Classify
+    description: >-
+      Endpoints for performing text classification using labeled examples
+      and Cohere language models.
+security:
+  - bearerAuth: []
+paths:
+  /v1/classify:
+    post:
+      operationId: classify
+      summary: Classify text inputs
+      description: >-
+        Makes a prediction about which label fits the specified text inputs
+        best. Requires a set of labeled examples to provide context to the
+        model. Each unique label requires at least 2 examples. Supports up
+        to 96 text inputs and 2500 examples per request.
+      tags:
+        - Classify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassifyRequest'
+      responses:
+        '200':
+          description: Successful classification response with predictions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  schemas:
+    ClassifyRequest:
+      type: object
+      required:
+        - inputs
+        - examples
+      properties:
+        inputs:
+          type: array
+          description: >-
+            A list of up to 96 texts to be classified. Each must be a
+            non-empty string.
+          items:
+            type: string
+            minLength: 1
+          maxItems: 96
+          minItems: 1
+        examples:
+          type: array
+          description: >-
+            An array of labeled examples providing context to the model.
+            Each unique label requires at least 2 examples. Maximum of
+            2500 examples, each with a maximum length of 512 tokens.
+          items:
+            $ref: '#/components/schemas/ClassifyExample'
+          maxItems: 2500
+          minItems: 2
+        model:
+          type: string
+          description: >-
+            The name of a compatible Cohere model to use for classification.
+        preset:
+          type: string
+          description: >-
+            The ID of a custom playground preset.
+        truncate:
+          type: string
+          enum:
+            - NONE
+            - START
+            - END
+          description: >-
+            Specifies how the API handles inputs longer than the maximum
+            token length. START discards the beginning, END discards the
+            end. NONE returns an error if the input is too long.
+    ClassifyExample:
+      type: object
+      required:
+        - text
+        - label
+      properties:
+        text:
+          type: string
+          description: >-
+            The example text content.
+          maxLength: 512
+        label:
+          type: string
+          description: >-
+            The classification label associated with the example text.
+    ClassifyResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier for the classification request.
+        classifications:
+          type: array
+          description: >-
+            An array of classification results, one per input text.
+          items:
+            $ref: '#/components/schemas/Classification'
+        meta:
+          type: object
+          description: >-
+            Metadata about the API request.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: >-
+                    The API version used for the request.
+    Classification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier for this classification result.
+        input:
+          type: string
+          description: >-
+            The input text that was classified.
+        prediction:
+          type: string
+          description: >-
+            The predicted label with the highest confidence.
+        predictions:
+          type: array
+          description: >-
+            All predicted labels ordered by confidence.
+          items:
+            type: string
+        confidence:
+          type: number
+          description: >-
+            The confidence score for the top prediction.
+          minimum: 0
+          maximum: 1
+        confidences:
+          type: array
+          description: >-
+            Confidence scores for all predictions.
+          items:
+            type: number
+        labels:
+          type: object
+          description: >-
+            A map of label names to their confidence scores.
+          additionalProperties:
+            type: object
+            properties:
+              confidence:
+                type: number
+                description: >-
+                  The confidence score for this label.
+                minimum: 0
+                maximum: 1
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.

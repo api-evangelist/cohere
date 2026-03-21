@@ -1,0 +1,197 @@
+openapi: 3.1.0
+info:
+  title: Cohere Models API
+  description: >-
+    The Cohere Models API allows developers to list and retrieve information
+    about available Cohere models, including the Command, Embed, and Rerank
+    model families. It provides details such as model names, versions,
+    supported endpoints, context lengths, and capabilities. This API is
+    useful for programmatically discovering which models are available and
+    selecting the appropriate model for a given task.
+  version: '1.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Models API Documentation
+  url: https://docs.cohere.com/reference/list-models
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Models
+    description: >-
+      Endpoints for listing and retrieving details about available Cohere
+      models.
+security:
+  - bearerAuth: []
+paths:
+  /v1/models:
+    get:
+      operationId: listModels
+      summary: List available models
+      description: >-
+        Returns a paginated list of models available for use. Supports
+        filtering by compatible endpoint and default models. Includes details
+        such as model name, supported endpoints, context length, and
+        default status.
+      tags:
+        - Models
+      parameters:
+        - name: page_size
+          in: query
+          description: >-
+            Maximum number of models to include in a page. Defaults to 20.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 1000
+            default: 20
+        - name: page_token
+          in: query
+          description: >-
+            Page token provided in the next_page_token field of a previous
+            response for pagination.
+          schema:
+            type: string
+        - name: endpoint
+          in: query
+          description: >-
+            When provided, filters the list of models to only those
+            compatible with the specified endpoint.
+          schema:
+            type: string
+            enum:
+              - chat
+              - embed
+              - rerank
+              - classify
+        - name: default_only
+          in: query
+          description: >-
+            When true, filters the list of models to only the default model
+            for the specified endpoint.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Successful list of available models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListModelsResponse'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/models/{model}:
+    get:
+      operationId: getModel
+      summary: Get model details
+      description: >-
+        Retrieves detailed information about a specific model, including its
+        name, supported endpoints, context length, tokenizer, and default
+        status.
+      tags:
+        - Models
+      parameters:
+        - $ref: '#/components/parameters/ModelName'
+      responses:
+        '200':
+          description: Successful model details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Model'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  parameters:
+    ModelName:
+      name: model
+      in: path
+      required: true
+      description: >-
+        The name of the model to retrieve details for.
+      schema:
+        type: string
+  schemas:
+    ListModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          description: >-
+            A list of available models.
+          items:
+            $ref: '#/components/schemas/Model'
+        next_page_token:
+          type: string
+          nullable: true
+          description: >-
+            A token to retrieve the next page of results. Null if there are
+            no more pages.
+    Model:
+      type: object
+      properties:
+        name:
+          type: string
+          description: >-
+            The name of the model for use in API requests.
+        endpoints:
+          type: array
+          description: >-
+            The API endpoints the model is compatible with.
+          items:
+            type: string
+            enum:
+              - chat
+              - embed
+              - rerank
+              - classify
+        context_length:
+          type: integer
+          description: >-
+            The maximum number of tokens the model can process in a single
+            request.
+        tokenizer_url:
+          type: string
+          format: uri
+          description: >-
+            The URL for the model's tokenizer configuration.
+        default_endpoints:
+          type: array
+          description: >-
+            The API endpoints for which this model is the default.
+          items:
+            type: string
+        finetuned:
+          type: boolean
+          description: >-
+            Whether the model is a fine-tuned variant.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.

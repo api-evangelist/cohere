@@ -1,0 +1,145 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "cohere": "https://api.cohere.com/ns/",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+
+    "ChatMessage": {
+      "@id": "cohere:ChatMessage",
+      "@context": {
+        "role": "cohere:role",
+        "content": "schema:text",
+        "toolCallId": "cohere:toolCallId",
+        "toolCalls": {
+          "@id": "cohere:toolCalls",
+          "@container": "@set"
+        },
+        "citations": {
+          "@id": "cohere:citations",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "ChatCompletion": {
+      "@id": "cohere:ChatCompletion",
+      "@context": {
+        "identifier": "schema:identifier",
+        "finishReason": "cohere:finishReason",
+        "message": "cohere:message",
+        "usage": "cohere:usage"
+      }
+    },
+
+    "Embedding": {
+      "@id": "cohere:Embedding",
+      "@context": {
+        "identifier": "schema:identifier",
+        "inputType": "cohere:inputType",
+        "embeddingType": "cohere:embeddingType",
+        "vectors": {
+          "@id": "cohere:vectors",
+          "@container": "@set"
+        },
+        "texts": {
+          "@id": "cohere:texts",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "RerankResult": {
+      "@id": "cohere:RerankResult",
+      "@context": {
+        "index": "cohere:index",
+        "relevanceScore": "cohere:relevanceScore",
+        "document": "cohere:document"
+      }
+    },
+
+    "Classification": {
+      "@id": "cohere:Classification",
+      "@context": {
+        "identifier": "schema:identifier",
+        "input": "schema:text",
+        "prediction": "cohere:prediction",
+        "confidence": "cohere:confidence",
+        "labels": {
+          "@id": "cohere:labels",
+          "@container": "@set"
+        }
+      }
+    },
+
+    "Model": {
+      "@id": "cohere:Model",
+      "@context": {
+        "name": "schema:name",
+        "endpoints": {
+          "@id": "cohere:endpoints",
+          "@container": "@set"
+        },
+        "contextLength": "cohere:contextLength",
+        "tokenizerUrl": {
+          "@id": "cohere:tokenizerUrl",
+          "@type": "@id"
+        },
+        "finetuned": "cohere:finetuned"
+      }
+    },
+
+    "Dataset": {
+      "@id": "cohere:Dataset",
+      "@context": {
+        "identifier": "schema:identifier",
+        "name": "schema:name",
+        "datasetType": "cohere:datasetType",
+        "validationStatus": "cohere:validationStatus",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "dateModified": {
+          "@id": "dcterms:modified",
+          "@type": "xsd:dateTime"
+        }
+      }
+    },
+
+    "EmbedJob": {
+      "@id": "cohere:EmbedJob",
+      "@context": {
+        "jobId": "schema:identifier",
+        "status": "cohere:status",
+        "model": "cohere:model",
+        "name": "schema:name",
+        "dateCreated": {
+          "@id": "dcterms:created",
+          "@type": "xsd:dateTime"
+        },
+        "inputDatasetId": "cohere:inputDatasetId",
+        "outputDatasetId": "cohere:outputDatasetId"
+      }
+    },
+
+    "Tool": {
+      "@id": "cohere:Tool",
+      "@context": {
+        "name": "schema:name",
+        "description": "schema:description",
+        "parameters": "cohere:parameters"
+      }
+    },
+
+    "ToolCall": {
+      "@id": "cohere:ToolCall",
+      "@context": {
+        "identifier": "schema:identifier",
+        "functionName": "cohere:functionName",
+        "arguments": "cohere:arguments"
+      }
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cohere.com/schemas/cohere/model.json",
+  "title": "Cohere Model",
+  "description": "Represents a Cohere model with its capabilities, supported endpoints, context length, and configuration details.",
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The unique name of the model for use in API requests."
+    },
+    "endpoints": {
+      "type": "array",
+      "description": "The API endpoints the model is compatible with.",
+      "items": {
+        "type": "string",
+        "enum": ["chat", "embed", "rerank", "classify"]
+      }
+    },
+    "context_length": {
+      "type": "integer",
+      "description": "The maximum number of tokens the model can process in a single request.",
+      "minimum": 1
+    },
+    "tokenizer_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "The URL for the model's tokenizer configuration file."
+    },
+    "default_endpoints": {
+      "type": "array",
+      "description": "The API endpoints for which this model is the default selection.",
+      "items": {
+        "type": "string",
+        "enum": ["chat", "embed", "rerank", "classify"]
+      }
+    },
+    "finetuned": {
+      "type": "boolean",
+      "description": "Indicates whether the model is a fine-tuned variant of a base model."
+    }
+  },
+  "$defs": {
+    "ModelFamily": {
+      "type": "string",
+      "description": "The family of Cohere models that a specific model belongs to.",
+      "enum": [
+        "command",
+        "command-r",
+        "command-r-plus",
+        "embed-english",
+        "embed-multilingual",
+        "rerank-english",
+        "rerank-multilingual"
+      ]
+    }
+  }
+}

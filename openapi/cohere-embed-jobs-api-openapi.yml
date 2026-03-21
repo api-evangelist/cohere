@@ -1,0 +1,295 @@
+openapi: 3.1.0
+info:
+  title: Cohere Embed Jobs API
+  description: >-
+    The Cohere Embed Jobs API allows developers to create and manage batch
+    embedding jobs for processing large volumes of text data asynchronously.
+    Rather than embedding texts one at a time, developers can submit datasets
+    for bulk embedding and monitor job progress. This is useful for
+    initializing vector databases, processing large document collections,
+    and other scenarios where embedding large amounts of content is needed.
+  version: '1.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Embed Jobs API Documentation
+  url: https://docs.cohere.com/reference/list-embed-jobs
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Embed Jobs
+    description: >-
+      Endpoints for creating, listing, retrieving, and cancelling batch
+      embedding jobs.
+security:
+  - bearerAuth: []
+paths:
+  /v1/embed-jobs:
+    post:
+      operationId: createEmbedJob
+      summary: Create an embed job
+      description: >-
+        Launches an asynchronous embed job for a dataset of type embed-input.
+        The result is a new dataset of type embed-output containing the
+        original text entries and their corresponding embeddings. The input
+        dataset must have a validation status of Validated.
+      tags:
+        - Embed Jobs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmbedJobRequest'
+      responses:
+        '200':
+          description: Embed job created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmbedJobResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Dataset not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      operationId: listEmbedJobs
+      summary: List embed jobs
+      description: >-
+        Returns a list of all embed jobs history for the authenticated user.
+        Includes job status, model, and dataset information for each job.
+      tags:
+        - Embed Jobs
+      responses:
+        '200':
+          description: Successful list of embed jobs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEmbedJobsResponse'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/embed-jobs/{id}:
+    get:
+      operationId: getEmbedJob
+      summary: Fetch an embed job
+      description: >-
+        Retrieves the details and status of a specific embed job by its
+        identifier.
+      tags:
+        - Embed Jobs
+      parameters:
+        - $ref: '#/components/parameters/EmbedJobId'
+      responses:
+        '200':
+          description: Successful embed job details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedJob'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Embed job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/embed-jobs/{id}/cancel:
+    post:
+      operationId: cancelEmbedJob
+      summary: Cancel an embed job
+      description: >-
+        Cancels an active embed job. Only jobs that are currently processing
+        can be cancelled.
+      tags:
+        - Embed Jobs
+      parameters:
+        - $ref: '#/components/parameters/EmbedJobId'
+      responses:
+        '200':
+          description: Embed job cancelled successfully
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Embed job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  parameters:
+    EmbedJobId:
+      name: id
+      in: path
+      required: true
+      description: >-
+        The unique identifier of the embed job.
+      schema:
+        type: string
+  schemas:
+    CreateEmbedJobRequest:
+      type: object
+      required:
+        - model
+        - dataset_id
+        - input_type
+      properties:
+        model:
+          type: string
+          description: >-
+            The ID of the embedding model to use for the job.
+          example: embed-english-v3.0
+        dataset_id:
+          type: string
+          description: >-
+            The ID of a dataset of type embed-input. The dataset must have
+            a validation status of Validated.
+        input_type:
+          type: string
+          enum:
+            - search_document
+            - search_query
+            - classification
+            - clustering
+          description: >-
+            Specifies the type of input. Required for embedding models v3
+            and higher. Use search_document for vector database storage,
+            search_query for search queries, classification for classifiers,
+            and clustering for clustering tasks.
+        truncate:
+          type: string
+          enum:
+            - START
+            - END
+          description: >-
+            Specifies how inputs longer than the maximum token length are
+            handled. START discards the beginning, END discards the end.
+        embedding_types:
+          type: array
+          description: >-
+            Specifies the types of embeddings to generate.
+          items:
+            type: string
+            enum:
+              - float
+              - int8
+              - uint8
+              - binary
+              - base64
+        name:
+          type: string
+          description: >-
+            An optional name for the embed job.
+    CreateEmbedJobResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: >-
+            The unique identifier of the created embed job.
+    ListEmbedJobsResponse:
+      type: object
+      properties:
+        embed_jobs:
+          type: array
+          description: >-
+            A list of embed jobs for the authenticated user.
+          items:
+            $ref: '#/components/schemas/EmbedJob'
+    EmbedJob:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: >-
+            The unique identifier of the embed job.
+        status:
+          type: string
+          enum:
+            - processing
+            - complete
+            - cancelling
+            - cancelled
+            - failed
+          description: >-
+            The current status of the embed job.
+        model:
+          type: string
+          description: >-
+            The embedding model used for the job.
+        name:
+          type: string
+          description: >-
+            The name of the embed job.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the embed job was created.
+        input_dataset_id:
+          type: string
+          description: >-
+            The ID of the input dataset.
+        output_dataset_id:
+          type: string
+          description: >-
+            The ID of the output dataset containing embeddings.
+        truncate:
+          type: string
+          description: >-
+            The truncation strategy used for the job.
+        meta:
+          type: object
+          description: >-
+            Metadata about the embed job.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: >-
+                    The API version used.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.

@@ -1,0 +1,178 @@
+openapi: 3.1.0
+info:
+  title: Cohere Rerank API
+  description: >-
+    The Cohere Rerank API takes a query and a list of text documents and
+    returns them ordered by relevance with assigned relevance scores. It is
+    commonly used as a second-stage ranker in retrieval-augmented generation
+    pipelines to improve the quality of search results before passing them
+    to a language model. The API supports multilingual reranking and can
+    significantly improve the precision of search and retrieval systems.
+  version: '2.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Rerank API Documentation
+  url: https://docs.cohere.com/reference/rerank
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Rerank
+    description: >-
+      Endpoints for reranking documents by relevance to a query using
+      Cohere reranking models.
+security:
+  - bearerAuth: []
+paths:
+  /v2/rerank:
+    post:
+      operationId: rerank
+      summary: Rerank documents by relevance
+      description: >-
+        Takes a query and a list of text documents and returns them ordered
+        by relevance with assigned relevance scores. It is recommended not
+        to send more than 1000 documents in a single request. Long documents
+        are automatically truncated to the value of max_tokens_per_doc.
+        Structured data should be formatted as YAML strings for best
+        performance.
+      tags:
+        - Rerank
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RerankRequest'
+      responses:
+        '200':
+          description: Successful rerank response with scored documents
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  schemas:
+    RerankRequest:
+      type: object
+      required:
+        - model
+        - query
+        - documents
+      properties:
+        model:
+          type: string
+          description: >-
+            The name of the reranking model to use.
+          example: rerank-english-v3.0
+        query:
+          type: string
+          description: >-
+            The search query to compare documents against.
+        documents:
+          type: array
+          description: >-
+            A list of document texts to be ranked against the query.
+            Maximum recommended is 1000 documents per request.
+          items:
+            oneOf:
+              - type: string
+              - type: object
+                properties:
+                  text:
+                    type: string
+                    description: >-
+                      The text content of the document.
+        top_n:
+          type: integer
+          description: >-
+            Limits the number of returned results to the specified value.
+            If not provided, all documents are returned with scores.
+          minimum: 1
+        max_tokens_per_doc:
+          type: integer
+          description: >-
+            Long documents will be automatically truncated to the specified
+            number of tokens. Defaults to 4096.
+          default: 4096
+          minimum: 1
+    RerankResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            Unique identifier for the rerank request.
+        results:
+          type: array
+          description: >-
+            An ordered array of documents with relevance scores, sorted
+            from most to least relevant.
+          items:
+            $ref: '#/components/schemas/RerankResult'
+        meta:
+          type: object
+          description: >-
+            Metadata about the API request.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: >-
+                    The API version used for the request.
+    RerankResult:
+      type: object
+      properties:
+        index:
+          type: integer
+          description: >-
+            The index of the document in the original input list.
+        relevance_score:
+          type: number
+          description: >-
+            The relevance score assigned to the document for the given
+            query. Higher scores indicate greater relevance.
+        document:
+          type: object
+          description: >-
+            The document text, returned when return_documents is true.
+          properties:
+            text:
+              type: string
+              description: >-
+                The text content of the document.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.

@@ -1,0 +1,126 @@
+openapi: 3.1.0
+info:
+  title: Cohere Tokenize API
+  description: >-
+    The Cohere Tokenize API splits input text into tokens using the
+    tokenizer associated with a specified model. It returns both the token
+    strings and their corresponding token IDs. This is useful for
+    understanding how text will be processed by Cohere models, estimating
+    token counts for billing purposes, and debugging input formatting issues.
+  version: '1.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Tokenize API Documentation
+  url: https://docs.cohere.com/reference/tokenize
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Tokenize
+    description: >-
+      Endpoints for splitting text into tokens using byte-pair encoding for
+      a specified Cohere model.
+security:
+  - bearerAuth: []
+paths:
+  /v1/tokenize:
+    post:
+      operationId: tokenize
+      summary: Tokenize text
+      description: >-
+        Splits input text into smaller units called tokens using byte-pair
+        encoding (BPE) for the specified model. Returns both the token
+        strings and their corresponding integer token IDs. The text must be
+        between 1 and 65536 characters.
+      tags:
+        - Tokenize
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenizeRequest'
+      responses:
+        '200':
+          description: Successful tokenization response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  schemas:
+    TokenizeRequest:
+      type: object
+      required:
+        - text
+        - model
+      properties:
+        text:
+          type: string
+          description: >-
+            The string to be tokenized. Must be between 1 and 65536
+            characters.
+          minLength: 1
+          maxLength: 65536
+        model:
+          type: string
+          description: >-
+            The name of the model whose tokenizer will be used to tokenize
+            the input text.
+          example: command-r-plus
+    TokenizeResponse:
+      type: object
+      properties:
+        tokens:
+          type: array
+          description: >-
+            An array of token strings resulting from tokenizing the input
+            text.
+          items:
+            type: string
+        token_strings:
+          type: array
+          description: >-
+            An array of token strings corresponding to each token.
+          items:
+            type: string
+        meta:
+          type: object
+          description: >-
+            Metadata about the API request.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: >-
+                    The API version used for the request.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.

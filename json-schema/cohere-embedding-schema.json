@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://api.cohere.com/schemas/cohere/embedding.json",
+  "title": "Cohere Embedding",
+  "description": "Represents the embedding output from the Cohere Embed API, including vector representations in multiple numeric formats.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the embedding request."
+    },
+    "embeddings": {
+      "type": "object",
+      "description": "Container for embedding vectors organized by type. Each type maps to an array of embedding vectors.",
+      "properties": {
+        "float": {
+          "type": "array",
+          "description": "Default float embeddings for each input. Supported with all Embed models.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "int8": {
+          "type": "array",
+          "description": "Signed int8 embeddings for each input. Supported with Embed v3.0 and newer models.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": -128,
+              "maximum": 127
+            }
+          }
+        },
+        "uint8": {
+          "type": "array",
+          "description": "Unsigned int8 embeddings for each input. Supported with Embed v3.0 and newer models.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            }
+          }
+        },
+        "binary": {
+          "type": "array",
+          "description": "Signed binary embeddings for each input. Supported with Embed v3.0 and newer models.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "base64": {
+          "type": "array",
+          "description": "Base64-encoded embeddings for each input. Supported with Embed v3.0 and newer models.",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9+/]+=*$"
+          }
+        }
+      }
+    },
+    "texts": {
+      "type": "array",
+      "description": "The text entries for which embeddings were returned.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "images": {
+      "type": "array",
+      "description": "The image entries for which embeddings were returned.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "EmbeddingInputType": {
+      "type": "string",
+      "description": "The type of input for embedding generation. Determines how the model processes the input.",
+      "enum": [
+        "search_document",
+        "search_query",
+        "classification",
+        "clustering",
+        "image"
+      ]
+    },
+    "TruncateOption": {
+      "type": "string",
+      "description": "How to handle inputs longer than the maximum token length.",
+      "enum": ["NONE", "START", "END"]
+    }
+  }
+}

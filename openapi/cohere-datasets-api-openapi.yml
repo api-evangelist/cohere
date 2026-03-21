@@ -1,0 +1,365 @@
+openapi: 3.1.0
+info:
+  title: Cohere Datasets API
+  description: >-
+    The Cohere Datasets API provides endpoints for uploading, managing, and
+    retrieving datasets used with other Cohere services such as fine-tuning
+    and embed jobs. Developers can create datasets from files, list existing
+    datasets, retrieve dataset metadata, and delete datasets they no longer
+    need. The API supports various data formats and validates uploaded data
+    against expected schemas.
+  version: '1.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Datasets API Documentation
+  url: https://docs.cohere.com/reference/list-datasets
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Datasets
+    description: >-
+      Endpoints for creating, listing, retrieving, and deleting datasets
+      used with Cohere services.
+security:
+  - bearerAuth: []
+paths:
+  /v1/datasets:
+    post:
+      operationId: createDataset
+      summary: Create a dataset
+      description: >-
+        Creates a new dataset by uploading data files. Supports multipart
+        form uploads with configurable delimiters for CSV files. The dataset
+        is validated after upload and rows with malformed input can
+        optionally be dropped instead of failing validation.
+      tags:
+        - Datasets
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateDatasetRequest'
+      responses:
+        '200':
+          description: Dataset created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDatasetResponse'
+        '400':
+          description: Bad request due to invalid parameters or data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      operationId: listDatasets
+      summary: List datasets
+      description: >-
+        Returns a list of datasets for the authenticated user. Supports
+        filtering by dataset type, date range, and validation status with
+        pagination controls.
+      tags:
+        - Datasets
+      parameters:
+        - name: datasetType
+          in: query
+          description: >-
+            Filter datasets by type.
+          schema:
+            type: string
+        - name: before
+          in: query
+          description: >-
+            Filter datasets created before this date.
+          schema:
+            type: string
+            format: date-time
+        - name: after
+          in: query
+          description: >-
+            Filter datasets created after this date.
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          description: >-
+            Maximum number of datasets to return.
+          schema:
+            type: integer
+            minimum: 1
+        - name: offset
+          in: query
+          description: >-
+            Offset to start returning datasets from.
+          schema:
+            type: integer
+            minimum: 0
+        - name: validationStatus
+          in: query
+          description: >-
+            Filter datasets by validation status.
+          schema:
+            type: string
+            enum:
+              - Unknown
+              - Queued
+              - Processing
+              - Validated
+              - Skipped
+              - Failed
+      responses:
+        '200':
+          description: Successful list of datasets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListDatasetsResponse'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/datasets/{id}:
+    get:
+      operationId: getDataset
+      summary: Get a dataset
+      description: >-
+        Retrieves metadata and details about a specific dataset by its
+        identifier.
+      tags:
+        - Datasets
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '200':
+          description: Successful dataset details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dataset'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Dataset not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: deleteDataset
+      summary: Delete a dataset
+      description: >-
+        Deletes a dataset by its identifier. Datasets are automatically
+        deleted after 30 days but can also be deleted manually using this
+        endpoint.
+      tags:
+        - Datasets
+      parameters:
+        - $ref: '#/components/parameters/DatasetId'
+      responses:
+        '200':
+          description: Dataset deleted successfully
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Dataset not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /v1/datasets/usage:
+    get:
+      operationId: getDatasetUsage
+      summary: Get dataset usage
+      description: >-
+        Retrieves the total dataset usage for the authenticated
+        organization.
+      tags:
+        - Datasets
+      responses:
+        '200':
+          description: Successful dataset usage response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatasetUsage'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  parameters:
+    DatasetId:
+      name: id
+      in: path
+      required: true
+      description: >-
+        The unique identifier of the dataset.
+      schema:
+        type: string
+  schemas:
+    CreateDatasetRequest:
+      type: object
+      required:
+        - name
+        - type
+        - data
+      properties:
+        name:
+          type: string
+          description: >-
+            The name of the dataset.
+        type:
+          type: string
+          description: >-
+            The type of dataset. Currently embed-input is the primary type
+            used with the Embed Jobs API.
+          enum:
+            - embed-input
+            - reranker-finetune-input
+            - prompt-completion-finetune-input
+            - single-label-classification-finetune-input
+            - chat-finetune-input
+        data:
+          type: string
+          format: binary
+          description: >-
+            The data file to upload.
+        delimiter:
+          type: string
+          description: >-
+            The delimiter used for CSV file uploads.
+        dry_run:
+          type: boolean
+          description: >-
+            When true, validates the data without creating the dataset.
+        keep_fields:
+          type: string
+          description: >-
+            Comma-separated list of field names to persist in the dataset.
+    CreateDatasetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the created dataset.
+    ListDatasetsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          description: >-
+            A list of datasets for the authenticated user.
+          items:
+            $ref: '#/components/schemas/Dataset'
+    Dataset:
+      type: object
+      properties:
+        id:
+          type: string
+          description: >-
+            The unique identifier of the dataset.
+        name:
+          type: string
+          description: >-
+            The name of the dataset.
+        dataset_type:
+          type: string
+          description: >-
+            The type of dataset.
+        validation_status:
+          type: string
+          enum:
+            - Unknown
+            - Queued
+            - Processing
+            - Validated
+            - Skipped
+            - Failed
+          description: >-
+            The current validation status of the dataset.
+        created_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the dataset was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: >-
+            The timestamp when the dataset was last updated.
+        schema:
+          type: string
+          description: >-
+            The expected schema for the dataset.
+        required_fields:
+          type: array
+          description: >-
+            The required fields in the dataset schema.
+          items:
+            type: string
+        preserve_fields:
+          type: array
+          description: >-
+            The fields that are preserved in the dataset.
+          items:
+            type: string
+        validation_error:
+          type: string
+          description: >-
+            The validation error message if validation failed.
+        validation_warnings:
+          type: array
+          description: >-
+            Validation warnings for rows that were dropped.
+          items:
+            type: string
+        meta:
+          type: object
+          description: >-
+            Metadata about the dataset.
+    DatasetUsage:
+      type: object
+      properties:
+        organization_usage:
+          type: integer
+          description: >-
+            The total dataset usage in bytes for the organization.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.

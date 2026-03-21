@@ -1,0 +1,115 @@
+openapi: 3.1.0
+info:
+  title: Cohere Detokenize API
+  description: >-
+    The Cohere Detokenize API converts a sequence of token IDs back into
+    their corresponding text string using the tokenizer for a specified
+    model. It is the inverse operation of the Tokenize API and is useful
+    for inspecting model outputs at the token level, debugging tokenization
+    behavior, and reconstructing text from token representations.
+  version: '1.0'
+  contact:
+    name: Cohere Support
+    url: https://support.cohere.com
+  termsOfService: https://cohere.com/terms-of-use
+externalDocs:
+  description: Cohere Detokenize API Documentation
+  url: https://docs.cohere.com/reference/detokenize
+servers:
+  - url: https://api.cohere.com
+    description: Cohere Production Server
+tags:
+  - name: Detokenize
+    description: >-
+      Endpoints for converting token IDs back into text using a specified
+      Cohere model's tokenizer.
+security:
+  - bearerAuth: []
+paths:
+  /v1/detokenize:
+    post:
+      operationId: detokenize
+      summary: Detokenize token IDs
+      description: >-
+        Takes a list of token IDs and converts them back into their
+        corresponding text string using byte-pair encoding for the specified
+        model. This is the inverse operation of the Tokenize endpoint.
+      tags:
+        - Detokenize
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DetokenizeRequest'
+      responses:
+        '200':
+          description: Successful detokenization response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DetokenizeResponse'
+        '400':
+          description: Bad request due to invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized due to missing or invalid API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Bearer authentication using a Cohere API key.
+  schemas:
+    DetokenizeRequest:
+      type: object
+      required:
+        - tokens
+        - model
+      properties:
+        tokens:
+          type: array
+          description: >-
+            The list of token IDs to be detokenized.
+          items:
+            type: integer
+        model:
+          type: string
+          description: >-
+            The name of the model whose tokenizer will be used to
+            detokenize the input tokens.
+          example: command-r-plus
+    DetokenizeResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          description: >-
+            The text string resulting from detokenizing the input token IDs.
+        meta:
+          type: object
+          description: >-
+            Metadata about the API request.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: >-
+                    The API version used for the request.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: >-
+            A human-readable error message describing what went wrong.
