@@ -1,5 +1,6 @@
 aid: cohere
-url: https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml
 apis:
   - aid: cohere:chat-api
     name: Cohere Chat API
@@ -9,7 +10,8 @@ apis:
       - Chat
       - Text Generation
       - Conversational AI
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/chat
     properties:
@@ -32,7 +34,8 @@ apis:
       - Vector Search
       - Semantic Search
       - Natural Language Processing
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/embed
     properties:
@@ -55,7 +58,8 @@ apis:
       - Reranking
       - Relevance
       - Information Retrieval
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/rerank
     properties:
@@ -77,7 +81,8 @@ apis:
       - Classification
       - Text Analysis
       - Natural Language Processing
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/classify
     properties:
@@ -99,7 +104,8 @@ apis:
       - Embeddings
       - Batch Processing
       - Vector Search
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/list-embed-jobs
     properties:
@@ -121,7 +127,8 @@ apis:
       - Datasets
       - Data Management
       - Fine-Tuning
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/list-datasets
     properties:
@@ -142,7 +149,8 @@ apis:
       - Artificial Intelligence
       - Models
       - Machine Learning
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/list-models
     properties:
@@ -164,7 +172,8 @@ apis:
       - Tokenization
       - Natural Language Processing
       - Text Processing
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/tokenize
     properties:
@@ -185,7 +194,8 @@ apis:
       - Tokenization
       - Natural Language Processing
       - Text Processing
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/detokenize
     properties:
@@ -211,3 +221,5 @@ common:
   - type: JSONSchema
     url: json-schema/cohere-dataset-schema.json
 modified: '2026-03-20'
+description: >-
+  Generates a text response to a user message and streams it down, token by token.
