@@ -1,17 +1,15 @@
 aid: cohere
-url: 
-  https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml
 apis:
   - aid: cohere:chat-api
     name: Cohere Chat API
     tags:
       - Artificial Intelligence
-      - Large Language Models
       - Chat
-      - Text Generation
       - Conversational AI
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Large Language Models
+      - Text Generation
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/chat
     properties:
@@ -31,11 +29,10 @@ apis:
     tags:
       - Artificial Intelligence
       - Embeddings
-      - Vector Search
-      - Semantic Search
       - Natural Language Processing
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Semantic Search
+      - Vector Search
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/embed
     properties:
@@ -54,12 +51,11 @@ apis:
     name: Cohere Rerank API
     tags:
       - Artificial Intelligence
-      - Search
-      - Reranking
-      - Relevance
       - Information Retrieval
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Relevance
+      - Reranking
+      - Search
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/rerank
     properties:
@@ -79,10 +75,9 @@ apis:
     tags:
       - Artificial Intelligence
       - Classification
-      - Text Analysis
       - Natural Language Processing
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Text Analysis
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/classify
     properties:
@@ -101,11 +96,10 @@ apis:
     name: Cohere Embed Jobs API
     tags:
       - Artificial Intelligence
-      - Embeddings
       - Batch Processing
+      - Embeddings
       - Vector Search
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/list-embed-jobs
     properties:
@@ -124,11 +118,10 @@ apis:
     name: Cohere Datasets API
     tags:
       - Artificial Intelligence
-      - Datasets
       - Data Management
+      - Datasets
       - Fine-Tuning
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/list-datasets
     properties:
@@ -147,10 +140,9 @@ apis:
     name: Cohere Models API
     tags:
       - Artificial Intelligence
-      - Models
       - Machine Learning
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Models
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/list-models
     properties:
@@ -169,11 +161,10 @@ apis:
     name: Cohere Tokenize API
     tags:
       - Artificial Intelligence
-      - Tokenization
       - Natural Language Processing
       - Text Processing
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Tokenization
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/tokenize
     properties:
@@ -191,11 +182,10 @@ apis:
     name: Cohere Detokenize API
     tags:
       - Artificial Intelligence
-      - Tokenization
       - Natural Language Processing
       - Text Processing
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Tokenization
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://api.cohere.com
     humanURL: https://docs.cohere.com/reference/detokenize
     properties:
