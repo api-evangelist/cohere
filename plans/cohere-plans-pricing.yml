@@ -1,0 +1,185 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Cohere
+providerId: cohere
+created: '2026-05-04'
+modified: '2026-05-04'
+reconciled: true
+tags:
+  - AI
+  - LLM
+  - Embeddings
+  - Reranker
+description: Cohere per-token pricing across Command and Aya families.
+sources:
+  - https://cohere.com/pricing
+plans:
+  - id: cohere-command
+    name: Command
+    type: usage-based
+    description: Per-token pricing for Command.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '2.00'
+        userMultiplied: false
+    elements:
+      - name: Per-token billing
+      - name: Pay as you go
+  - id: cohere-command-light
+    name: Command-light
+    type: usage-based
+    description: Per-token pricing for Command-light.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.30'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.60'
+        userMultiplied: false
+    elements:
+      - name: Per-token billing
+      - name: Pay as you go
+  - id: cohere-command-r-03-2024
+    name: Command R 03-2024
+    type: usage-based
+    description: Per-token pricing for Command R 03-2024.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.50'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.50'
+        userMultiplied: false
+    elements:
+      - name: Per-token billing
+      - name: Pay as you go
+  - id: cohere-command-r-plus-04-2024
+    name: Command R+ 04-2024
+    type: usage-based
+    description: Per-token pricing for Command R+ 04-2024.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '3.00'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '15.00'
+        userMultiplied: false
+    elements:
+      - name: Per-token billing
+      - name: Pay as you go
+  - id: cohere-command-r-plus-08-2024
+    name: Command R+ 08-2024
+    type: usage-based
+    description: Per-token pricing for Command R+ 08-2024.
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '2.50'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '10.00'
+        userMultiplied: false
+    elements:
+      - name: Per-token billing
+      - name: Pay as you go
+  - id: cohere-aya-expanse
+    name: Aya Expanse (8B/32B)
+    type: usage-based
+    description: Per-token pricing for Aya Expanse (8B/32B).
+    entries:
+      - label: Input tokens
+        name: input
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '0.50'
+        userMultiplied: false
+      - label: Output tokens
+        name: output
+        type: metered
+        metric: tokens
+        limit: -1
+        timeFrame: usage
+        geo: global
+        unit: 1000000
+        price: '1.50'
+        userMultiplied: false
+    elements:
+      - name: Per-token billing
+      - name: Pay as you go
