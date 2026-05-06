@@ -1,0 +1,100 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cohere Chat API
+  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into
+    their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema
+    definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works
+    with Cohere's Command family of models.
+  tags:
+  - Cohere
+  - API
+  created: '2026-05-06'
+  modified: '2026-05-06'
+capability:
+  consumes:
+  - type: http
+    namespace: cohere
+    baseUri: https://api.cohere.com
+    description: Cohere Chat API HTTP API.
+    authentication:
+      type: bearer
+      token: '{{COHERE_TOKEN}}'
+    resources:
+    - name: v2-chat
+      path: /v2/chat
+      operations:
+      - name: chat
+        method: POST
+        description: Chat with a Cohere model
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: v2-chat-stream
+      path: /v2/chat/stream
+      operations:
+      - name: chatstream
+        method: POST
+        description: Chat with streaming response
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+  exposes:
+  - type: rest
+    port: 8080
+    namespace: cohere-rest
+    description: REST adapter for Cohere Chat API.
+    resources:
+    - path: /v2/chat
+      name: chat
+      operations:
+      - method: POST
+        name: chat
+        description: Chat with a Cohere model
+        call: cohere.chat
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v2/chat/stream
+      name: chatstream
+      operations:
+      - method: POST
+        name: chatstream
+        description: Chat with streaming response
+        call: cohere.chatstream
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    port: 9090
+    namespace: cohere-mcp
+    transport: http
+    description: MCP adapter for Cohere Chat API for AI agent use.
+    tools:
+    - name: chat
+      description: Chat with a Cohere model
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: cohere.chat
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: chatstream
+      description: Chat with streaming response
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: cohere.chatstream
+      outputParameters:
+      - type: object
+        mapping: $.
+binds:
+- namespace: env
+  keys:
+    COHERE_TOKEN: COHERE_TOKEN
