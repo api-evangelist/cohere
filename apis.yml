@@ -179,7 +179,7 @@ apis:
       API and is useful for inspecting model outputs at the token level, debugging tokenization behavior,
       and reconstructing text from token representations.
 common:
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/cohere-context.jsonld
   - type: JSONSchema
     url: json-schema/cohere-chat-message-schema.json
