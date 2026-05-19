@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cohere Embed API — Embed
+  description: 'Cohere Embed API — Embed. 1 operations. Lead operation: Generate embeddings. Self-contained Naftiko capability
+    covering one Cohere business surface.'
+  tags:
+  - Cohere
+  - Embed
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    COHERE_API_KEY: COHERE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: embed-embed
+    baseUri: https://api.cohere.com
+    description: Cohere Embed API — Embed business capability. Self-contained, no shared references.
+    resources:
+    - name: v2-embed
+      path: /v2/embed
+      operations:
+      - name: embed
+        method: POST
+        description: Generate embeddings
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.COHERE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: embed-embed-rest
+    port: 8080
+    description: REST adapter for Cohere Embed API — Embed. One Spectral-compliant resource per consumed operation, prefixed
+      with /v1.
+    resources:
+    - path: /v1/v2/embed
+      name: v2-embed
+      description: REST surface for v2-embed.
+      operations:
+      - method: POST
+        name: embed
+        description: Generate embeddings
+        call: embed-embed.embed
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: embed-embed-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cohere Embed API — Embed. One tool per consumed operation, routed inline through this capability's
+      consumes block.
+    tools:
+    - name: generate-embeddings
+      description: Generate embeddings
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: embed-embed.embed
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

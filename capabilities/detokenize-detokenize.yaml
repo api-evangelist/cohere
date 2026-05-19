@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cohere Detokenize API — Detokenize
+  description: 'Cohere Detokenize API — Detokenize. 1 operations. Lead operation: Detokenize token IDs. Self-contained Naftiko
+    capability covering one Cohere business surface.'
+  tags:
+  - Cohere
+  - Detokenize
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    COHERE_API_KEY: COHERE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: detokenize-detokenize
+    baseUri: https://api.cohere.com
+    description: Cohere Detokenize API — Detokenize business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-detokenize
+      path: /v1/detokenize
+      operations:
+      - name: detokenize
+        method: POST
+        description: Detokenize token IDs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.COHERE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: detokenize-detokenize-rest
+    port: 8080
+    description: REST adapter for Cohere Detokenize API — Detokenize. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/detokenize
+      name: v1-detokenize
+      description: REST surface for v1-detokenize.
+      operations:
+      - method: POST
+        name: detokenize
+        description: Detokenize token IDs
+        call: detokenize-detokenize.detokenize
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: detokenize-detokenize-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cohere Detokenize API — Detokenize. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: detokenize-token-ids
+      description: Detokenize token IDs
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: detokenize-detokenize.detokenize
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

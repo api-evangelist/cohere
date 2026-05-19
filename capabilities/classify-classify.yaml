@@ -1,0 +1,80 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Cohere Classify API — Classify
+  description: 'Cohere Classify API — Classify. 1 operations. Lead operation: Classify text inputs. Self-contained Naftiko
+    capability covering one Cohere business surface.'
+  tags:
+  - Cohere
+  - Classify
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    COHERE_API_KEY: COHERE_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: classify-classify
+    baseUri: https://api.cohere.com
+    description: Cohere Classify API — Classify business capability. Self-contained, no shared references.
+    resources:
+    - name: v1-classify
+      path: /v1/classify
+      operations:
+      - name: classify
+        method: POST
+        description: Classify text inputs
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: bearer
+      token: '{{env.COHERE_API_KEY}}'
+  exposes:
+  - type: rest
+    namespace: classify-classify-rest
+    port: 8080
+    description: REST adapter for Cohere Classify API — Classify. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1/v1/classify
+      name: v1-classify
+      description: REST surface for v1-classify.
+      operations:
+      - method: POST
+        name: classify
+        description: Classify text inputs
+        call: classify-classify.classify
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: classify-classify-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Cohere Classify API — Classify. One tool per consumed operation, routed inline through this
+      capability's consumes block.
+    tools:
+    - name: classify-text-inputs
+      description: Classify text inputs
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: classify-classify.classify
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
