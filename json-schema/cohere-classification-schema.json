@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Classification",
+  "title": "Classification",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this classification result."
+    },
+    "input": {
+      "type": "string",
+      "description": "The input text that was classified."
+    },
+    "prediction": {
+      "type": "string",
+      "description": "The predicted label with the highest confidence."
+    },
+    "predictions": {
+      "type": "array",
+      "description": "All predicted labels ordered by confidence.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "description": "The confidence score for the top prediction.",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "confidences": {
+      "type": "array",
+      "description": "Confidence scores for all predictions.",
+      "items": {
+        "type": "number"
+      }
+    },
+    "labels": {
+      "type": "object",
+      "description": "A map of label names to their confidence scores.",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "confidence": {
+            "type": "number",
+            "description": "The confidence score for this label.",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    }
+  }
+}

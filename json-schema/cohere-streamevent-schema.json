@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/StreamEvent",
+  "title": "StreamEvent",
+  "type": "object",
+  "description": "A server-sent event emitted during streaming chat generation. Event types include stream-start, content-delta, citation-start, citation-end, tool-call-start, tool-call-delta, tool-call-end, and stream-end.",
+  "properties": {
+    "event_type": {
+      "type": "string",
+      "enum": [
+        "stream-start",
+        "content-delta",
+        "citation-start",
+        "citation-end",
+        "tool-call-start",
+        "tool-call-delta",
+        "tool-call-end",
+        "stream-end"
+      ],
+      "description": "The type of streaming event."
+    },
+    "delta": {
+      "type": "object",
+      "description": "The incremental content payload for delta events.",
+      "properties": {
+        "message": {
+          "type": "object",
+          "properties": {
+            "content": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "The incremental text content."
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

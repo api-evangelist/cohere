@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ClassifyExample",
+  "title": "ClassifyExample",
+  "type": "object",
+  "required": [
+    "text",
+    "label"
+  ],
+  "properties": {
+    "text": {
+      "type": "string",
+      "description": "The example text content.",
+      "maxLength": 512
+    },
+    "label": {
+      "type": "string",
+      "description": "The classification label associated with the example text."
+    }
+  }
+}

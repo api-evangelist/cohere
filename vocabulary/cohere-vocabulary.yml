@@ -1,0 +1,7 @@
+name: Cohere Domain Vocabulary
+provider: Cohere
+providerId: cohere
+description: Tag-derived vocabulary for the Cohere API surface; sourced from openapi/ tags.
+terms:
+- term: Chat
+  description: Endpoints for generating text responses through conversational interactions with Cohere language models.

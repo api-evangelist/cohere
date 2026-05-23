@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CreateEmbedJobRequest",
+  "title": "CreateEmbedJobRequest",
+  "type": "object",
+  "required": [
+    "model",
+    "dataset_id",
+    "input_type"
+  ],
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "The ID of the embedding model to use for the job.",
+      "example": "embed-english-v3.0"
+    },
+    "dataset_id": {
+      "type": "string",
+      "description": "The ID of a dataset of type embed-input. The dataset must have a validation status of Validated."
+    },
+    "input_type": {
+      "type": "string",
+      "enum": [
+        "search_document",
+        "search_query",
+        "classification",
+        "clustering"
+      ],
+      "description": "Specifies the type of input. Required for embedding models v3 and higher. Use search_document for vector database storage, search_query for search queries, classification for classifiers, and clustering for clustering tasks."
+    },
+    "truncate": {
+      "type": "string",
+      "enum": [
+        "START",
+        "END"
+      ],
+      "description": "Specifies how inputs longer than the maximum token length are handled. START discards the beginning, END discards the end."
+    },
+    "embedding_types": {
+      "type": "array",
+      "description": "Specifies the types of embeddings to generate.",
+      "items": {
+        "type": "string",
+        "enum": [
+          "float",
+          "int8",
+          "uint8",
+          "binary",
+          "base64"
+        ]
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "An optional name for the embed job."
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/DetokenizeRequest",
+  "title": "DetokenizeRequest",
+  "type": "object",
+  "required": [
+    "tokens",
+    "model"
+  ],
+  "properties": {
+    "tokens": {
+      "type": "array",
+      "description": "The list of token IDs to be detokenized.",
+      "items": {
+        "type": "integer"
+      }
+    },
+    "model": {
+      "type": "string",
+      "description": "The name of the model whose tokenizer will be used to detokenize the input tokens.",
+      "example": "command-r-plus"
+    }
+  }
+}

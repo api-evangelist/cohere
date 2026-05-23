@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/Tool",
+  "title": "Tool",
+  "type": "object",
+  "required": [
+    "type",
+    "function"
+  ],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "function"
+      ],
+      "description": "The type of tool. Currently only function is supported."
+    },
+    "function": {
+      "type": "object",
+      "required": [
+        "name",
+        "description"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the function to be called."
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of what the function does."
+        },
+        "parameters": {
+          "type": "object",
+          "description": "The parameters the function accepts, described as a JSON Schema object."
+        }
+      }
+    }
+  }
+}

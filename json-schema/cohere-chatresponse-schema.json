@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ChatResponse",
+  "title": "ChatResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the chat completion."
+    },
+    "finish_reason": {
+      "type": "string",
+      "enum": [
+        "complete",
+        "max_tokens",
+        "stop_sequence",
+        "tool_call",
+        "error",
+        "timeout"
+      ],
+      "description": "The reason the chat request finished. Values include complete, max_tokens, stop_sequence, tool_call, error, and timeout."
+    },
+    "message": {
+      "$ref": "#/components/schemas/Message"
+    },
+    "usage": {
+      "$ref": "#/components/schemas/Usage"
+    }
+  }
+}

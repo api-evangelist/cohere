@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EmbedResponse",
+  "title": "EmbedResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the embedding request."
+    },
+    "embeddings": {
+      "type": "object",
+      "description": "An object containing the generated embeddings organized by embedding type. Each type maps to an array of embedding vectors corresponding to the input texts.",
+      "properties": {
+        "float": {
+          "type": "array",
+          "description": "Float embeddings for each input.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "int8": {
+          "type": "array",
+          "description": "Signed int8 embeddings for each input.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "uint8": {
+          "type": "array",
+          "description": "Unsigned int8 embeddings for each input.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "binary": {
+          "type": "array",
+          "description": "Signed binary embeddings for each input.",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "base64": {
+          "type": "array",
+          "description": "Base64-encoded embeddings for each input.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "texts": {
+      "type": "array",
+      "description": "The text entries for which embeddings were returned.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "description": "Metadata about the API request.",
+      "properties": {
+        "api_version": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "The API version used for the request."
+            }
+          }
+        }
+      }
+    }
+  }
+}

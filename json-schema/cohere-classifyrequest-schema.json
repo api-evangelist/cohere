@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ClassifyRequest",
+  "title": "ClassifyRequest",
+  "type": "object",
+  "required": [
+    "inputs",
+    "examples"
+  ],
+  "properties": {
+    "inputs": {
+      "type": "array",
+      "description": "A list of up to 96 texts to be classified. Each must be a non-empty string.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "maxItems": 96,
+      "minItems": 1
+    },
+    "examples": {
+      "type": "array",
+      "description": "An array of labeled examples providing context to the model. Each unique label requires at least 2 examples. Maximum of 2500 examples, each with a maximum length of 512 tokens.",
+      "items": {
+        "$ref": "#/components/schemas/ClassifyExample"
+      },
+      "maxItems": 2500,
+      "minItems": 2
+    },
+    "model": {
+      "type": "string",
+      "description": "The name of a compatible Cohere model to use for classification."
+    },
+    "preset": {
+      "type": "string",
+      "description": "The ID of a custom playground preset."
+    },
+    "truncate": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "START",
+        "END"
+      ],
+      "description": "Specifies how the API handles inputs longer than the maximum token length. START discards the beginning, END discards the end. NONE returns an error if the input is too long."
+    }
+  }
+}

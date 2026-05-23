@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RerankRequest",
+  "title": "RerankRequest",
+  "type": "object",
+  "required": [
+    "model",
+    "query",
+    "documents"
+  ],
+  "properties": {
+    "model": {
+      "type": "string",
+      "description": "The name of the reranking model to use.",
+      "example": "rerank-english-v3.0"
+    },
+    "query": {
+      "type": "string",
+      "description": "The search query to compare documents against."
+    },
+    "documents": {
+      "type": "array",
+      "description": "A list of document texts to be ranked against the query. Maximum recommended is 1000 documents per request.",
+      "items": {
+        "oneOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "The text content of the document."
+              }
+            }
+          }
+        ]
+      }
+    },
+    "top_n": {
+      "type": "integer",
+      "description": "Limits the number of returned results to the specified value. If not provided, all documents are returned with scores.",
+      "minimum": 1
+    },
+    "max_tokens_per_doc": {
+      "type": "integer",
+      "description": "Long documents will be automatically truncated to the specified number of tokens. Defaults to 4096.",
+      "default": 4096,
+      "minimum": 1
+    }
+  }
+}

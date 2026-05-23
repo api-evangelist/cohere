@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/RerankResponse",
+  "title": "RerankResponse",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for the rerank request."
+    },
+    "results": {
+      "type": "array",
+      "description": "An ordered array of documents with relevance scores, sorted from most to least relevant.",
+      "items": {
+        "$ref": "#/components/schemas/RerankResult"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "description": "Metadata about the API request.",
+      "properties": {
+        "api_version": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "The API version used for the request."
+            }
+          }
+        }
+      }
+    }
+  }
+}

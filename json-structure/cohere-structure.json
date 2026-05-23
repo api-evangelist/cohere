@@ -1,0 +1,86 @@
+{
+  "provider": "Cohere",
+  "providerId": "cohere",
+  "kind": "json-structure",
+  "description": "Structural overview of the Cohere API surface; extracted from openapi/.",
+  "schemaCount": 8,
+  "operationCount": 2,
+  "schemas": [
+    {
+      "name": "ChatRequest",
+      "type": "object",
+      "propertyCount": 8,
+      "required": [
+        "model",
+        "messages"
+      ]
+    },
+    {
+      "name": "Message",
+      "type": "object",
+      "propertyCount": 4,
+      "required": [
+        "role"
+      ]
+    },
+    {
+      "name": "Tool",
+      "type": "object",
+      "propertyCount": 2,
+      "required": [
+        "type",
+        "function"
+      ]
+    },
+    {
+      "name": "ToolCall",
+      "type": "object",
+      "propertyCount": 3,
+      "required": []
+    },
+    {
+      "name": "ChatResponse",
+      "type": "object",
+      "propertyCount": 4,
+      "required": []
+    },
+    {
+      "name": "Usage",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "StreamEvent",
+      "type": "object",
+      "propertyCount": 2,
+      "required": []
+    },
+    {
+      "name": "Error",
+      "type": "object",
+      "propertyCount": 1,
+      "required": []
+    }
+  ],
+  "operations": [
+    {
+      "method": "POST",
+      "path": "/v2/chat",
+      "operationId": "chat",
+      "summary": "Chat with a Cohere model",
+      "tags": [
+        "Chat"
+      ]
+    },
+    {
+      "method": "POST",
+      "path": "/v2/chat/stream",
+      "operationId": "chatStream",
+      "summary": "Chat with streaming response",
+      "tags": [
+        "Chat"
+      ]
+    }
+  ]
+}

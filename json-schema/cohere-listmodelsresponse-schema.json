@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/ListModelsResponse",
+  "title": "ListModelsResponse",
+  "type": "object",
+  "properties": {
+    "models": {
+      "type": "array",
+      "description": "A list of available models.",
+      "items": {
+        "$ref": "#/components/schemas/Model"
+      }
+    },
+    "next_page_token": {
+      "type": "string",
+      "nullable": true,
+      "description": "A token to retrieve the next page of results. Null if there are no more pages."
+    }
+  }
+}

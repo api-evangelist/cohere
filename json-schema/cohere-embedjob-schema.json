@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/EmbedJob",
+  "title": "EmbedJob",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "The unique identifier of the embed job."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "processing",
+        "complete",
+        "cancelling",
+        "cancelled",
+        "failed"
+      ],
+      "description": "The current status of the embed job."
+    },
+    "model": {
+      "type": "string",
+      "description": "The embedding model used for the job."
+    },
+    "name": {
+      "type": "string",
+      "description": "The name of the embed job."
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "The timestamp when the embed job was created."
+    },
+    "input_dataset_id": {
+      "type": "string",
+      "description": "The ID of the input dataset."
+    },
+    "output_dataset_id": {
+      "type": "string",
+      "description": "The ID of the output dataset containing embeddings."
+    },
+    "truncate": {
+      "type": "string",
+      "description": "The truncation strategy used for the job."
+    },
+    "meta": {
+      "type": "object",
+      "description": "Metadata about the embed job.",
+      "properties": {
+        "api_version": {
+          "type": "object",
+          "properties": {
+            "version": {
+              "type": "string",
+              "description": "The API version used."
+            }
+          }
+        }
+      }
+    }
+  }
+}

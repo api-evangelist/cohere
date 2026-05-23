@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "#/components/schemas/CreateDatasetRequest",
+  "title": "CreateDatasetRequest",
+  "type": "object",
+  "required": [
+    "name",
+    "type",
+    "data"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the dataset."
+    },
+    "type": {
+      "type": "string",
+      "description": "The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API.",
+      "enum": [
+        "embed-input",
+        "reranker-finetune-input",
+        "prompt-completion-finetune-input",
+        "single-label-classification-finetune-input",
+        "chat-finetune-input"
+      ]
+    },
+    "data": {
+      "type": "string",
+      "format": "binary",
+      "description": "The data file to upload."
+    },
+    "delimiter": {
+      "type": "string",
+      "description": "The delimiter used for CSV file uploads."
+    },
+    "dry_run": {
+      "type": "boolean",
+      "description": "When true, validates the data without creating the dataset."
+    },
+    "keep_fields": {
+      "type": "string",
+      "description": "Comma-separated list of field names to persist in the dataset."
+    }
+  }
+}
