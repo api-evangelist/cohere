@@ -17,6 +17,8 @@ apis:
       type: Documentation
     - url: openapi/cohere-chat-api-openapi.yml
       type: OpenAPI
+    - url: asyncapi/cohere-asyncapi.yml
+      type: AsyncAPI
     - type: NaftikoCapability
       url: capabilities/chat-chat.yaml
     description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into
@@ -228,5 +230,5 @@ common:
     updated: '2026-05-04'
   - type: LLMsTxt
     url: https://docs.cohere.com/llms.txt
-modified: '2026-05-19'
+modified: '2026-05-29'
 description: Generates a text response to a user message and streams it down, token by token.

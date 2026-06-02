@@ -1,0 +1,982 @@
+asyncapi: 2.6.0
+info:
+  title: Cohere Streaming API
+  version: 1.0.0
+  description: |
+    AsyncAPI definition for Cohere's HTTP+SSE streaming endpoints.
+
+    Cohere's streaming responses are NOT delivered via WebSockets. They are
+    delivered as Server-Sent Events (SSE) over plain HTTPS, returned as the
+    body of a standard HTTP POST response when the request body is sent with
+    `"stream": true`. The `Content-Type` of the response is
+    `text/event-stream` and each event is a JSON object on a single SSE
+    `data:` line.
+
+    Two API generations are covered here:
+
+      * v2 Chat streaming (`POST /v2/chat`) — the current recommended
+        streaming interface, emitting typed events such as `message-start`,
+        `content-delta`, `tool-call-delta`, `citation-start`, `message-end`,
+        and `debug`.
+      * v1 Chat streaming (`POST /v1/chat`) — the legacy streaming
+        interface, emitting events such as `stream-start`,
+        `search-queries-generation`, `search-results`, `text-generation`,
+        `citation-generation`, `tool-calls-generation`,
+        `tool-calls-chunk`, `stream-end`, and `debug`.
+      * v1 Generate streaming (`POST /v1/generate`) — legacy completion
+        streaming; emits incremental chunks containing `text`, `index`,
+        `is_finished`, `finish_reason`, and a final `response` object.
+
+    Cohere's Embed Jobs API (`/v1/embed-jobs`) is asynchronous but operates
+    on a polling model — it does NOT expose an SSE channel and is therefore
+    out of scope for this AsyncAPI document.
+  contact:
+    name: Cohere Support
+    url: https://docs.cohere.com
+  license:
+    name: Cohere Terms of Use
+    url: https://cohere.com/terms-of-use
+  x-transport: HTTP+SSE
+  x-not-websocket: true
+
+servers:
+  production:
+    url: api.cohere.com
+    protocol: https
+    description: |
+      Cohere production HTTPS endpoint. Streaming responses are returned
+      as Server-Sent Events (SSE) over the same HTTP/1.1 (or HTTP/2)
+      connection used for the initial POST request. This is HTTP+SSE,
+      NOT WebSocket.
+    bindings:
+      http:
+        type: response
+        method: POST
+        headers:
+          type: object
+          properties:
+            Content-Type:
+              type: string
+              const: text/event-stream
+            Cache-Control:
+              type: string
+              const: no-cache
+            Connection:
+              type: string
+              const: keep-alive
+        bindingVersion: '0.3.0'
+    security:
+      - bearerAuth: []
+    x-transport-details:
+      transport: HTTP+SSE
+      requestContentType: application/json
+      responseContentType: text/event-stream
+      framing: SSE (each event is one JSON document on a `data:` line)
+
+defaultContentType: application/json
+
+channels:
+
+  /v2/chat:
+    description: |
+      Cohere v2 Chat streaming endpoint. The client sends a single HTTPS
+      POST with `"stream": true`; Cohere returns a `text/event-stream`
+      response. Each event on the wire is a typed object discriminated by
+      its `type` field.
+
+      Documented events: `message-start`, `content-start`, `content-delta`,
+      `content-end`, `tool-plan-delta`, `tool-call-start`,
+      `tool-call-delta`, `tool-call-end`, `citation-start`,
+      `citation-end`, `message-end`, `debug`.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    publish:
+      operationId: receiveV2ChatStream
+      summary: Receive v2 Chat streaming events
+      description: |
+        Server-Sent Events streamed back from `POST /v2/chat` when the
+        request body sets `stream: true`.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/V2MessageStart'
+          - $ref: '#/components/messages/V2ContentStart'
+          - $ref: '#/components/messages/V2ContentDelta'
+          - $ref: '#/components/messages/V2ContentEnd'
+          - $ref: '#/components/messages/V2ToolPlanDelta'
+          - $ref: '#/components/messages/V2ToolCallStart'
+          - $ref: '#/components/messages/V2ToolCallDelta'
+          - $ref: '#/components/messages/V2ToolCallEnd'
+          - $ref: '#/components/messages/V2CitationStart'
+          - $ref: '#/components/messages/V2CitationEnd'
+          - $ref: '#/components/messages/V2MessageEnd'
+          - $ref: '#/components/messages/V2Debug'
+
+  /v1/chat:
+    description: |
+      Cohere v1 Chat streaming endpoint (legacy). Sent as
+      `POST /v1/chat` with `"stream": true`. Returns a
+      `text/event-stream` body whose events are discriminated by the
+      `event_type` field.
+
+      Documented events: `stream-start`, `search-queries-generation`,
+      `search-results`, `text-generation`, `citation-generation`,
+      `tool-calls-generation`, `tool-calls-chunk`, `stream-end`,
+      `debug`.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    publish:
+      operationId: receiveV1ChatStream
+      summary: Receive v1 Chat streaming events
+      description: |
+        Server-Sent Events streamed back from `POST /v1/chat` when the
+        request body sets `stream: true`.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/V1StreamStart'
+          - $ref: '#/components/messages/V1SearchQueriesGeneration'
+          - $ref: '#/components/messages/V1SearchResults'
+          - $ref: '#/components/messages/V1TextGeneration'
+          - $ref: '#/components/messages/V1CitationGeneration'
+          - $ref: '#/components/messages/V1ToolCallsGeneration'
+          - $ref: '#/components/messages/V1ToolCallsChunk'
+          - $ref: '#/components/messages/V1StreamEnd'
+          - $ref: '#/components/messages/V1ChatDebug'
+
+  /v1/generate:
+    description: |
+      Cohere v1 Generate streaming endpoint (legacy; superseded by
+      `/v2/chat`). Sent as `POST /v1/generate` with `"stream": true`.
+      Returns a sequence of JSON chunks. Each chunk carries incremental
+      generation state; the terminal chunk has `is_finished: true` and a
+      `finish_reason`, and includes a consolidated `response` object.
+    bindings:
+      http:
+        type: request
+        method: POST
+        bindingVersion: '0.3.0'
+    publish:
+      operationId: receiveV1GenerateStream
+      summary: Receive v1 Generate streaming chunks
+      description: |
+        Streamed chunks emitted by `POST /v1/generate` when the request
+        body sets `stream: true`.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/V1GenerateChunk'
+          - $ref: '#/components/messages/V1GenerateFinalChunk'
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Key
+      description: "Cohere API key passed as `Authorization: Bearer <COHERE_API_KEY>`."
+
+  messages:
+
+    # ------------------------------------------------------------------
+    # v2 /v2/chat streaming events
+    # ------------------------------------------------------------------
+
+    V2MessageStart:
+      name: messageStart
+      title: v2 message-start
+      summary: First event in the stream; carries the generated message id.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatMessageStartEvent'
+
+    V2ContentStart:
+      name: contentStart
+      title: v2 content-start
+      summary: Beginning of a content block.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatContentStartEvent'
+
+    V2ContentDelta:
+      name: contentDelta
+      title: v2 content-delta
+      summary: Incremental text chunk for the current content block.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatContentDeltaEvent'
+
+    V2ContentEnd:
+      name: contentEnd
+      title: v2 content-end
+      summary: End of a content block.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatContentEndEvent'
+
+    V2ToolPlanDelta:
+      name: toolPlanDelta
+      title: v2 tool-plan-delta
+      summary: Incremental token of the model's tool plan text.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatToolPlanDeltaEvent'
+
+    V2ToolCallStart:
+      name: toolCallStart
+      title: v2 tool-call-start
+      summary: Start of a tool call (id, type, function name).
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatToolCallStartEvent'
+
+    V2ToolCallDelta:
+      name: toolCallDelta
+      title: v2 tool-call-delta
+      summary: Incremental tool-call arguments.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatToolCallDeltaEvent'
+
+    V2ToolCallEnd:
+      name: toolCallEnd
+      title: v2 tool-call-end
+      summary: End of a tool call.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatToolCallEndEvent'
+
+    V2CitationStart:
+      name: citationStart
+      title: v2 citation-start
+      summary: Start of a citation; carries spans and sources.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatCitationStartEvent'
+
+    V2CitationEnd:
+      name: citationEnd
+      title: v2 citation-end
+      summary: End of a citation.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatCitationEndEvent'
+
+    V2MessageEnd:
+      name: messageEnd
+      title: v2 message-end
+      summary: Final event; carries finish_reason and usage.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatMessageEndEvent'
+
+    V2Debug:
+      name: debug
+      title: v2 debug
+      summary: Debug event; contains the raw prompt sent to the model.
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V2ChatDebugEvent'
+
+    # ------------------------------------------------------------------
+    # v1 /v1/chat streaming events (legacy)
+    # ------------------------------------------------------------------
+
+    V1StreamStart:
+      name: streamStart
+      title: v1 stream-start
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatStreamStartEvent'
+
+    V1SearchQueriesGeneration:
+      name: searchQueriesGeneration
+      title: v1 search-queries-generation
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatSearchQueriesGenerationEvent'
+
+    V1SearchResults:
+      name: searchResults
+      title: v1 search-results
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatSearchResultsEvent'
+
+    V1TextGeneration:
+      name: textGeneration
+      title: v1 text-generation
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatTextGenerationEvent'
+
+    V1CitationGeneration:
+      name: citationGeneration
+      title: v1 citation-generation
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatCitationGenerationEvent'
+
+    V1ToolCallsGeneration:
+      name: toolCallsGeneration
+      title: v1 tool-calls-generation
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatToolCallsGenerationEvent'
+
+    V1ToolCallsChunk:
+      name: toolCallsChunk
+      title: v1 tool-calls-chunk
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatToolCallsChunkEvent'
+
+    V1StreamEnd:
+      name: streamEnd
+      title: v1 stream-end
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatStreamEndEvent'
+
+    V1ChatDebug:
+      name: chatDebug
+      title: v1 debug
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1ChatDebugEvent'
+
+    # ------------------------------------------------------------------
+    # v1 /v1/generate streaming chunks (legacy)
+    # ------------------------------------------------------------------
+
+    V1GenerateChunk:
+      name: generateChunk
+      title: v1 generate streaming chunk
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1GenerateStreamChunk'
+
+    V1GenerateFinalChunk:
+      name: generateFinalChunk
+      title: v1 generate streaming final chunk
+      contentType: application/json
+      payload:
+        $ref: '#/components/schemas/V1GenerateStreamFinalChunk'
+
+  schemas:
+
+    # ------------------------------------------------------------------
+    # v2 chat event payload schemas
+    # ------------------------------------------------------------------
+
+    V2ChatMessageStartEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [message-start]
+        id:
+          type: string
+          description: Identifier of the streamed message.
+        delta:
+          $ref: '#/components/schemas/ChatMessageStartEventDelta'
+
+    ChatMessageStartEventDelta:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            id:
+              type: string
+            role:
+              type: string
+              description: Role of the streamed message (typically "assistant").
+
+    V2ChatContentStartEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [content-start]
+        index:
+          type: integer
+          description: Index of the content block being opened.
+        delta:
+          $ref: '#/components/schemas/ChatContentStartEventDelta'
+
+    ChatContentStartEventDelta:
+      type: object
+      description: |
+        Opening delta for a new content block. The block's leading text
+        (if any) is carried under `message.content.text`.
+      properties:
+        message:
+          type: object
+          properties:
+            content:
+              type: object
+              properties:
+                type:
+                  type: string
+                text:
+                  type: string
+
+    V2ChatContentDeltaEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [content-delta]
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/ChatContentDeltaEventDelta'
+        logprobs:
+          $ref: '#/components/schemas/LogprobItem'
+
+    ChatContentDeltaEventDelta:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            content:
+              type: object
+              properties:
+                text:
+                  type: string
+                  description: Next chunk of generated text for this content block.
+
+    V2ChatContentEndEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [content-end]
+        index:
+          type: integer
+
+    V2ChatToolPlanDeltaEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [tool-plan-delta]
+        delta:
+          $ref: '#/components/schemas/ChatToolPlanDeltaEventDelta'
+
+    ChatToolPlanDeltaEventDelta:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            tool_plan:
+              type: string
+              description: Next token of the model's tool plan.
+
+    V2ChatToolCallStartEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [tool-call-start]
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/ChatToolCallStartEventDelta'
+
+    ChatToolCallStartEventDelta:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            tool_calls:
+              type: object
+              properties:
+                id:
+                  type: string
+                type:
+                  type: string
+                  description: Typically "function".
+                function:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    arguments:
+                      type: string
+
+    V2ChatToolCallDeltaEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [tool-call-delta]
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/ChatToolCallDeltaEventDelta'
+
+    ChatToolCallDeltaEventDelta:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            tool_calls:
+              type: object
+              properties:
+                function:
+                  type: object
+                  properties:
+                    arguments:
+                      type: string
+                      description: Incremental tool call arguments (JSON fragment).
+
+    V2ChatToolCallEndEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [tool-call-end]
+        index:
+          type: integer
+
+    V2ChatCitationStartEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [citation-start]
+        index:
+          type: integer
+        delta:
+          $ref: '#/components/schemas/CitationStartEventDelta'
+
+    CitationStartEventDelta:
+      type: object
+      properties:
+        message:
+          type: object
+          properties:
+            citations:
+              type: object
+              properties:
+                start:
+                  type: integer
+                  description: Start character offset of the cited span.
+                end:
+                  type: integer
+                  description: End character offset of the cited span.
+                text:
+                  type: string
+                  description: Cited substring.
+                sources:
+                  type: array
+                  description: Source documents backing the citation.
+                  items:
+                    type: object
+                    additionalProperties: true
+
+    V2ChatCitationEndEvent:
+      type: object
+      required: [type, index]
+      properties:
+        type:
+          type: string
+          enum: [citation-end]
+        index:
+          type: integer
+
+    V2ChatMessageEndEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [message-end]
+        id:
+          type: string
+        delta:
+          $ref: '#/components/schemas/ChatMessageEndEventDelta'
+
+    ChatMessageEndEventDelta:
+      type: object
+      properties:
+        finish_reason:
+          type: string
+          description: Reason the message terminated.
+          enum:
+            - COMPLETE
+            - STOP_SEQUENCE
+            - MAX_TOKENS
+            - TOOL_CALL
+            - ERROR
+        usage:
+          type: object
+          properties:
+            billed_units:
+              type: object
+              properties:
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+                search_units:
+                  type: number
+                classifications:
+                  type: number
+            tokens:
+              type: object
+              properties:
+                input_tokens:
+                  type: number
+                output_tokens:
+                  type: number
+
+    V2ChatDebugEvent:
+      type: object
+      required: [type]
+      properties:
+        type:
+          type: string
+          enum: [debug]
+        prompt:
+          type: string
+          description: The fully rendered prompt sent to the model.
+
+    LogprobItem:
+      type: object
+      description: Per-token logprob detail (when requested via `logprobs`).
+      properties:
+        text:
+          type: string
+        token_ids:
+          type: array
+          items:
+            type: integer
+        logprobs:
+          type: array
+          items:
+            type: number
+
+    # ------------------------------------------------------------------
+    # v1 chat event payload schemas (legacy)
+    # ------------------------------------------------------------------
+
+    V1ChatStreamStartEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [stream-start]
+        generation_id:
+          type: string
+          format: uuid
+
+    V1ChatSearchQueriesGenerationEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [search-queries-generation]
+        search_queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/V1ChatSearchQuery'
+
+    V1ChatSearchQuery:
+      type: object
+      properties:
+        text:
+          type: string
+        generation_id:
+          type: string
+          format: uuid
+
+    V1ChatSearchResultsEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [search-results]
+        search_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/V1ChatSearchResult'
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/V1ChatDocument'
+
+    V1ChatSearchResult:
+      type: object
+      properties:
+        search_query:
+          $ref: '#/components/schemas/V1ChatSearchQuery'
+        connector:
+          type: object
+          properties:
+            id:
+              type: string
+        document_ids:
+          type: array
+          items:
+            type: string
+        error_message:
+          type: string
+        continue_on_failure:
+          type: boolean
+
+    V1ChatDocument:
+      type: object
+      additionalProperties: true
+      description: |
+        Free-form document object backing a retrieval result.
+
+    V1ChatTextGenerationEvent:
+      type: object
+      required: [event_type, text]
+      properties:
+        event_type:
+          type: string
+          enum: [text-generation]
+        text:
+          type: string
+
+    V1ChatCitationGenerationEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [citation-generation]
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/V1ChatCitation'
+
+    V1ChatCitation:
+      type: object
+      properties:
+        start:
+          type: integer
+        end:
+          type: integer
+        text:
+          type: string
+        document_ids:
+          type: array
+          items:
+            type: string
+        type:
+          type: string
+          description: ChatCitationType.
+
+    V1ChatToolCallsGenerationEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [tool-calls-generation]
+        text:
+          type: string
+        tool_calls:
+          type: array
+          items:
+            $ref: '#/components/schemas/V1ChatToolCall'
+
+    V1ChatToolCall:
+      type: object
+      properties:
+        name:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+
+    V1ChatToolCallsChunkEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [tool-calls-chunk]
+        tool_call_delta:
+          type: object
+          properties:
+            index:
+              type: integer
+            name:
+              type: string
+            parameters:
+              type: string
+              description: Incremental tool-call parameters (JSON fragment).
+        text:
+          type: string
+
+    V1ChatStreamEndEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [stream-end]
+        finish_reason:
+          type: string
+          enum:
+            - COMPLETE
+            - ERROR_LIMIT
+            - MAX_TOKENS
+            - ERROR
+            - ERROR_TOXIC
+        response:
+          type: object
+          description: Consolidated final response (mirrors the non-streaming `/v1/chat` response).
+          additionalProperties: true
+
+    V1ChatDebugEvent:
+      type: object
+      required: [event_type]
+      properties:
+        event_type:
+          type: string
+          enum: [debug]
+        prompt:
+          type: string
+
+    # ------------------------------------------------------------------
+    # v1 generate streaming chunk schemas (legacy)
+    # ------------------------------------------------------------------
+
+    V1GenerateStreamChunk:
+      type: object
+      description: |
+        Intermediate streaming chunk for `POST /v1/generate` with
+        `stream: true`. Emitted once per generated token (or token group).
+      required: [text, is_finished]
+      properties:
+        text:
+          type: string
+          description: Next chunk of generated text.
+        index:
+          type: integer
+          description: Index of the generation this chunk belongs to (when `num_generations` > 1).
+        is_finished:
+          type: boolean
+          description: Always `false` for intermediate chunks.
+
+    V1GenerateStreamFinalChunk:
+      type: object
+      description: |
+        Terminal streaming chunk for `POST /v1/generate`. Carries the
+        consolidated response, finish reason, and `is_finished: true`.
+      required: [is_finished, finish_reason, response]
+      properties:
+        is_finished:
+          type: boolean
+          enum: [true]
+        finish_reason:
+          type: string
+          enum:
+            - COMPLETE
+            - MAX_TOKENS
+            - ERROR
+            - ERROR_TOXIC
+        response:
+          type: object
+          description: Final `generate_Response_stream` object.
+          properties:
+            id:
+              type: string
+            prompt:
+              type: string
+            generations:
+              type: array
+              items:
+                $ref: '#/components/schemas/V1GenerateSingleGeneration'
+            meta:
+              $ref: '#/components/schemas/V1ApiMeta'
+
+    V1GenerateSingleGeneration:
+      type: object
+      properties:
+        id:
+          type: string
+        text:
+          type: string
+        index:
+          type: integer
+        likelihood:
+          type: number
+        token_likelihoods:
+          type: array
+          items:
+            type: object
+            properties:
+              token:
+                type: string
+              likelihood:
+                type: number
+        finish_reason:
+          type: string
+          enum:
+            - COMPLETE
+            - MAX_TOKENS
+            - ERROR
+            - ERROR_TOXIC
+
+    V1ApiMeta:
+      type: object
+      properties:
+        api_version:
+          type: object
+          properties:
+            version:
+              type: string
+            is_deprecated:
+              type: boolean
+            is_experimental:
+              type: boolean
+        billed_units:
+          type: object
+          properties:
+            input_tokens:
+              type: number
+            output_tokens:
+              type: number
+            search_units:
+              type: number
+            classifications:
+              type: number
+        tokens:
+          type: object
+          properties:
+            input_tokens:
+              type: number
+            output_tokens:
+              type: number
+        warnings:
+          type: array
+          items:
+            type: string
