@@ -1,0 +1,1169 @@
+{
+  "item": [
+    {
+      "id": "b45754e7-613f-484d-b9ae-f7d8dad631f8",
+      "name": "Datasets",
+      "description": {
+        "content": "Endpoints for creating, listing, retrieving, and deleting datasets used with Cohere services.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bf885639-d520-49e4-8174-a21f5062ad8f",
+          "name": "Create a dataset",
+          "request": {
+            "name": "Create a dataset",
+            "description": {
+              "content": "Creates a new dataset by uploading data files. Supports multipart form uploads with configurable delimiters for CSV files. The dataset is validated after upload and rows with malformed input can optionally be dropped instead of failing validation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "datasets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "multipart/form-data"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The name of the dataset."
+                },
+                {
+                  "key": "type",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "(Required) The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API. (This can only be one of embed-input,reranker-finetune-input,prompt-completion-finetune-input,single-label-classification-finetune-input,chat-finetune-input)"
+                },
+                {
+                  "key": "data",
+                  "type": "file",
+                  "description": "(Required) The data file to upload."
+                },
+                {
+                  "key": "delimiter",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "The delimiter used for CSV file uploads."
+                },
+                {
+                  "key": "dry_run",
+                  "value": "<boolean>",
+                  "type": "text",
+                  "description": "When true, validates the data without creating the dataset."
+                },
+                {
+                  "key": "keep_fields",
+                  "value": "<string>",
+                  "type": "text",
+                  "description": "Comma-separated list of field names to persist in the dataset."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a9da21d0-d93a-4641-861b-ce86951f4f23",
+              "name": "Dataset created successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The name of the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API. (This can only be one of embed-input,reranker-finetune-input,prompt-completion-finetune-input,single-label-classification-finetune-input,chat-finetune-input)",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The data file to upload.",
+                        "type": "text/plain"
+                      },
+                      "key": "data",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The delimiter used for CSV file uploads.",
+                        "type": "text/plain"
+                      },
+                      "key": "delimiter",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "When true, validates the data without creating the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "dry_run",
+                      "value": "<boolean>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Comma-separated list of field names to persist in the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "keep_fields",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7b258286-9b43-4a1b-8f04-9caadc07fb47",
+              "name": "Bad request due to invalid parameters or data",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The name of the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API. (This can only be one of embed-input,reranker-finetune-input,prompt-completion-finetune-input,single-label-classification-finetune-input,chat-finetune-input)",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The data file to upload.",
+                        "type": "text/plain"
+                      },
+                      "key": "data",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The delimiter used for CSV file uploads.",
+                        "type": "text/plain"
+                      },
+                      "key": "delimiter",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "When true, validates the data without creating the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "dry_run",
+                      "value": "<boolean>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Comma-separated list of field names to persist in the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "keep_fields",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40d83655-c9c3-4b70-8bc8-e34cd7065d67",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "formdata",
+                  "formdata": [
+                    {
+                      "description": {
+                        "content": "(Required) The name of the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API. (This can only be one of embed-input,reranker-finetune-input,prompt-completion-finetune-input,single-label-classification-finetune-input,chat-finetune-input)",
+                        "type": "text/plain"
+                      },
+                      "key": "type",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "(Required) The data file to upload.",
+                        "type": "text/plain"
+                      },
+                      "key": "data",
+                      "value": "<binary>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "The delimiter used for CSV file uploads.",
+                        "type": "text/plain"
+                      },
+                      "key": "delimiter",
+                      "value": "<string>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "When true, validates the data without creating the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "dry_run",
+                      "value": "<boolean>",
+                      "type": "text"
+                    },
+                    {
+                      "description": {
+                        "content": "Comma-separated list of field names to persist in the dataset.",
+                        "type": "text/plain"
+                      },
+                      "key": "keep_fields",
+                      "value": "<string>",
+                      "type": "text"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8310fa04-3adc-41cf-a1e7-5cba6cb98664",
+          "name": "List datasets",
+          "request": {
+            "name": "List datasets",
+            "description": {
+              "content": "Returns a list of datasets for the authenticated user. Supports filtering by dataset type, date range, and validation status with pagination controls.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "datasets"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "datasetType",
+                  "value": "<string>",
+                  "description": "Filter datasets by type."
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<dateTime>",
+                  "description": "Filter datasets created before this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "after",
+                  "value": "<dateTime>",
+                  "description": "Filter datasets created after this date."
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>",
+                  "description": "Maximum number of datasets to return."
+                },
+                {
+                  "disabled": false,
+                  "key": "offset",
+                  "value": "<integer>",
+                  "description": "Offset to start returning datasets from."
+                },
+                {
+                  "disabled": false,
+                  "key": "validationStatus",
+                  "value": "<string>",
+                  "description": "Filter datasets by validation status."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "201da708-a751-454b-9956-6954eed548b2",
+              "name": "Successful list of datasets",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "datasetType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "validationStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"datasets\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"dataset_type\": \"string\",\n      \"validation_status\": \"Failed\",\n      \"created_at\": \"1998-05-26T10:17:40.901Z\",\n      \"updated_at\": \"2023-08-03T07:40:26.631Z\",\n      \"schema\": \"string\",\n      \"required_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"preserve_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"validation_error\": \"string\",\n      \"validation_warnings\": [\n        \"string\",\n        \"string\"\n      ],\n      \"meta\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"dataset_type\": \"string\",\n      \"validation_status\": \"Queued\",\n      \"created_at\": \"2004-02-21T19:36:20.600Z\",\n      \"updated_at\": \"2011-03-21T08:25:29.756Z\",\n      \"schema\": \"string\",\n      \"required_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"preserve_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"validation_error\": \"string\",\n      \"validation_warnings\": [\n        \"string\",\n        \"string\"\n      ],\n      \"meta\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b8e17d25-5990-4599-8c3f-5eab8950ee47",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "datasetType",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "offset",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "validationStatus",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8ca84252-ba81-4996-b2ee-794eaab6f4d3",
+          "name": "Get a dataset",
+          "request": {
+            "name": "Get a dataset",
+            "description": {
+              "content": "Retrieves metadata and details about a specific dataset by its identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "datasets",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the dataset."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c995fcc7-3918-4f4a-ac9d-1a992102e647",
+              "name": "Successful dataset details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the dataset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"dataset_type\": \"string\",\n  \"validation_status\": \"Validated\",\n  \"created_at\": \"1988-01-06T15:14:34.193Z\",\n  \"updated_at\": \"2009-03-26T06:19:53.043Z\",\n  \"schema\": \"string\",\n  \"required_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"preserve_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"validation_error\": \"string\",\n  \"validation_warnings\": [\n    \"string\",\n    \"string\"\n  ],\n  \"meta\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e41cbd77-a981-4a22-b340-fbd0f9f805d4",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the dataset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d9b4d93c-fb64-4b4a-b147-bc076eb9ccd0",
+              "name": "Dataset not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the dataset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "824a7f03-164e-4b15-84e4-722b359f670d",
+          "name": "Delete a dataset",
+          "request": {
+            "name": "Delete a dataset",
+            "description": {
+              "content": "Deletes a dataset by its identifier. Datasets are automatically deleted after 30 days but can also be deleted manually using this endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "datasets",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The unique identifier of the dataset."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "55465730-91e1-4ad6-b556-f2509928790a",
+              "name": "Dataset deleted successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the dataset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "d89c91d0-4dc9-4b84-bb03-f7cc21fee2b5",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the dataset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef5dd5cc-a14c-44a8-b730-549549775896",
+              "name": "Dataset not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The unique identifier of the dataset."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "44b5fa27-1789-450d-a408-1a6ad6e210b6",
+          "name": "Get dataset usage",
+          "request": {
+            "name": "Get dataset usage",
+            "description": {
+              "content": "Retrieves the total dataset usage for the authenticated organization.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "datasets",
+                "usage"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e4825717-2612-4ab7-a4e9-ce2288d08217",
+              "name": "Successful dataset usage response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"organization_usage\": 7006\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "571b69e0-76c4-4e3d-a884-4536ba03cfcd",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "datasets",
+                    "usage"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.cohere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "c4722427-2785-414d-8a42-8990e02b3c23",
+    "name": "Cohere Datasets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cohere Datasets API provides endpoints for uploading, managing, and retrieving datasets used with other Cohere services such as fine-tuning and embed jobs. Developers can create datasets from files, list existing datasets, retrieve dataset metadata, and delete datasets they no longer need. The API supports various data formats and validates uploaded data against expected schemas.\n\nContact Support:\n Name: Cohere Support",
+      "type": "text/plain"
+    }
+  }
+}

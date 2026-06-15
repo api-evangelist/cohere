@@ -1,0 +1,298 @@
+{
+  "item": [
+    {
+      "id": "94b6f3ed-f264-4ac8-b125-80065a764007",
+      "name": "Classify",
+      "description": {
+        "content": "Endpoints for performing text classification using labeled examples and Cohere language models.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c0dfb529-192a-4a3c-b074-cc82bf476281",
+          "name": "Classify text inputs",
+          "request": {
+            "name": "Classify text inputs",
+            "description": {
+              "content": "Makes a prediction about which label fits the specified text inputs best. Requires a set of labeled examples to provide context to the model. Each unique label requires at least 2 examples. Supports up to 96 text inputs and 2500 examples per request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "classify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    \"<string>\"\n  ],\n  \"examples\": [\n    {\n      \"text\": \"<string>\",\n      \"label\": \"<string>\"\n    },\n    {\n      \"text\": \"<string>\",\n      \"label\": \"<string>\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"truncate\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "2cd7712d-fd99-412c-8bc4-892879151b5b",
+              "name": "Successful classification response with predictions",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    \"<string>\"\n  ],\n  \"examples\": [\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    },\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"classifications\": [\n    {\n      \"id\": \"string\",\n      \"input\": \"string\",\n      \"prediction\": \"string\",\n      \"predictions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"confidence\": 0.00582882613594371,\n      \"confidences\": [\n        9050.759840347126,\n        9234.489702925826\n      ],\n      \"labels\": {\n        \"key_0\": {\n          \"confidence\": 0.0594349782185043\n        },\n        \"key_1\": {\n          \"confidence\": 0.14635063407764937\n        },\n        \"key_2\": {\n          \"confidence\": 0.6702600513604685\n        },\n        \"key_3\": {\n          \"confidence\": 0.11912895845002913\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"input\": \"string\",\n      \"prediction\": \"string\",\n      \"predictions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"confidence\": 0.3742451075345873,\n      \"confidences\": [\n        4485.0387677216,\n        9961.832624720533\n      ],\n      \"labels\": {\n        \"key_0\": {\n          \"confidence\": 0.1024966037661208\n        },\n        \"key_1\": {\n          \"confidence\": 0.5939116115706339\n        },\n        \"key_2\": {\n          \"confidence\": 0.34992941748080475\n        },\n        \"key_3\": {\n          \"confidence\": 0.7897515002478145\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15b2bdf8-1dcb-448d-9195-4c5fe3c9a7e2",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    \"<string>\"\n  ],\n  \"examples\": [\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    },\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5435153f-1895-4156-9f72-389621c9442a",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    \"<string>\"\n  ],\n  \"examples\": [\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    },\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "710cdf4a-b562-4113-aa33-90986246c398",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    \"<string>\"\n  ],\n  \"examples\": [\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    },\n    {\n      \"text\": \"string\",\n      \"label\": \"string\"\n    }\n  ],\n  \"model\": \"<string>\",\n  \"preset\": \"<string>\",\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.cohere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "de14c81d-cc1e-483a-82a2-c043800aef4b",
+    "name": "Cohere Classify API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cohere Classify API performs text classification by assigning labels to input text based on provided examples. It can be used for sentiment analysis, content moderation, topic categorization, and other classification tasks. Developers provide a set of labeled examples along with texts to classify, and the API returns predicted labels with confidence scores for each input. Note that this is a v1 endpoint.\n\nContact Support:\n Name: Cohere Support",
+      "type": "text/plain"
+    }
+  }
+}

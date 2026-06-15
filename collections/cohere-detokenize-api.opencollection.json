@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cohere Detokenize API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Detokenize",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Detokenize token IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.cohere.com/v1/detokenize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Takes a list of token IDs and converts them back into their corresponding text string using byte-pair encoding for the specified model. This is the inverse operation of the Tokenize endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

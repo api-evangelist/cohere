@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cohere Embed API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Embed",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate embeddings",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.cohere.com/v2/embed",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Returns vector embeddings for the provided text or image inputs. The embeddings capture semantic information about the content and can be used for semantic search, clustering, classification, and other tasks requiring similarity comparisons. Requires specifying an input_type for embedding models v3 and higher."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

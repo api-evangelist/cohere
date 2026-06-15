@@ -1,0 +1,298 @@
+{
+  "item": [
+    {
+      "id": "7a6d0a60-e703-4665-a810-8ece8c5216da",
+      "name": "Rerank",
+      "description": {
+        "content": "Endpoints for reranking documents by relevance to a query using Cohere reranking models.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c83fa954-3348-4ef8-ae62-c366a64ed372",
+          "name": "Rerank documents by relevance",
+          "request": {
+            "name": "Rerank documents by relevance",
+            "description": {
+              "content": "Takes a query and a list of text documents and returns them ordered by relevance with assigned relevance scores. It is recommended not to send more than 1000 documents in a single request. Long documents are automatically truncated to the value of max_tokens_per_doc. Structured data should be formatted as YAML strings for best performance.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "rerank"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"query\": \"<string>\",\n  \"documents\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"top_n\": \"<integer>\",\n  \"max_tokens_per_doc\": 4096\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "37083330-225f-417f-8d27-b08e43996ff4",
+              "name": "Successful rerank response with scored documents",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "rerank"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"rerank-english-v3.0\",\n  \"query\": \"<string>\",\n  \"documents\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"top_n\": \"<integer>\",\n  \"max_tokens_per_doc\": 4096\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"results\": [\n    {\n      \"index\": 5312,\n      \"relevance_score\": 8837.044841314928,\n      \"document\": {\n        \"text\": \"string\"\n      }\n    },\n    {\n      \"index\": 752,\n      \"relevance_score\": 1971.705748019611,\n      \"document\": {\n        \"text\": \"string\"\n      }\n    }\n  ],\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c17f14e5-43e0-4992-94a2-4659bffb1bc9",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "rerank"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"rerank-english-v3.0\",\n  \"query\": \"<string>\",\n  \"documents\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"top_n\": \"<integer>\",\n  \"max_tokens_per_doc\": 4096\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b6773fb3-598f-490d-b815-3c1897fc63e7",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "rerank"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"rerank-english-v3.0\",\n  \"query\": \"<string>\",\n  \"documents\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"top_n\": \"<integer>\",\n  \"max_tokens_per_doc\": 4096\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e0457901-dfdc-409d-8ca4-5151bf88a8fa",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "rerank"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"rerank-english-v3.0\",\n  \"query\": \"<string>\",\n  \"documents\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"top_n\": \"<integer>\",\n  \"max_tokens_per_doc\": 4096\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.cohere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "eac78560-fede-4d8f-b4f4-a28e5c667244",
+    "name": "Cohere Rerank API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cohere Rerank API takes a query and a list of text documents and returns them ordered by relevance with assigned relevance scores. It is commonly used as a second-stage ranker in retrieval-augmented generation pipelines to improve the quality of search results before passing them to a language model. The API supports multilingual reranking and can significantly improve the precision of search and retrieval systems.\n\nContact Support:\n Name: Cohere Support",
+      "type": "text/plain"
+    }
+  }
+}

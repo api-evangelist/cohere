@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cohere Tokenize API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tokenize",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tokenize text",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.cohere.com/v1/tokenize",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Splits input text into smaller units called tokens using byte-pair encoding (BPE) for the specified model. Returns both the token strings and their corresponding integer token IDs. The text must be between 1 and 65536 characters."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

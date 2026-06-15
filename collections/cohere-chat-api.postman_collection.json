@@ -1,0 +1,560 @@
+{
+  "item": [
+    {
+      "id": "e4c1cede-2b2c-4040-8d05-970dfa413116",
+      "name": "Chat",
+      "description": {
+        "content": "Endpoints for generating text responses through conversational interactions with Cohere language models.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d989108e-dcbf-4358-a267-ab388da368da",
+          "name": "Chat with a Cohere model",
+          "request": {
+            "name": "Chat with a Cohere model",
+            "description": {
+              "content": "Generates a text response to a user message. Accepts a list of chat messages in chronological order representing a conversation between the user and the model. Messages can include User, Assistant, Tool, and System roles. Supports tool use, retrieval-augmented generation, and structured JSON output.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "chat"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\",\n      \"tool_call_id\": \"<string>\",\n      \"tool_calls\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\",\n      \"tool_call_id\": \"<string>\",\n      \"tool_calls\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"<string>\",\n      \"function\": {\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"parameters\": \"<object>\"\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"function\": {\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"parameters\": \"<object>\"\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "40f6086a-8d6c-40ab-b475-23d1a5c9eda7",
+              "name": "Successful chat completion response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"finish_reason\": \"timeout\",\n  \"message\": {\n    \"role\": \"system\",\n    \"content\": \"string\",\n    \"tool_call_id\": \"string\",\n    \"tool_calls\": [\n      {\n        \"id\": \"string\",\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"string\",\n          \"arguments\": \"string\"\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"string\",\n          \"arguments\": \"string\"\n        }\n      }\n    ]\n  },\n  \"usage\": {\n    \"billed_units\": {\n      \"input_tokens\": 5475,\n      \"output_tokens\": 5529\n    },\n    \"tokens\": {\n      \"input_tokens\": 1264,\n      \"output_tokens\": 2079\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8b64d6cd-1847-4c01-a604-6a43017cbc72",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96816c26-52d9-4b2c-8167-4fd39f8b60fd",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1383b209-8584-45a0-b5dc-da5803115682",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7752aede-0569-4bdb-b895-97376942dd26",
+          "name": "Chat with streaming response",
+          "request": {
+            "name": "Chat with streaming response",
+            "description": {
+              "content": "Generates a text response to a user message and streams it using server-sent events (SSE). Partial results are delivered as they are generated, enabling real-time display in user interfaces. Emits stream-start, content-delta, citation-start, citation-end, and stream-end events.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "chat",
+                "stream"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"messages\": [\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\",\n      \"tool_call_id\": \"<string>\",\n      \"tool_calls\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"<string>\",\n      \"content\": \"<string>\",\n      \"tool_call_id\": \"<string>\",\n      \"tool_calls\": [\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        },\n        {\n          \"id\": \"<string>\",\n          \"type\": \"<string>\",\n          \"function\": {\n            \"name\": \"<string>\",\n            \"arguments\": \"<string>\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"<string>\",\n      \"function\": {\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"parameters\": \"<object>\"\n      }\n    },\n    {\n      \"type\": \"<string>\",\n      \"function\": {\n        \"name\": \"<string>\",\n        \"description\": \"<string>\",\n        \"parameters\": \"<object>\"\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6ee56d89-1279-46f3-ba7b-cbf5dd1fd6a3",
+              "name": "Streaming chat completion response delivered as SSE events",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "text/event-stream"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/event-stream"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "b4df15ef-173d-463b-be13-cc1e264f18d2",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "764723bc-0406-47a2-8fb1-fdd456b45d52",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7e8fd679-4584-4757-80cd-2f297497d851",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "chat",
+                    "stream"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.cohere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "aca2ff64-3905-48fc-8962-785a0c8e7397",
+    "name": "Cohere Chat API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
+      "type": "text/plain"
+    }
+  }
+}

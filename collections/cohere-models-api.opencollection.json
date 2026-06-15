@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cohere Models API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Models",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List available models",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.cohere.com/v1/models",
+            "params": [
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of models to include in a page. Defaults to 20."
+              },
+              {
+                "name": "page_token",
+                "value": "",
+                "type": "query",
+                "description": "Page token provided in the next_page_token field of a previous response for pagination."
+              },
+              {
+                "name": "endpoint",
+                "value": "",
+                "type": "query",
+                "description": "When provided, filters the list of models to only those compatible with the specified endpoint."
+              },
+              {
+                "name": "default_only",
+                "value": "",
+                "type": "query",
+                "description": "When true, filters the list of models to only the default model for the specified endpoint."
+              }
+            ]
+          },
+          "docs": "Returns a paginated list of models available for use. Supports filtering by compatible endpoint and default models. Includes details such as model name, supported endpoints, context length, and default status."
+        },
+        {
+          "info": {
+            "name": "Get model details",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.cohere.com/v1/models/:model",
+            "params": [
+              {
+                "name": "model",
+                "value": "",
+                "type": "path",
+                "description": "The name of the model to retrieve details for."
+              }
+            ]
+          },
+          "docs": "Retrieves detailed information about a specific model, including its name, supported endpoints, context length, tokenizer, and default status."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

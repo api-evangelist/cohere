@@ -1,0 +1,298 @@
+{
+  "item": [
+    {
+      "id": "9c5edefb-bb9c-427e-b9af-a46ace189732",
+      "name": "Embed",
+      "description": {
+        "content": "Endpoints for generating vector embeddings from text and image inputs using Cohere embedding models.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "35158580-af7c-48c8-848e-93c510d4fab9",
+          "name": "Generate embeddings",
+          "request": {
+            "name": "Generate embeddings",
+            "description": {
+              "content": "Returns vector embeddings for the provided text or image inputs. The embeddings capture semantic information about the content and can be used for semantic search, clustering, classification, and other tasks requiring similarity comparisons. Requires specifying an input_type for embedding models v3 and higher.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v2",
+                "embed"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"<string>\",\n  \"input_type\": \"<string>\",\n  \"texts\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"embedding_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncate\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e1063775-4775-47ec-9213-0eda50cc5e5f",
+              "name": "Successful embedding response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "embed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"embed-english-v3.0\",\n  \"input_type\": \"<string>\",\n  \"texts\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"embedding_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"embeddings\": {\n    \"float\": [\n      [\n        5321.988095972597,\n        2909.035740384832\n      ],\n      [\n        8251.294317065885,\n        5757.124539160651\n      ]\n    ],\n    \"int8\": [\n      [\n        140,\n        9629\n      ],\n      [\n        5276,\n        4021\n      ]\n    ],\n    \"uint8\": [\n      [\n        9058,\n        7164\n      ],\n      [\n        8413,\n        862\n      ]\n    ],\n    \"binary\": [\n      [\n        5433,\n        5644\n      ],\n      [\n        2824,\n        690\n      ]\n    ],\n    \"base64\": [\n      \"string\",\n      \"string\"\n    ]\n  },\n  \"texts\": [\n    \"string\",\n    \"string\"\n  ],\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2cfba851-4fcc-4ee8-8eb8-8d02fb0e9578",
+              "name": "Bad request due to invalid parameters",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "embed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"embed-english-v3.0\",\n  \"input_type\": \"<string>\",\n  \"texts\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"embedding_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ba232bf-5477-4a0a-b174-6103663884a5",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "embed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"embed-english-v3.0\",\n  \"input_type\": \"<string>\",\n  \"texts\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"embedding_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a8d985b0-dce5-4215-9afb-6f5fd51141e0",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v2",
+                    "embed"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"model\": \"embed-english-v3.0\",\n  \"input_type\": \"<string>\",\n  \"texts\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"images\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"embedding_types\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"truncate\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.cohere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "3104c8bb-c438-45da-bc29-879965cede36",
+    "name": "Cohere Embed API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cohere Embed API generates vector embeddings from text and images, enabling semantic search, clustering, and classification use cases. It supports multilingual content and can process both text and image inputs using the Embed v3 model family. Developers can use these embeddings to build retrieval systems, recommendation engines, and other applications that require understanding semantic similarity between content.\n\nContact Support:\n Name: Cohere Support",
+      "type": "text/plain"
+    }
+  }
+}

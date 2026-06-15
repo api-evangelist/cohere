@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cohere Rerank API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Rerank",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Rerank documents by relevance",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.cohere.com/v2/rerank",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Takes a query and a list of text documents and returns them ordered by relevance with assigned relevance scores. It is recommended not to send more than 1000 documents in a single request. Long documents are automatically truncated to the value of max_tokens_per_doc. Structured data should be formatted as YAML strings for best performance."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

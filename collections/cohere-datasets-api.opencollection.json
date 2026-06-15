@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Cohere Datasets API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Datasets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List datasets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.cohere.com/v1/datasets",
+            "params": [
+              {
+                "name": "datasetType",
+                "value": "",
+                "type": "query",
+                "description": "Filter datasets by type."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Filter datasets created before this date."
+              },
+              {
+                "name": "after",
+                "value": "",
+                "type": "query",
+                "description": "Filter datasets created after this date."
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of datasets to return."
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Offset to start returning datasets from."
+              },
+              {
+                "name": "validationStatus",
+                "value": "",
+                "type": "query",
+                "description": "Filter datasets by validation status."
+              }
+            ]
+          },
+          "docs": "Returns a list of datasets for the authenticated user. Supports filtering by dataset type, date range, and validation status with pagination controls."
+        },
+        {
+          "info": {
+            "name": "Create a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.cohere.com/v1/datasets",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Creates a new dataset by uploading data files. Supports multipart form uploads with configurable delimiters for CSV files. The dataset is validated after upload and rows with malformed input can optionally be dropped instead of failing validation."
+        },
+        {
+          "info": {
+            "name": "Get a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.cohere.com/v1/datasets/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the dataset."
+              }
+            ]
+          },
+          "docs": "Retrieves metadata and details about a specific dataset by its identifier."
+        },
+        {
+          "info": {
+            "name": "Delete a dataset",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.cohere.com/v1/datasets/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier of the dataset."
+              }
+            ]
+          },
+          "docs": "Deletes a dataset by its identifier. Datasets are automatically deleted after 30 days but can also be deleted manually using this endpoint."
+        },
+        {
+          "info": {
+            "name": "Get dataset usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.cohere.com/v1/datasets/usage"
+          },
+          "docs": "Retrieves the total dataset usage for the authenticated organization."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

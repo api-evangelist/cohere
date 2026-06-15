@@ -1,0 +1,428 @@
+{
+  "item": [
+    {
+      "id": "143c488e-7bdd-4d42-a552-80135b82d924",
+      "name": "Models",
+      "description": {
+        "content": "Endpoints for listing and retrieving details about available Cohere models.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c5560b90-d733-42dd-999d-b8cd7404af8d",
+          "name": "List available models",
+          "request": {
+            "name": "List available models",
+            "description": {
+              "content": "Returns a paginated list of models available for use. Supports filtering by compatible endpoint and default models. Includes details such as model name, supported endpoints, context length, and default status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "20",
+                  "description": "Maximum number of models to include in a page. Defaults to 20."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_token",
+                  "value": "<string>",
+                  "description": "Page token provided in the next_page_token field of a previous response for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "endpoint",
+                  "value": "<string>",
+                  "description": "When provided, filters the list of models to only those compatible with the specified endpoint."
+                },
+                {
+                  "disabled": false,
+                  "key": "default_only",
+                  "value": "<boolean>",
+                  "description": "When true, filters the list of models to only the default model for the specified endpoint."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aee13f0c-8e67-4596-9744-4e5666e2d509",
+              "name": "Successful list of available models",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endpoint",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "default_only",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"models\": [\n    {\n      \"name\": \"string\",\n      \"endpoints\": [\n        \"classify\",\n        \"embed\"\n      ],\n      \"context_length\": 803,\n      \"tokenizer_url\": \"https://PQSEdjCvRucgFRCJWlqsWGZjtcF.flssA0+cEROh1yM2n4zwyjHDhFShWbHDZWgaCsGlJKwYgfJ5o3Ux-g9gEghJ,L\",\n      \"default_endpoints\": [\n        \"string\",\n        \"string\"\n      ],\n      \"finetuned\": true\n    },\n    {\n      \"name\": \"string\",\n      \"endpoints\": [\n        \"classify\",\n        \"chat\"\n      ],\n      \"context_length\": 1095,\n      \"tokenizer_url\": \"https://dYgQIWFrRWunAwf.ryolw36nBKA,gmNSgjHG8fl-SSUVGGwdLneQsAjO4SzB+cYVoHVHdrjL5zaVq8GKoL6hVCfIQ5Og\",\n      \"default_endpoints\": [\n        \"string\",\n        \"string\"\n      ],\n      \"finetuned\": false\n    }\n  ],\n  \"next_page_token\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "68d51e34-c6e4-41ef-a05a-221cd34718e4",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page_size",
+                      "value": "20"
+                    },
+                    {
+                      "key": "page_token",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "endpoint",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "default_only",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fab59315-057a-4d5f-9d5a-f8bc72b7bb60",
+          "name": "Get model details",
+          "request": {
+            "name": "Get model details",
+            "description": {
+              "content": "Retrieves detailed information about a specific model, including its name, supported endpoints, context length, tokenizer, and default status.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "models",
+                ":model"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "model",
+                  "description": "(Required) The name of the model to retrieve details for."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f9a74b8e-a0cc-4255-8850-e6de83bacc63",
+              "name": "Successful model details",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":model"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model",
+                      "description": "(Required) The name of the model to retrieve details for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"string\",\n  \"endpoints\": [\n    \"chat\",\n    \"classify\"\n  ],\n  \"context_length\": 4126,\n  \"tokenizer_url\": \"https://rCMJJysqgyLnZ.yaguvzwt5g3bGfB6NFFCGXBITttTRnku965N4fe46gfO3eJHwY6gDRzMBZLEW\",\n  \"default_endpoints\": [\n    \"string\",\n    \"string\"\n  ],\n  \"finetuned\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "908d1c3b-c4fd-416c-a07d-3bd3da8ac41a",
+              "name": "Unauthorized due to missing or invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":model"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model",
+                      "description": "(Required) The name of the model to retrieve details for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c3932150-9012-43ee-80d6-a99c99fa38f9",
+              "name": "Model not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "models",
+                    ":model"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "model",
+                      "description": "(Required) The name of the model to retrieve details for."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.cohere.com",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "05555a13-6119-4eda-a8ba-3110ea4b0d07",
+    "name": "Cohere Models API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Cohere Models API allows developers to list and retrieve information about available Cohere models, including the Command, Embed, and Rerank model families. It provides details such as model names, versions, supported endpoints, context lengths, and capabilities. This API is useful for programmatically discovering which models are available and selecting the appropriate model for a given task.\n\nContact Support:\n Name: Cohere Support",
+      "type": "text/plain"
+    }
+  }
+}
