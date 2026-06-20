@@ -9,7 +9,7 @@ apis:
   - Conversational AI
   - Large Language Models
   - Text Generation
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/chat
   properties:
@@ -34,7 +34,7 @@ apis:
   - Natural Language Processing
   - Semantic Search
   - Vector Search
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/embed
   properties:
@@ -56,7 +56,7 @@ apis:
   - Relevance
   - Reranking
   - Search
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/rerank
   properties:
@@ -77,7 +77,7 @@ apis:
   - Classification
   - Natural Language Processing
   - Text Analysis
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/classify
   properties:
@@ -97,7 +97,7 @@ apis:
   - Batch Processing
   - Embeddings
   - Vector Search
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/list-embed-jobs
   properties:
@@ -118,7 +118,7 @@ apis:
   - Data Management
   - Datasets
   - Fine-Tuning
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/list-datasets
   properties:
@@ -137,7 +137,7 @@ apis:
   - Artificial Intelligence
   - Machine Learning
   - Models
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/list-models
   properties:
@@ -157,7 +157,7 @@ apis:
   - Natural Language Processing
   - Text Processing
   - Tokenization
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/tokenize
   properties:
@@ -177,7 +177,7 @@ apis:
   - Natural Language Processing
   - Text Processing
   - Tokenization
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/detokenize
   properties:
