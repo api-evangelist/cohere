@@ -191,6 +191,12 @@ apis:
     outputs at the token level, debugging tokenization behavior, and reconstructing
     text from token representations.
 common:
+- type: DomainSecurity
+  url: security/cohere-domain-security.yml
+- type: Authentication
+  url: authentication/cohere-authentication.yml
+- url: https://cohere.com/blog
+  type: Blog
 - type: GitHubOrganization
   url: https://github.com/cohere-ai
 - type: LinkedIn

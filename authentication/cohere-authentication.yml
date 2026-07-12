@@ -1,0 +1,24 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/cohere-chat-api-openapi.yml, openapi/cohere-classify-api-openapi.yml, openapi/cohere-datasets-api-openapi.yml,
+  openapi/cohere-detokenize-api-openapi.yml, openapi/cohere-embed-api-openapi.yml, openapi/cohere-embed-jobs-api-openapi.yml,
+  openapi/cohere-models-api-openapi.yml, openapi/cohere-rerank-api-openapi.yml, openapi/cohere-tokenize-api-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: bearerAuth
+  type: http
+  scheme: bearer
+  description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization
+    header as Bearer <token>.
+  sources:
+  - openapi/cohere-chat-api-openapi.yml
+  - openapi/cohere-classify-api-openapi.yml
+  - openapi/cohere-datasets-api-openapi.yml
+  - openapi/cohere-detokenize-api-openapi.yml
+  - openapi/cohere-embed-api-openapi.yml
+  - openapi/cohere-embed-jobs-api-openapi.yml
+  - openapi/cohere-models-api-openapi.yml
+  - openapi/cohere-rerank-api-openapi.yml
+  - openapi/cohere-tokenize-api-openapi.yml
