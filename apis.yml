@@ -191,6 +191,8 @@ apis:
     outputs at the token level, debugging tokenization behavior, and reconstructing
     text from token representations.
 common:
+- type: AgenticAccess
+  url: agentic-access/cohere-agentic-access.yml
 - type: DomainSecurity
   url: security/cohere-domain-security.yml
 - type: Authentication
