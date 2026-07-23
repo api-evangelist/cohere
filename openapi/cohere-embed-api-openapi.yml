@@ -1,44 +1,28 @@
 openapi: 3.1.0
 info:
-  title: Cohere Embed API
-  description: >-
-    The Cohere Embed API generates vector embeddings from text and images,
-    enabling semantic search, clustering, and classification use cases. It
-    supports multilingual content and can process both text and image inputs
-    using the Embed v3 model family. Developers can use these embeddings to
-    build retrieval systems, recommendation engines, and other applications
-    that require understanding semantic similarity between content.
+  title: Cohere Chat Embed API
+  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
   version: '2.0'
   contact:
     name: Cohere Support
     url: https://support.cohere.com
   termsOfService: https://cohere.com/terms-of-use
-externalDocs:
-  description: Cohere Embed API Documentation
-  url: https://docs.cohere.com/reference/embed
 servers:
-  - url: https://api.cohere.com
-    description: Cohere Production Server
-tags:
-  - name: Embed
-    description: >-
-      Endpoints for generating vector embeddings from text and image inputs
-      using Cohere embedding models.
+- url: https://api.cohere.com
+  description: Cohere Production Server
 security:
-  - bearerAuth: []
+- bearerAuth: []
+tags:
+- name: Embed
+  description: Endpoints for generating vector embeddings from text and image inputs using Cohere embedding models.
 paths:
   /v2/embed:
     post:
       operationId: embed
       summary: Generate embeddings
-      description: >-
-        Returns vector embeddings for the provided text or image inputs. The
-        embeddings capture semantic information about the content and can be
-        used for semantic search, clustering, classification, and other tasks
-        requiring similarity comparisons. Requires specifying an input_type
-        for embedding models v3 and higher.
+      description: Returns vector embeddings for the provided text or image inputs. The embeddings capture semantic information about the content and can be used for semantic search, clustering, classification, and other tasks requiring similarity comparisons. Requires specifying an input_type for embedding models v3 and higher.
       tags:
-        - Embed
+      - Embed
       requestBody:
         required: true
         content:
@@ -71,149 +55,123 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: >-
-        Bearer authentication using a Cohere API key.
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     EmbedRequest:
       type: object
       required:
-        - model
-        - input_type
+      - model
+      - input_type
       properties:
         model:
           type: string
-          description: >-
-            The name of the embedding model to use.
+          description: The name of the embedding model to use.
           example: embed-english-v3.0
         texts:
           type: array
-          description: >-
-            An array of strings for the model to embed. Maximum number of
-            texts per call depends on the model.
+          description: An array of strings for the model to embed. Maximum number of texts per call depends on the model.
           items:
             type: string
         images:
           type: array
-          description: >-
-            An array of image data for the model to embed. Used with
-            models that support image embedding.
+          description: An array of image data for the model to embed. Used with models that support image embedding.
           items:
             type: string
         input_type:
           type: string
           enum:
-            - search_document
-            - search_query
-            - classification
-            - clustering
-            - image
-          description: >-
-            Specifies the type of input passed to the model. Required for
-            embedding models v3 and higher. Use search_document for
-            embeddings stored in a vector database, search_query for search
-            queries, classification for text classifiers, clustering for
-            clustering tasks, and image for image inputs.
+          - search_document
+          - search_query
+          - classification
+          - clustering
+          - image
+          description: Specifies the type of input passed to the model. Required for embedding models v3 and higher. Use search_document for embeddings stored in a vector database, search_query for search queries, classification for text classifiers, clustering for clustering tasks, and image for image inputs.
         embedding_types:
           type: array
-          description: >-
-            Specifies the types of embeddings to return. Can include one or
-            more of float, int8, uint8, binary, and base64.
+          description: Specifies the types of embeddings to return. Can include one or more of float, int8, uint8, binary, and base64.
           items:
             type: string
             enum:
-              - float
-              - int8
-              - uint8
-              - binary
-              - base64
+            - float
+            - int8
+            - uint8
+            - binary
+            - base64
         truncate:
           type: string
           enum:
-            - NONE
-            - START
-            - END
-          description: >-
-            Specifies how the API handles inputs longer than the maximum
-            token length. START discards the beginning, END discards the
-            end. NONE returns an error if the input is too long.
+          - NONE
+          - START
+          - END
+          description: Specifies how the API handles inputs longer than the maximum token length. START discards the beginning, END discards the end. NONE returns an error if the input is too long.
     EmbedResponse:
       type: object
       properties:
         id:
           type: string
-          description: >-
-            Unique identifier for the embedding request.
+          description: Unique identifier for the embedding request.
         embeddings:
           type: object
-          description: >-
-            An object containing the generated embeddings organized by
-            embedding type. Each type maps to an array of embedding vectors
-            corresponding to the input texts.
+          description: An object containing the generated embeddings organized by embedding type. Each type maps to an array of embedding vectors corresponding to the input texts.
           properties:
             float:
               type: array
-              description: >-
-                Float embeddings for each input.
+              description: Float embeddings for each input.
               items:
                 type: array
                 items:
                   type: number
             int8:
               type: array
-              description: >-
-                Signed int8 embeddings for each input.
+              description: Signed int8 embeddings for each input.
               items:
                 type: array
                 items:
                   type: integer
             uint8:
               type: array
-              description: >-
-                Unsigned int8 embeddings for each input.
+              description: Unsigned int8 embeddings for each input.
               items:
                 type: array
                 items:
                   type: integer
             binary:
               type: array
-              description: >-
-                Signed binary embeddings for each input.
+              description: Signed binary embeddings for each input.
               items:
                 type: array
                 items:
                   type: integer
             base64:
               type: array
-              description: >-
-                Base64-encoded embeddings for each input.
+              description: Base64-encoded embeddings for each input.
               items:
                 type: string
         texts:
           type: array
-          description: >-
-            The text entries for which embeddings were returned.
+          description: The text entries for which embeddings were returned.
           items:
             type: string
         meta:
           type: object
-          description: >-
-            Metadata about the API request.
+          description: Metadata about the API request.
           properties:
             api_version:
               type: object
               properties:
                 version:
                   type: string
-                  description: >-
-                    The API version used for the request.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: >-
-            A human-readable error message describing what went wrong.
+                  description: The API version used for the request.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
+externalDocs:
+  description: Cohere Chat API Documentation
+  url: https://docs.cohere.com/reference/chat

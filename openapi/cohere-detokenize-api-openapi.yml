@@ -1,41 +1,28 @@
 openapi: 3.1.0
 info:
-  title: Cohere Detokenize API
-  description: >-
-    The Cohere Detokenize API converts a sequence of token IDs back into
-    their corresponding text string using the tokenizer for a specified
-    model. It is the inverse operation of the Tokenize API and is useful
-    for inspecting model outputs at the token level, debugging tokenization
-    behavior, and reconstructing text from token representations.
-  version: '1.0'
+  title: Cohere Chat Detokenize API
+  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
+  version: '2.0'
   contact:
     name: Cohere Support
     url: https://support.cohere.com
   termsOfService: https://cohere.com/terms-of-use
-externalDocs:
-  description: Cohere Detokenize API Documentation
-  url: https://docs.cohere.com/reference/detokenize
 servers:
-  - url: https://api.cohere.com
-    description: Cohere Production Server
-tags:
-  - name: Detokenize
-    description: >-
-      Endpoints for converting token IDs back into text using a specified
-      Cohere model's tokenizer.
+- url: https://api.cohere.com
+  description: Cohere Production Server
 security:
-  - bearerAuth: []
+- bearerAuth: []
+tags:
+- name: Detokenize
+  description: Endpoints for converting token IDs back into text using a specified Cohere model's tokenizer.
 paths:
   /v1/detokenize:
     post:
       operationId: detokenize
       summary: Detokenize token IDs
-      description: >-
-        Takes a list of token IDs and converts them back into their
-        corresponding text string using byte-pair encoding for the specified
-        model. This is the inverse operation of the Tokenize endpoint.
+      description: Takes a list of token IDs and converts them back into their corresponding text string using byte-pair encoding for the specified model. This is the inverse operation of the Tokenize endpoint.
       tags:
-        - Detokenize
+      - Detokenize
       requestBody:
         required: true
         content:
@@ -62,54 +49,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: >-
-        Bearer authentication using a Cohere API key.
   schemas:
     DetokenizeRequest:
       type: object
       required:
-        - tokens
-        - model
+      - tokens
+      - model
       properties:
         tokens:
           type: array
-          description: >-
-            The list of token IDs to be detokenized.
+          description: The list of token IDs to be detokenized.
           items:
             type: integer
         model:
           type: string
-          description: >-
-            The name of the model whose tokenizer will be used to
-            detokenize the input tokens.
+          description: The name of the model whose tokenizer will be used to detokenize the input tokens.
           example: command-r-plus
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     DetokenizeResponse:
       type: object
       properties:
         text:
           type: string
-          description: >-
-            The text string resulting from detokenizing the input token IDs.
+          description: The text string resulting from detokenizing the input token IDs.
         meta:
           type: object
-          description: >-
-            Metadata about the API request.
+          description: Metadata about the API request.
           properties:
             api_version:
               type: object
               properties:
                 version:
                   type: string
-                  description: >-
-                    The API version used for the request.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: >-
-            A human-readable error message describing what went wrong.
+                  description: The API version used for the request.
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
+externalDocs:
+  description: Cohere Chat API Documentation
+  url: https://docs.cohere.com/reference/chat
