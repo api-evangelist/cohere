@@ -1,4 +1,18 @@
 aid: cohere
+accessModel:
+  pricing: paid
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Paid · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/cohere.png
 url: https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml
 apis:
 - aid: cohere:chat-api
