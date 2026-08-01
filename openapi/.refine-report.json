@@ -1,0 +1,30 @@
+{
+  "provider": "cohere",
+  "sources": [
+    "cohere-chat-api-openapi.yml",
+    "cohere-classify-api-openapi.yml",
+    "cohere-datasets-api-openapi.yml",
+    "cohere-detokenize-api-openapi.yml",
+    "cohere-embed-api-openapi.yml",
+    "cohere-embed-jobs-api-openapi.yml",
+    "cohere-models-api-openapi.yml",
+    "cohere-rerank-api-openapi.yml",
+    "cohere-tokenize-api-openapi.yml"
+  ],
+  "outputs": [
+    "cohere-chat-api-openapi.yml",
+    "cohere-classify-api-openapi.yml",
+    "cohere-datasets-api-openapi.yml",
+    "cohere-detokenize-api-openapi.yml",
+    "cohere-embed-api-openapi.yml",
+    "cohere-embed-jobs-api-openapi.yml",
+    "cohere-models-api-openapi.yml",
+    "cohere-rerank-api-openapi.yml",
+    "cohere-tokenize-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
