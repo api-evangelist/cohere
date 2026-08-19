@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "b45754e7-613f-484d-b9ae-f7d8dad631f8",
+      "id": "2b973770-18f1-4862-8233-2112ef0f6174",
       "name": "Datasets",
       "description": {
         "content": "Endpoints for creating, listing, retrieving, and deleting datasets used with Cohere services.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "bf885639-d520-49e4-8174-a21f5062ad8f",
+          "id": "5411c824-4f43-4e2a-9eb9-7c14e43f1a68",
           "name": "Create a dataset",
           "request": {
             "name": "Create a dataset",
@@ -83,7 +83,7 @@
           },
           "response": [
             {
-              "id": "a9da21d0-d93a-4641-861b-ce86951f4f23",
+              "id": "bf65da61-16a5-4eb6-8741-cddaeade6f10",
               "name": "Dataset created successfully",
               "originalRequest": {
                 "url": {
@@ -185,7 +185,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "7b258286-9b43-4a1b-8f04-9caadc07fb47",
+              "id": "cc8a8d97-199a-4680-a50e-2c98cfabccee",
               "name": "Bad request due to invalid parameters or data",
               "originalRequest": {
                 "url": {
@@ -287,7 +287,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "40d83655-c9c3-4b70-8bc8-e34cd7065d67",
+              "id": "45b0a012-0db1-47b2-b241-7a411e219746",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -395,7 +395,7 @@
           }
         },
         {
-          "id": "8310fa04-3adc-41cf-a1e7-5cba6cb98664",
+          "id": "2df03790-f20c-4496-86d6-12ea87cb2cdd",
           "name": "List datasets",
           "request": {
             "name": "List datasets",
@@ -462,7 +462,7 @@
           },
           "response": [
             {
-              "id": "201da708-a751-454b-9956-6954eed548b2",
+              "id": "cbada918-6a36-4525-9b87-c9cf5d445d1c",
               "name": "Successful list of datasets",
               "originalRequest": {
                 "url": {
@@ -526,12 +526,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"datasets\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"dataset_type\": \"string\",\n      \"validation_status\": \"Failed\",\n      \"created_at\": \"1998-05-26T10:17:40.901Z\",\n      \"updated_at\": \"2023-08-03T07:40:26.631Z\",\n      \"schema\": \"string\",\n      \"required_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"preserve_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"validation_error\": \"string\",\n      \"validation_warnings\": [\n        \"string\",\n        \"string\"\n      ],\n      \"meta\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"dataset_type\": \"string\",\n      \"validation_status\": \"Queued\",\n      \"created_at\": \"2004-02-21T19:36:20.600Z\",\n      \"updated_at\": \"2011-03-21T08:25:29.756Z\",\n      \"schema\": \"string\",\n      \"required_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"preserve_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"validation_error\": \"string\",\n      \"validation_warnings\": [\n        \"string\",\n        \"string\"\n      ],\n      \"meta\": {}\n    }\n  ]\n}",
+              "body": "{\n  \"datasets\": [\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"dataset_type\": \"string\",\n      \"validation_status\": \"Failed\",\n      \"created_at\": \"1989-05-20T03:32:56.383Z\",\n      \"updated_at\": \"1985-11-13T14:10:15.362Z\",\n      \"schema\": \"string\",\n      \"required_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"preserve_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"validation_error\": \"string\",\n      \"validation_warnings\": [\n        \"string\",\n        \"string\"\n      ],\n      \"meta\": {}\n    },\n    {\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"dataset_type\": \"string\",\n      \"validation_status\": \"Queued\",\n      \"created_at\": \"1971-05-12T06:05:56.379Z\",\n      \"updated_at\": \"1954-12-31T04:31:22.700Z\",\n      \"schema\": \"string\",\n      \"required_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"preserve_fields\": [\n        \"string\",\n        \"string\"\n      ],\n      \"validation_error\": \"string\",\n      \"validation_warnings\": [\n        \"string\",\n        \"string\"\n      ],\n      \"meta\": {}\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "b8e17d25-5990-4599-8c3f-5eab8950ee47",
+              "id": "9839befd-0694-4838-9e27-d89ca7aed40a",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -606,7 +606,7 @@
           }
         },
         {
-          "id": "8ca84252-ba81-4996-b2ee-794eaab6f4d3",
+          "id": "ec4fdf1d-635e-4578-8a84-64f4cd5a377a",
           "name": "Get a dataset",
           "request": {
             "name": "Get a dataset",
@@ -645,7 +645,7 @@
           },
           "response": [
             {
-              "id": "c995fcc7-3918-4f4a-ac9d-1a992102e647",
+              "id": "45df35c0-dd1b-44bf-a6e7-c0c9065d9513",
               "name": "Successful dataset details",
               "originalRequest": {
                 "url": {
@@ -693,12 +693,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"dataset_type\": \"string\",\n  \"validation_status\": \"Validated\",\n  \"created_at\": \"1988-01-06T15:14:34.193Z\",\n  \"updated_at\": \"2009-03-26T06:19:53.043Z\",\n  \"schema\": \"string\",\n  \"required_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"preserve_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"validation_error\": \"string\",\n  \"validation_warnings\": [\n    \"string\",\n    \"string\"\n  ],\n  \"meta\": {}\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"dataset_type\": \"string\",\n  \"validation_status\": \"Failed\",\n  \"created_at\": \"1948-04-20T00:02:56.415Z\",\n  \"updated_at\": \"1994-07-26T21:33:12.340Z\",\n  \"schema\": \"string\",\n  \"required_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"preserve_fields\": [\n    \"string\",\n    \"string\"\n  ],\n  \"validation_error\": \"string\",\n  \"validation_warnings\": [\n    \"string\",\n    \"string\"\n  ],\n  \"meta\": {}\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "e41cbd77-a981-4a22-b340-fbd0f9f805d4",
+              "id": "a684f575-04de-4340-9ce3-3c8c9e9b7456",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -751,7 +751,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "d9b4d93c-fb64-4b4a-b147-bc076eb9ccd0",
+              "id": "84c4480f-77b8-4c18-aa10-96acc2d12d06",
               "name": "Dataset not found",
               "originalRequest": {
                 "url": {
@@ -810,7 +810,7 @@
           }
         },
         {
-          "id": "824a7f03-164e-4b15-84e4-722b359f670d",
+          "id": "fb66ee93-bab2-465b-b914-af7ff5ecee83",
           "name": "Delete a dataset",
           "request": {
             "name": "Delete a dataset",
@@ -849,7 +849,7 @@
           },
           "response": [
             {
-              "id": "55465730-91e1-4ad6-b556-f2509928790a",
+              "id": "71f1dcb2-261a-41b1-91c5-e39714c43258",
               "name": "Dataset deleted successfully",
               "originalRequest": {
                 "url": {
@@ -898,7 +898,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "d89c91d0-4dc9-4b84-bb03-f7cc21fee2b5",
+              "id": "eb68c0e6-ade4-48bb-a63c-184cc71c7b21",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -951,7 +951,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "ef5dd5cc-a14c-44a8-b730-549549775896",
+              "id": "02739c70-04c9-4328-ae88-494114ad8a7f",
               "name": "Dataset not found",
               "originalRequest": {
                 "url": {
@@ -1010,7 +1010,7 @@
           }
         },
         {
-          "id": "44b5fa27-1789-450d-a408-1a6ad6e210b6",
+          "id": "8940cc4b-1ec6-4230-b593-d736d263f8f2",
           "name": "Get dataset usage",
           "request": {
             "name": "Get dataset usage",
@@ -1041,7 +1041,7 @@
           },
           "response": [
             {
-              "id": "e4825717-2612-4ab7-a4e9-ce2288d08217",
+              "id": "adb2437b-952e-4cf5-8f88-23af9b43a5f3",
               "name": "Successful dataset usage response",
               "originalRequest": {
                 "url": {
@@ -1081,12 +1081,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"organization_usage\": 7006\n}",
+              "body": "{\n  \"organization_usage\": 6405\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "571b69e0-76c4-4e3d-a884-4536ba03cfcd",
+              "id": "22105eed-9be6-420d-ab31-b7c27cd41cec",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -1158,11 +1158,11 @@
     ]
   },
   "info": {
-    "_postman_id": "c4722427-2785-414d-8a42-8990e02b3c23",
-    "name": "Cohere Datasets API",
+    "_postman_id": "e44d8e8f-dfba-4f55-9963-e84e9e3d480e",
+    "name": "Cohere Chat Datasets API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Cohere Datasets API provides endpoints for uploading, managing, and retrieving datasets used with other Cohere services such as fine-tuning and embed jobs. Developers can create datasets from files, list existing datasets, retrieve dataset metadata, and delete datasets they no longer need. The API supports various data formats and validates uploaded data against expected schemas.\n\nContact Support:\n Name: Cohere Support",
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
       "type": "text/plain"
     }
   }

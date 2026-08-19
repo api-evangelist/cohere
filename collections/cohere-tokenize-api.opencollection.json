@@ -1,8 +1,8 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Cohere Tokenize API",
-    "version": "1.0"
+    "name": "Cohere Chat Tokenize API",
+    "version": "2.0"
   },
   "request": {
     "auth": {

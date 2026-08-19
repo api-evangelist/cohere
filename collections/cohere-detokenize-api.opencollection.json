@@ -1,8 +1,8 @@
 {
   "opencollection": "1.0.0",
   "info": {
-    "name": "Cohere Detokenize API",
-    "version": "1.0"
+    "name": "Cohere Chat Detokenize API",
+    "version": "2.0"
   },
   "request": {
     "auth": {

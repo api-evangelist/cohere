@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "e4c1cede-2b2c-4040-8d05-970dfa413116",
+      "id": "4bfb5f3e-2cb8-4df1-a1db-0cce9ca3d3c4",
       "name": "Chat",
       "description": {
         "content": "Endpoints for generating text responses through conversational interactions with Cohere language models.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "d989108e-dcbf-4358-a267-ab388da368da",
+          "id": "21aaf11d-a330-4454-a6d6-033c85d7c0ce",
           "name": "Chat with a Cohere model",
           "request": {
             "name": "Chat with a Cohere model",
@@ -52,7 +52,7 @@
           },
           "response": [
             {
-              "id": "40f6086a-8d6c-40ab-b475-23d1a5c9eda7",
+              "id": "3d8d989c-f9c6-4bc7-806d-266f464243d0",
               "name": "Successful chat completion response",
               "originalRequest": {
                 "url": {
@@ -83,7 +83,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -99,12 +99,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"finish_reason\": \"timeout\",\n  \"message\": {\n    \"role\": \"system\",\n    \"content\": \"string\",\n    \"tool_call_id\": \"string\",\n    \"tool_calls\": [\n      {\n        \"id\": \"string\",\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"string\",\n          \"arguments\": \"string\"\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"string\",\n          \"arguments\": \"string\"\n        }\n      }\n    ]\n  },\n  \"usage\": {\n    \"billed_units\": {\n      \"input_tokens\": 5475,\n      \"output_tokens\": 5529\n    },\n    \"tokens\": {\n      \"input_tokens\": 1264,\n      \"output_tokens\": 2079\n    }\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"finish_reason\": \"max_tokens\",\n  \"message\": {\n    \"role\": \"assistant\",\n    \"content\": \"string\",\n    \"tool_call_id\": \"string\",\n    \"tool_calls\": [\n      {\n        \"id\": \"string\",\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"string\",\n          \"arguments\": \"string\"\n        }\n      },\n      {\n        \"id\": \"string\",\n        \"type\": \"function\",\n        \"function\": {\n          \"name\": \"string\",\n          \"arguments\": \"string\"\n        }\n      }\n    ]\n  },\n  \"usage\": {\n    \"billed_units\": {\n      \"input_tokens\": 723,\n      \"output_tokens\": 7526\n    },\n    \"tokens\": {\n      \"input_tokens\": 3690,\n      \"output_tokens\": 6902\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8b64d6cd-1847-4c01-a604-6a43017cbc72",
+              "id": "f34c6044-5615-4276-bdaa-ff521150d497",
               "name": "Bad request due to invalid parameters",
               "originalRequest": {
                 "url": {
@@ -135,7 +135,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -156,7 +156,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "96816c26-52d9-4b2c-8167-4fd39f8b60fd",
+              "id": "e6cd7898-b219-4569-b608-34eb61b2048c",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -187,7 +187,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -208,7 +208,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "1383b209-8584-45a0-b5dc-da5803115682",
+              "id": "a61d931f-9e14-4290-9f91-6626061f37b7",
               "name": "Rate limit exceeded",
               "originalRequest": {
                 "url": {
@@ -239,7 +239,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -266,7 +266,7 @@
           }
         },
         {
-          "id": "7752aede-0569-4bdb-b895-97376942dd26",
+          "id": "9a59d70a-3351-46d4-b5ff-e0ddf1447974",
           "name": "Chat with streaming response",
           "request": {
             "name": "Chat with streaming response",
@@ -310,7 +310,7 @@
           },
           "response": [
             {
-              "id": "6ee56d89-1279-46f3-ba7b-cbf5dd1fd6a3",
+              "id": "0da6bfc7-4f63-42a4-9de3-328745bac039",
               "name": "Streaming chat completion response delivered as SSE events",
               "originalRequest": {
                 "url": {
@@ -342,7 +342,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -363,7 +363,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "b4df15ef-173d-463b-be13-cc1e264f18d2",
+              "id": "a949f5b4-bf79-4464-acfd-953df0f3f0ef",
               "name": "Bad request due to invalid parameters",
               "originalRequest": {
                 "url": {
@@ -395,7 +395,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -416,7 +416,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "764723bc-0406-47a2-8fb1-fdd456b45d52",
+              "id": "aa4c5c19-1533-43ef-9b6c-10e04fb1a51c",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -448,7 +448,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -469,7 +469,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "7e8fd679-4584-4757-80cd-2f297497d851",
+              "id": "b3193c9a-d58b-43d4-b9ae-6a7cc4e2d220",
               "name": "Rate limit exceeded",
               "originalRequest": {
                 "url": {
@@ -501,7 +501,7 @@
                 "method": "POST",
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
+                  "raw": "{\n  \"model\": \"command-r-plus\",\n  \"messages\": [\n    {\n      \"role\": \"assistant\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    },\n    {\n      \"role\": \"system\",\n      \"content\": \"string\",\n      \"tool_call_id\": \"string\",\n      \"tool_calls\": [\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        },\n        {\n          \"id\": \"string\",\n          \"type\": \"function\",\n          \"function\": {\n            \"name\": \"string\",\n            \"arguments\": \"string\"\n          }\n        }\n      ]\n    }\n  ],\n  \"tools\": [\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    },\n    {\n      \"type\": \"function\",\n      \"function\": {\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"parameters\": {}\n      }\n    }\n  ],\n  \"max_tokens\": \"<integer>\",\n  \"stop_sequences\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"temperature\": 0.3,\n  \"response_format\": {\n    \"type\": \"<string>\",\n    \"json_schema\": \"<object>\"\n  },\n  \"safety_mode\": \"CONTEXTUAL\"\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -549,7 +549,7 @@
     ]
   },
   "info": {
-    "_postman_id": "aca2ff64-3905-48fc-8962-785a0c8e7397",
+    "_postman_id": "7fc6aa86-09f8-4a9c-9c72-e62067ff57d2",
     "name": "Cohere Chat API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {

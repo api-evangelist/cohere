@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "94b6f3ed-f264-4ac8-b125-80065a764007",
+      "id": "ae5b40cb-c9ae-4f48-b131-5b8a56c63dc6",
       "name": "Classify",
       "description": {
         "content": "Endpoints for performing text classification using labeled examples and Cohere language models.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "c0dfb529-192a-4a3c-b074-cc82bf476281",
+          "id": "4476f991-c557-4113-b5b5-f10066d9c58c",
           "name": "Classify text inputs",
           "request": {
             "name": "Classify text inputs",
@@ -52,7 +52,7 @@
           },
           "response": [
             {
-              "id": "2cd7712d-fd99-412c-8bc4-892879151b5b",
+              "id": "d0a1026f-9c50-4948-ba09-df8e7f8440a0",
               "name": "Successful classification response with predictions",
               "originalRequest": {
                 "url": {
@@ -99,12 +99,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"id\": \"string\",\n  \"classifications\": [\n    {\n      \"id\": \"string\",\n      \"input\": \"string\",\n      \"prediction\": \"string\",\n      \"predictions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"confidence\": 0.00582882613594371,\n      \"confidences\": [\n        9050.759840347126,\n        9234.489702925826\n      ],\n      \"labels\": {\n        \"key_0\": {\n          \"confidence\": 0.0594349782185043\n        },\n        \"key_1\": {\n          \"confidence\": 0.14635063407764937\n        },\n        \"key_2\": {\n          \"confidence\": 0.6702600513604685\n        },\n        \"key_3\": {\n          \"confidence\": 0.11912895845002913\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"input\": \"string\",\n      \"prediction\": \"string\",\n      \"predictions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"confidence\": 0.3742451075345873,\n      \"confidences\": [\n        4485.0387677216,\n        9961.832624720533\n      ],\n      \"labels\": {\n        \"key_0\": {\n          \"confidence\": 0.1024966037661208\n        },\n        \"key_1\": {\n          \"confidence\": 0.5939116115706339\n        },\n        \"key_2\": {\n          \"confidence\": 0.34992941748080475\n        },\n        \"key_3\": {\n          \"confidence\": 0.7897515002478145\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
+              "body": "{\n  \"id\": \"string\",\n  \"classifications\": [\n    {\n      \"id\": \"string\",\n      \"input\": \"string\",\n      \"prediction\": \"string\",\n      \"predictions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"confidence\": 0.5200832958320762,\n      \"confidences\": [\n        6371.331441642077,\n        5675.316706182788\n      ],\n      \"labels\": {\n        \"key_0\": {\n          \"confidence\": 0.9818322557777212\n        },\n        \"key_1\": {\n          \"confidence\": 0.48820110029396246\n        },\n        \"key_2\": {\n          \"confidence\": 0.4957712943062692\n        }\n      }\n    },\n    {\n      \"id\": \"string\",\n      \"input\": \"string\",\n      \"prediction\": \"string\",\n      \"predictions\": [\n        \"string\",\n        \"string\"\n      ],\n      \"confidence\": 0.9436162634440398,\n      \"confidences\": [\n        8839.88609297315,\n        6040.651766582667\n      ],\n      \"labels\": {\n        \"key_0\": {\n          \"confidence\": 0.04406033921178221\n        }\n      }\n    }\n  ],\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "15b2bdf8-1dcb-448d-9195-4c5fe3c9a7e2",
+              "id": "64868a70-b214-424b-b8a9-37b8c1273694",
               "name": "Bad request due to invalid parameters",
               "originalRequest": {
                 "url": {
@@ -156,7 +156,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "5435153f-1895-4156-9f72-389621c9442a",
+              "id": "b4766f19-1655-451f-a74c-d50aed005a56",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -208,7 +208,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "710cdf4a-b562-4113-aa33-90986246c398",
+              "id": "d85f75c0-174d-4b04-a462-db3e96f54663",
               "name": "Rate limit exceeded",
               "originalRequest": {
                 "url": {
@@ -287,11 +287,11 @@
     ]
   },
   "info": {
-    "_postman_id": "de14c81d-cc1e-483a-82a2-c043800aef4b",
-    "name": "Cohere Classify API",
+    "_postman_id": "352064d8-e779-4631-b972-2c0acd291f94",
+    "name": "Cohere Chat Classify API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Cohere Classify API performs text classification by assigning labels to input text based on provided examples. It can be used for sentiment analysis, content moderation, topic categorization, and other classification tasks. Developers provide a set of labeled examples along with texts to classify, and the API returns predicted labels with confidence scores for each input. Note that this is a v1 endpoint.\n\nContact Support:\n Name: Cohere Support",
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
       "type": "text/plain"
     }
   }

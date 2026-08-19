@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "3738f41b-13f9-4a08-9f3b-e7b01ad7ca4f",
+      "id": "078aaccf-4efd-4ca4-a653-bc6e42a95c91",
       "name": "Embed Jobs",
       "description": {
         "content": "Endpoints for creating, listing, retrieving, and cancelling batch embedding jobs.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "65e22930-9ded-43d7-b006-b051366e7fa0",
+          "id": "d872c285-d396-4ba2-9f4e-1c0b092ec293",
           "name": "Create an embed job",
           "request": {
             "name": "Create an embed job",
@@ -52,7 +52,7 @@
           },
           "response": [
             {
-              "id": "61ff6c3b-70ea-4c56-bbac-4ecfd7ea0c45",
+              "id": "51aa3d7c-0b4f-4811-bbfb-b072867eafae",
               "name": "Embed job created successfully",
               "originalRequest": {
                 "url": {
@@ -104,7 +104,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "a8de6928-0081-4d7a-9e22-e52f828ffba6",
+              "id": "492a003a-56fe-42df-9e8e-728e313acf6a",
               "name": "Bad request due to invalid parameters",
               "originalRequest": {
                 "url": {
@@ -156,7 +156,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "de5e0fc3-4408-450e-904c-fbab78e264a4",
+              "id": "25dbb954-5933-4cfb-96f6-5faf80a7f631",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -208,7 +208,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "50ebdd86-b5ee-4c74-80da-14fdaa474542",
+              "id": "fa5091b0-6cb0-42d7-b1be-255ce4f5e38e",
               "name": "Dataset not found",
               "originalRequest": {
                 "url": {
@@ -266,7 +266,7 @@
           }
         },
         {
-          "id": "ee209861-3f30-4b76-a07d-b173d16cd9d8",
+          "id": "ecaed047-775a-4a78-bda3-df1b4dc2a796",
           "name": "List embed jobs",
           "request": {
             "name": "List embed jobs",
@@ -296,7 +296,7 @@
           },
           "response": [
             {
-              "id": "f93f7f5a-fd05-488e-9d8b-7bc91be4262e",
+              "id": "187b4c3d-5ba0-492d-a344-811e030260a3",
               "name": "Successful list of embed jobs",
               "originalRequest": {
                 "url": {
@@ -335,12 +335,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"embed_jobs\": [\n    {\n      \"job_id\": \"string\",\n      \"status\": \"failed\",\n      \"model\": \"string\",\n      \"name\": \"string\",\n      \"created_at\": \"1966-12-27T23:02:37.934Z\",\n      \"input_dataset_id\": \"string\",\n      \"output_dataset_id\": \"string\",\n      \"truncate\": \"string\",\n      \"meta\": {\n        \"api_version\": {\n          \"version\": \"string\"\n        }\n      }\n    },\n    {\n      \"job_id\": \"string\",\n      \"status\": \"cancelling\",\n      \"model\": \"string\",\n      \"name\": \"string\",\n      \"created_at\": \"2022-11-03T00:10:54.392Z\",\n      \"input_dataset_id\": \"string\",\n      \"output_dataset_id\": \"string\",\n      \"truncate\": \"string\",\n      \"meta\": {\n        \"api_version\": {\n          \"version\": \"string\"\n        }\n      }\n    }\n  ]\n}",
+              "body": "{\n  \"embed_jobs\": [\n    {\n      \"job_id\": \"string\",\n      \"status\": \"cancelling\",\n      \"model\": \"string\",\n      \"name\": \"string\",\n      \"created_at\": \"1992-06-19T13:38:20.446Z\",\n      \"input_dataset_id\": \"string\",\n      \"output_dataset_id\": \"string\",\n      \"truncate\": \"string\",\n      \"meta\": {\n        \"api_version\": {\n          \"version\": \"string\"\n        }\n      }\n    },\n    {\n      \"job_id\": \"string\",\n      \"status\": \"cancelled\",\n      \"model\": \"string\",\n      \"name\": \"string\",\n      \"created_at\": \"1961-05-04T23:35:59.441Z\",\n      \"input_dataset_id\": \"string\",\n      \"output_dataset_id\": \"string\",\n      \"truncate\": \"string\",\n      \"meta\": {\n        \"api_version\": {\n          \"version\": \"string\"\n        }\n      }\n    }\n  ]\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "405a9896-5015-4dfc-aa69-4961c0f1bc08",
+              "id": "32ab3db5-3349-4327-a1fd-030917394ba3",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -390,7 +390,7 @@
           }
         },
         {
-          "id": "42280b01-dc45-4be3-9305-e18df0ff9285",
+          "id": "bbe9cdbf-423c-48ae-87fc-d4e5f603ccd1",
           "name": "Fetch an embed job",
           "request": {
             "name": "Fetch an embed job",
@@ -429,7 +429,7 @@
           },
           "response": [
             {
-              "id": "2df30506-9a51-42bd-af36-da88ee68cb08",
+              "id": "9c00fb15-f04d-49fd-a638-cce018a32a7b",
               "name": "Successful embed job details",
               "originalRequest": {
                 "url": {
@@ -477,12 +477,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"job_id\": \"string\",\n  \"status\": \"cancelling\",\n  \"model\": \"string\",\n  \"name\": \"string\",\n  \"created_at\": \"2018-12-26T20:17:20.540Z\",\n  \"input_dataset_id\": \"string\",\n  \"output_dataset_id\": \"string\",\n  \"truncate\": \"string\",\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
+              "body": "{\n  \"job_id\": \"string\",\n  \"status\": \"complete\",\n  \"model\": \"string\",\n  \"name\": \"string\",\n  \"created_at\": \"2010-10-17T07:56:46.598Z\",\n  \"input_dataset_id\": \"string\",\n  \"output_dataset_id\": \"string\",\n  \"truncate\": \"string\",\n  \"meta\": {\n    \"api_version\": {\n      \"version\": \"string\"\n    }\n  }\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "79668c2e-012e-46b2-82c8-bb2f57581794",
+              "id": "250920ff-e9f9-4fb9-86af-4b1da37582f1",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -535,7 +535,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "bc550aff-6c3a-485d-bfcb-fb7a8693b4f9",
+              "id": "e64b6ba9-59fa-45a5-9b96-cbd495d616e2",
               "name": "Embed job not found",
               "originalRequest": {
                 "url": {
@@ -594,7 +594,7 @@
           }
         },
         {
-          "id": "85014c9f-263b-4877-94be-69634a66d693",
+          "id": "25276ce9-92ef-432e-aa89-97f37de5e80c",
           "name": "Cancel an embed job",
           "request": {
             "name": "Cancel an embed job",
@@ -634,7 +634,7 @@
           },
           "response": [
             {
-              "id": "06066a1a-684a-4f05-b83a-99d0368d8e95",
+              "id": "ecfaefbd-3fce-4a4c-9ae4-e0658b086be4",
               "name": "Embed job cancelled successfully",
               "originalRequest": {
                 "url": {
@@ -684,7 +684,7 @@
               "_postman_previewlanguage": "text"
             },
             {
-              "id": "018c64fd-cfb4-458d-a09a-5cef776d1aba",
+              "id": "460eb75e-69e3-4855-bab6-82652cf53796",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -738,7 +738,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8fd3727d-9dd1-4e87-a569-d969801a46c6",
+              "id": "1fa0a34d-5dc0-4446-b20b-fcc797cb8a95",
               "name": "Embed job not found",
               "originalRequest": {
                 "url": {
@@ -819,11 +819,11 @@
     ]
   },
   "info": {
-    "_postman_id": "6e6aac31-9b59-4ac7-8a2c-87a347b8aec6",
-    "name": "Cohere Embed Jobs API",
+    "_postman_id": "fc98f541-9626-4d24-8c9d-c01164b5d3d0",
+    "name": "Cohere Chat Embed Jobs API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Cohere Embed Jobs API allows developers to create and manage batch embedding jobs for processing large volumes of text data asynchronously. Rather than embedding texts one at a time, developers can submit datasets for bulk embedding and monitor job progress. This is useful for initializing vector databases, processing large document collections, and other scenarios where embedding large amounts of content is needed.\n\nContact Support:\n Name: Cohere Support",
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
       "type": "text/plain"
     }
   }

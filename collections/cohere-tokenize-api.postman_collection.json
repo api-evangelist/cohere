@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "885c1d90-7271-4b17-b576-8c91aca63289",
+      "id": "698c1fed-36a0-4579-80f1-05d39e8895dd",
       "name": "Tokenize",
       "description": {
         "content": "Endpoints for splitting text into tokens using byte-pair encoding for a specified Cohere model.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "cd7dc5b1-00b8-4d84-85aa-e2acad3d6efc",
+          "id": "0f3bed45-3a2c-4770-91bc-0bed6afefde2",
           "name": "Tokenize text",
           "request": {
             "name": "Tokenize text",
@@ -52,7 +52,7 @@
           },
           "response": [
             {
-              "id": "7126d8b8-a415-495b-be31-1f92b2948a40",
+              "id": "2c54e06a-9075-4f42-9094-c9a0c47f4525",
               "name": "Successful tokenization response",
               "originalRequest": {
                 "url": {
@@ -104,7 +104,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "3bb66f46-e87d-4bbf-b9fc-76c27bbcf52e",
+              "id": "030aaba5-6799-4aec-999c-b0327b3c95d7",
               "name": "Bad request due to invalid parameters",
               "originalRequest": {
                 "url": {
@@ -156,7 +156,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "24734aa2-a4fe-4fa3-affa-8e05b800070c",
+              "id": "1fd834c4-3ce7-4fa8-a098-e78fb28db989",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -235,11 +235,11 @@
     ]
   },
   "info": {
-    "_postman_id": "26e4181c-29d5-45f0-98f9-2c3ccb75ce9b",
-    "name": "Cohere Tokenize API",
+    "_postman_id": "f69070fe-ee88-4692-bc84-f69f9d1a93a9",
+    "name": "Cohere Chat Tokenize API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Cohere Tokenize API splits input text into tokens using the tokenizer associated with a specified model. It returns both the token strings and their corresponding token IDs. This is useful for understanding how text will be processed by Cohere models, estimating token counts for billing purposes, and debugging input formatting issues.\n\nContact Support:\n Name: Cohere Support",
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
       "type": "text/plain"
     }
   }

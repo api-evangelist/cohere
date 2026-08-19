@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "12d52db4-7239-4757-b836-a0ff731c63ad",
+      "id": "118ff7d5-da33-4590-90b2-7eb64a5b2ee5",
       "name": "Detokenize",
       "description": {
         "content": "Endpoints for converting token IDs back into text using a specified Cohere model's tokenizer.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "0e82dc0a-5ad0-4c58-99f3-d94872c90328",
+          "id": "e0653aa1-79ce-4ce1-abbb-22f7aca96f6c",
           "name": "Detokenize token IDs",
           "request": {
             "name": "Detokenize token IDs",
@@ -52,7 +52,7 @@
           },
           "response": [
             {
-              "id": "a2270071-77a5-4ad4-a6a6-f91040715134",
+              "id": "c85c1489-c2ab-4798-a850-219a1efde369",
               "name": "Successful detokenization response",
               "originalRequest": {
                 "url": {
@@ -104,7 +104,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "8e55b30f-912d-44cf-9128-009446760948",
+              "id": "9b554c05-5761-4d21-a8f4-f9948360acd9",
               "name": "Bad request due to invalid parameters",
               "originalRequest": {
                 "url": {
@@ -156,7 +156,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "84accff7-9ae9-461f-8ecd-c48896498c78",
+              "id": "83b3ce41-17d7-4f0a-8763-b69a5a1e68cb",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -235,11 +235,11 @@
     ]
   },
   "info": {
-    "_postman_id": "09172c37-1f52-46be-9424-624007bcc701",
-    "name": "Cohere Detokenize API",
+    "_postman_id": "c9d7232e-4694-42a0-805a-d8a79ab9e81d",
+    "name": "Cohere Chat Detokenize API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Cohere Detokenize API converts a sequence of token IDs back into their corresponding text string using the tokenizer for a specified model. It is the inverse operation of the Tokenize API and is useful for inspecting model outputs at the token level, debugging tokenization behavior, and reconstructing text from token representations.\n\nContact Support:\n Name: Cohere Support",
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
       "type": "text/plain"
     }
   }

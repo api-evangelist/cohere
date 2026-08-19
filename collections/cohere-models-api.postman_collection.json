@@ -1,7 +1,7 @@
 {
   "item": [
     {
-      "id": "143c488e-7bdd-4d42-a552-80135b82d924",
+      "id": "60599b7e-4f18-4bea-9fbf-405bd1b42b4c",
       "name": "Models",
       "description": {
         "content": "Endpoints for listing and retrieving details about available Cohere models.",
@@ -9,7 +9,7 @@
       },
       "item": [
         {
-          "id": "c5560b90-d733-42dd-999d-b8cd7404af8d",
+          "id": "0aedbddf-052f-4f12-84f4-b5919e69153c",
           "name": "List available models",
           "request": {
             "name": "List available models",
@@ -64,7 +64,7 @@
           },
           "response": [
             {
-              "id": "aee13f0c-8e67-4596-9744-4e5666e2d509",
+              "id": "48e0b99f-ce3c-43cc-bc19-acc4779a3c89",
               "name": "Successful list of available models",
               "originalRequest": {
                 "url": {
@@ -120,12 +120,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"models\": [\n    {\n      \"name\": \"string\",\n      \"endpoints\": [\n        \"classify\",\n        \"embed\"\n      ],\n      \"context_length\": 803,\n      \"tokenizer_url\": \"https://PQSEdjCvRucgFRCJWlqsWGZjtcF.flssA0+cEROh1yM2n4zwyjHDhFShWbHDZWgaCsGlJKwYgfJ5o3Ux-g9gEghJ,L\",\n      \"default_endpoints\": [\n        \"string\",\n        \"string\"\n      ],\n      \"finetuned\": true\n    },\n    {\n      \"name\": \"string\",\n      \"endpoints\": [\n        \"classify\",\n        \"chat\"\n      ],\n      \"context_length\": 1095,\n      \"tokenizer_url\": \"https://dYgQIWFrRWunAwf.ryolw36nBKA,gmNSgjHG8fl-SSUVGGwdLneQsAjO4SzB+cYVoHVHdrjL5zaVq8GKoL6hVCfIQ5Og\",\n      \"default_endpoints\": [\n        \"string\",\n        \"string\"\n      ],\n      \"finetuned\": false\n    }\n  ],\n  \"next_page_token\": \"string\"\n}",
+              "body": "{\n  \"models\": [\n    {\n      \"name\": \"string\",\n      \"endpoints\": [\n        \"embed\",\n        \"embed\"\n      ],\n      \"context_length\": 4524,\n      \"tokenizer_url\": \"http://iDgEzNvJvmWocnSHRUhWaAlxAnjHWzbBT.nwbEo0nxAbwnCtJYd.vNaT8JYa-qzNPQqCGzq3N,uwmAd5qNTo5Bf609DJ\",\n      \"default_endpoints\": [\n        \"string\",\n        \"string\"\n      ],\n      \"finetuned\": false\n    },\n    {\n      \"name\": \"string\",\n      \"endpoints\": [\n        \"chat\",\n        \"rerank\"\n      ],\n      \"context_length\": 7711,\n      \"tokenizer_url\": \"https://qoNOfukuQTXNDHquBWsDdA.atul8vJ5F5.Y\",\n      \"default_endpoints\": [\n        \"string\",\n        \"string\"\n      ],\n      \"finetuned\": true\n    }\n  ],\n  \"next_page_token\": \"string\"\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "68d51e34-c6e4-41ef-a05a-221cd34718e4",
+              "id": "df8578eb-6cc9-4790-a50f-ad54a105fa38",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -192,7 +192,7 @@
           }
         },
         {
-          "id": "fab59315-057a-4d5f-9d5a-f8bc72b7bb60",
+          "id": "e6517a5c-1f3e-4c6f-b988-ad966fa7b1a1",
           "name": "Get model details",
           "request": {
             "name": "Get model details",
@@ -231,7 +231,7 @@
           },
           "response": [
             {
-              "id": "f9a74b8e-a0cc-4255-8850-e6de83bacc63",
+              "id": "9fce0c5e-bb1e-4363-a9c6-f9745fd3f975",
               "name": "Successful model details",
               "originalRequest": {
                 "url": {
@@ -279,12 +279,12 @@
                   "value": "application/json"
                 }
               ],
-              "body": "{\n  \"name\": \"string\",\n  \"endpoints\": [\n    \"chat\",\n    \"classify\"\n  ],\n  \"context_length\": 4126,\n  \"tokenizer_url\": \"https://rCMJJysqgyLnZ.yaguvzwt5g3bGfB6NFFCGXBITttTRnku965N4fe46gfO3eJHwY6gDRzMBZLEW\",\n  \"default_endpoints\": [\n    \"string\",\n    \"string\"\n  ],\n  \"finetuned\": true\n}",
+              "body": "{\n  \"name\": \"string\",\n  \"endpoints\": [\n    \"embed\",\n    \"embed\"\n  ],\n  \"context_length\": 1533,\n  \"tokenizer_url\": \"https://cgUQihtSnVeFwCxWDCt.mhC0OfN2xzZT\",\n  \"default_endpoints\": [\n    \"string\",\n    \"string\"\n  ],\n  \"finetuned\": false\n}",
               "cookie": [],
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "908d1c3b-c4fd-416c-a07d-3bd3da8ac41a",
+              "id": "864a2537-cac9-4fb8-b839-ac978fe3fb64",
               "name": "Unauthorized due to missing or invalid API key",
               "originalRequest": {
                 "url": {
@@ -337,7 +337,7 @@
               "_postman_previewlanguage": "json"
             },
             {
-              "id": "c3932150-9012-43ee-80d6-a99c99fa38f9",
+              "id": "9caa26d3-0803-4cb8-a17f-5aea4a66c7da",
               "name": "Model not found",
               "originalRequest": {
                 "url": {
@@ -417,11 +417,11 @@
     ]
   },
   "info": {
-    "_postman_id": "05555a13-6119-4eda-a8ba-3110ea4b0d07",
-    "name": "Cohere Models API",
+    "_postman_id": "9bfbdb28-313e-49c5-ae02-53e4bd3176ce",
+    "name": "Cohere Chat Models API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "The Cohere Models API allows developers to list and retrieve information about available Cohere models, including the Command, Embed, and Rerank model families. It provides details such as model names, versions, supported endpoints, context lengths, and capabilities. This API is useful for programmatically discovering which models are available and selecting the appropriate model for a given task.\n\nContact Support:\n Name: Cohere Support",
+      "content": "The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.\n\nContact Support:\n Name: Cohere Support",
       "type": "text/plain"
     }
   }
