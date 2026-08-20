@@ -150,6 +150,10 @@ apis:
   name: Cohere Models API
   tags:
   - Artificial Intelligence
+  - Machine-Learning
+  - Models
+  tags_raw:
+  - Artificial Intelligence
   - Machine Learning
   - Models
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
