@@ -35,6 +35,12 @@ apis:
   - Artificial Intelligence
   - Chat
   - Conversational AI
+  - LLM
+  - Text Generation
+  tags_raw:
+  - Artificial Intelligence
+  - Chat
+  - Conversational AI
   - Large Language Models
   - Text Generation
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
