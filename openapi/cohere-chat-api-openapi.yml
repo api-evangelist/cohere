@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Cohere Chat API
   description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
@@ -94,47 +94,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ChatResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the chat completion.
-        finish_reason:
-          type: string
-          enum:
-          - complete
-          - max_tokens
-          - stop_sequence
-          - tool_call
-          - error
-          - timeout
-          description: The reason the chat request finished. Values include complete, max_tokens, stop_sequence, tool_call, error, and timeout.
-        message:
-          $ref: '#/components/schemas/Message'
-        usage:
-          $ref: '#/components/schemas/Usage'
-    Usage:
-      type: object
-      properties:
-        billed_units:
-          type: object
-          properties:
-            input_tokens:
-              type: integer
-              description: The number of billed input tokens.
-            output_tokens:
-              type: integer
-              description: The number of billed output tokens.
-        tokens:
-          type: object
-          properties:
-            input_tokens:
-              type: integer
-              description: The total number of input tokens processed.
-            output_tokens:
-              type: integer
-              description: The total number of output tokens generated.
     Tool:
       type: object
       required:
@@ -161,12 +120,75 @@ components:
             parameters:
               type: object
               description: The parameters the function accepts, described as a JSON Schema object.
-    Error:
+    StreamEvent:
+      type: object
+      description: A server-sent event emitted during streaming chat generation. Event types include stream-start, content-delta, citation-start, citation-end, tool-call-start, tool-call-delta, tool-call-end, and stream-end.
+      properties:
+        event_type:
+          type: string
+          enum:
+          - stream-start
+          - content-delta
+          - citation-start
+          - citation-end
+          - tool-call-start
+          - tool-call-delta
+          - tool-call-end
+          - stream-end
+          description: The type of streaming event.
+        delta:
+          type: object
+          description: The incremental content payload for delta events.
+          properties:
+            message:
+              type: object
+              properties:
+                content:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                      description: The incremental text content.
+    ChatResponse:
       type: object
       properties:
-        message:
+        id:
           type: string
-          description: A human-readable error message describing what went wrong.
+          description: Unique identifier for the chat completion.
+        finish_reason:
+          type: string
+          enum:
+          - complete
+          - max_tokens
+          - stop_sequence
+          - tool_call
+          - error
+          - timeout
+          description: The reason the chat request finished. Values include complete, max_tokens, stop_sequence, tool_call, error, and timeout.
+        message:
+          $ref: '#/components/schemas/Message'
+        usage:
+          $ref: '#/components/schemas/Usage'
+    ToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this tool call.
+        type:
+          type: string
+          enum:
+          - function
+          description: The type of tool call.
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the function to call.
+            arguments:
+              type: string
+              description: The arguments to pass to the function, as a JSON string.
     Message:
       type: object
       required:
@@ -248,55 +270,33 @@ components:
           - NONE
           description: Used to select the safety instruction inserted into the prompt. Defaults to CONTEXTUAL.
           default: CONTEXTUAL
-    ToolCall:
+    Usage:
       type: object
       properties:
-        id:
-          type: string
-          description: The unique identifier for this tool call.
-        type:
-          type: string
-          enum:
-          - function
-          description: The type of tool call.
-        function:
+        billed_units:
           type: object
           properties:
-            name:
-              type: string
-              description: The name of the function to call.
-            arguments:
-              type: string
-              description: The arguments to pass to the function, as a JSON string.
-    StreamEvent:
+            input_tokens:
+              type: integer
+              description: The number of billed input tokens.
+            output_tokens:
+              type: integer
+              description: The number of billed output tokens.
+        tokens:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+              description: The total number of input tokens processed.
+            output_tokens:
+              type: integer
+              description: The total number of output tokens generated.
+    Error:
       type: object
-      description: A server-sent event emitted during streaming chat generation. Event types include stream-start, content-delta, citation-start, citation-end, tool-call-start, tool-call-delta, tool-call-end, and stream-end.
       properties:
-        event_type:
+        message:
           type: string
-          enum:
-          - stream-start
-          - content-delta
-          - citation-start
-          - citation-end
-          - tool-call-start
-          - tool-call-delta
-          - tool-call-end
-          - stream-end
-          description: The type of streaming event.
-        delta:
-          type: object
-          description: The incremental content payload for delta events.
-          properties:
-            message:
-              type: object
-              properties:
-                content:
-                  type: object
-                  properties:
-                    text:
-                      type: string
-                      description: The incremental text content.
+          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http

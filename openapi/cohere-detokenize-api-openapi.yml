@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Cohere Chat Detokenize API
   description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
@@ -50,6 +50,22 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    DetokenizeResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text string resulting from detokenizing the input token IDs.
+        meta:
+          type: object
+          description: Metadata about the API request.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: The API version used for the request.
     DetokenizeRequest:
       type: object
       required:
@@ -71,22 +87,6 @@ components:
         message:
           type: string
           description: A human-readable error message describing what went wrong.
-    DetokenizeResponse:
-      type: object
-      properties:
-        text:
-          type: string
-          description: The text string resulting from detokenizing the input token IDs.
-        meta:
-          type: object
-          description: Metadata about the API request.
-          properties:
-            api_version:
-              type: object
-              properties:
-                version:
-                  type: string
-                  description: The API version used for the request.
   securitySchemes:
     bearerAuth:
       type: http

@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Cohere Chat Embed API
   description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
@@ -56,59 +56,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
-    EmbedRequest:
-      type: object
-      required:
-      - model
-      - input_type
-      properties:
-        model:
-          type: string
-          description: The name of the embedding model to use.
-          example: embed-english-v3.0
-        texts:
-          type: array
-          description: An array of strings for the model to embed. Maximum number of texts per call depends on the model.
-          items:
-            type: string
-        images:
-          type: array
-          description: An array of image data for the model to embed. Used with models that support image embedding.
-          items:
-            type: string
-        input_type:
-          type: string
-          enum:
-          - search_document
-          - search_query
-          - classification
-          - clustering
-          - image
-          description: Specifies the type of input passed to the model. Required for embedding models v3 and higher. Use search_document for embeddings stored in a vector database, search_query for search queries, classification for text classifiers, clustering for clustering tasks, and image for image inputs.
-        embedding_types:
-          type: array
-          description: Specifies the types of embeddings to return. Can include one or more of float, int8, uint8, binary, and base64.
-          items:
-            type: string
-            enum:
-            - float
-            - int8
-            - uint8
-            - binary
-            - base64
-        truncate:
-          type: string
-          enum:
-          - NONE
-          - START
-          - END
-          description: Specifies how the API handles inputs longer than the maximum token length. START discards the beginning, END discards the end. NONE returns an error if the input is too long.
     EmbedResponse:
       type: object
       properties:
@@ -167,6 +114,59 @@ components:
                 version:
                   type: string
                   description: The API version used for the request.
+    EmbedRequest:
+      type: object
+      required:
+      - model
+      - input_type
+      properties:
+        model:
+          type: string
+          description: The name of the embedding model to use.
+          example: embed-english-v3.0
+        texts:
+          type: array
+          description: An array of strings for the model to embed. Maximum number of texts per call depends on the model.
+          items:
+            type: string
+        images:
+          type: array
+          description: An array of image data for the model to embed. Used with models that support image embedding.
+          items:
+            type: string
+        input_type:
+          type: string
+          enum:
+          - search_document
+          - search_query
+          - classification
+          - clustering
+          - image
+          description: Specifies the type of input passed to the model. Required for embedding models v3 and higher. Use search_document for embeddings stored in a vector database, search_query for search queries, classification for text classifiers, clustering for clustering tasks, and image for image inputs.
+        embedding_types:
+          type: array
+          description: Specifies the types of embeddings to return. Can include one or more of float, int8, uint8, binary, and base64.
+          items:
+            type: string
+            enum:
+            - float
+            - int8
+            - uint8
+            - binary
+            - base64
+        truncate:
+          type: string
+          enum:
+          - NONE
+          - START
+          - END
+          description: Specifies how the API handles inputs longer than the maximum token length. START discards the beginning, END discards the end. NONE returns an error if the input is too long.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http

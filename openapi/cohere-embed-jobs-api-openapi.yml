@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Cohere Chat Embed Jobs API
   description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
@@ -127,6 +127,58 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    EmbedJob:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: The unique identifier of the embed job.
+        status:
+          type: string
+          enum:
+          - processing
+          - complete
+          - cancelling
+          - cancelled
+          - failed
+          description: The current status of the embed job.
+        model:
+          type: string
+          description: The embedding model used for the job.
+        name:
+          type: string
+          description: The name of the embed job.
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the embed job was created.
+        input_dataset_id:
+          type: string
+          description: The ID of the input dataset.
+        output_dataset_id:
+          type: string
+          description: The ID of the output dataset containing embeddings.
+        truncate:
+          type: string
+          description: The truncation strategy used for the job.
+        meta:
+          type: object
+          description: Metadata about the embed job.
+          properties:
+            api_version:
+              type: object
+              properties:
+                version:
+                  type: string
+                  description: The API version used.
+    ListEmbedJobsResponse:
+      type: object
+      properties:
+        embed_jobs:
+          type: array
+          description: A list of embed jobs for the authenticated user.
+          items:
+            $ref: '#/components/schemas/EmbedJob'
     CreateEmbedJobRequest:
       type: object
       required:
@@ -181,58 +233,6 @@ components:
         message:
           type: string
           description: A human-readable error message describing what went wrong.
-    ListEmbedJobsResponse:
-      type: object
-      properties:
-        embed_jobs:
-          type: array
-          description: A list of embed jobs for the authenticated user.
-          items:
-            $ref: '#/components/schemas/EmbedJob'
-    EmbedJob:
-      type: object
-      properties:
-        job_id:
-          type: string
-          description: The unique identifier of the embed job.
-        status:
-          type: string
-          enum:
-          - processing
-          - complete
-          - cancelling
-          - cancelled
-          - failed
-          description: The current status of the embed job.
-        model:
-          type: string
-          description: The embedding model used for the job.
-        name:
-          type: string
-          description: The name of the embed job.
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the embed job was created.
-        input_dataset_id:
-          type: string
-          description: The ID of the input dataset.
-        output_dataset_id:
-          type: string
-          description: The ID of the output dataset containing embeddings.
-        truncate:
-          type: string
-          description: The truncation strategy used for the job.
-        meta:
-          type: object
-          description: Metadata about the embed job.
-          properties:
-            api_version:
-              type: object
-              properties:
-                version:
-                  type: string
-                  description: The API version used.
   parameters:
     EmbedJobId:
       name: id
