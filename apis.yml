@@ -53,8 +53,6 @@ apis:
     type: OpenAPI
   - url: asyncapi/cohere-asyncapi.yml
     type: AsyncAPI
-  - url: graphql/cohere-graphql.md
-    type: GraphQL
   description: The Cohere Chat API enables developers to integrate large language model text generation
     capabilities into their applications through a conversational interface. It supports multi-turn conversations,
     tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The
@@ -163,12 +161,13 @@ apis:
   name: Cohere Models API
   tags:
   - Artificial Intelligence
-  - Machine-Learning
+  - Machine Learning
   - Models
   tags_raw:
   - Artificial Intelligence
   - Machine Learning
   - Models
+  - Machine-Learning
   image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   baseURL: https://api.cohere.com
   humanURL: https://docs.cohere.com/reference/list-models
@@ -277,3 +276,4 @@ tags:
 - Vector Search
 - Tokenization
 - LLM
+- Canada
