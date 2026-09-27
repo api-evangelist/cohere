@@ -103,6 +103,24 @@ components:
       schema:
         type: string
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
+    ListModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          description: A list of available models.
+          items:
+            $ref: '#/components/schemas/Model'
+        next_page_token:
+          type: string
+          nullable: true
+          description: A token to retrieve the next page of results. Null if there are no more pages.
     Model:
       type: object
       properties:
@@ -134,24 +152,6 @@ components:
         finetuned:
           type: boolean
           description: Whether the model is a fine-tuned variant.
-    ListModelsResponse:
-      type: object
-      properties:
-        models:
-          type: array
-          description: A list of available models.
-          items:
-            $ref: '#/components/schemas/Model'
-        next_page_token:
-          type: string
-          nullable: true
-          description: A token to retrieve the next page of results. Null if there are no more pages.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http

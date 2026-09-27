@@ -50,27 +50,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
-    TokenizeRequest:
-      type: object
-      required:
-      - text
-      - model
-      properties:
-        text:
-          type: string
-          description: The string to be tokenized. Must be between 1 and 65536 characters.
-          minLength: 1
-          maxLength: 65536
-        model:
-          type: string
-          description: The name of the model whose tokenizer will be used to tokenize the input text.
-          example: command-r-plus
     TokenizeResponse:
       type: object
       properties:
@@ -94,6 +73,27 @@ components:
                 version:
                   type: string
                   description: The API version used for the request.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
+    TokenizeRequest:
+      type: object
+      required:
+      - text
+      - model
+      properties:
+        text:
+          type: string
+          description: The string to be tokenized. Must be between 1 and 65536 characters.
+          minLength: 1
+          maxLength: 65536
+        model:
+          type: string
+          description: The name of the model whose tokenizer will be used to tokenize the input text.
+          example: command-r-plus
   securitySchemes:
     bearerAuth:
       type: http

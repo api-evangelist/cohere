@@ -182,46 +182,24 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    CreateDatasetRequest:
-      type: object
-      required:
-      - name
-      - type
-      - data
-      properties:
-        name:
-          type: string
-          description: The name of the dataset.
-        type:
-          type: string
-          description: The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API.
-          enum:
-          - embed-input
-          - reranker-finetune-input
-          - prompt-completion-finetune-input
-          - single-label-classification-finetune-input
-          - chat-finetune-input
-        data:
-          type: string
-          format: binary
-          description: The data file to upload.
-        delimiter:
-          type: string
-          description: The delimiter used for CSV file uploads.
-        dry_run:
-          type: boolean
-          description: When true, validates the data without creating the dataset.
-        keep_fields:
-          type: string
-          description: Comma-separated list of field names to persist in the dataset.
-    ListDatasetsResponse:
+    Error:
       type: object
       properties:
-        datasets:
-          type: array
-          description: A list of datasets for the authenticated user.
-          items:
-            $ref: '#/components/schemas/Dataset'
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
+    CreateDatasetResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier of the created dataset.
+    DatasetUsage:
+      type: object
+      properties:
+        organization_usage:
+          type: integer
+          description: The total dataset usage in bytes for the organization.
     Dataset:
       type: object
       properties:
@@ -276,24 +254,46 @@ components:
         meta:
           type: object
           description: Metadata about the dataset.
-    DatasetUsage:
+    CreateDatasetRequest:
       type: object
+      required:
+      - name
+      - type
+      - data
       properties:
-        organization_usage:
-          type: integer
-          description: The total dataset usage in bytes for the organization.
-    CreateDatasetResponse:
-      type: object
-      properties:
-        id:
+        name:
           type: string
-          description: The unique identifier of the created dataset.
-    Error:
+          description: The name of the dataset.
+        type:
+          type: string
+          description: The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API.
+          enum:
+          - embed-input
+          - reranker-finetune-input
+          - prompt-completion-finetune-input
+          - single-label-classification-finetune-input
+          - chat-finetune-input
+        data:
+          type: string
+          format: binary
+          description: The data file to upload.
+        delimiter:
+          type: string
+          description: The delimiter used for CSV file uploads.
+        dry_run:
+          type: boolean
+          description: When true, validates the data without creating the dataset.
+        keep_fields:
+          type: string
+          description: Comma-separated list of field names to persist in the dataset.
+    ListDatasetsResponse:
       type: object
       properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
+        datasets:
+          type: array
+          description: A list of datasets for the authenticated user.
+          items:
+            $ref: '#/components/schemas/Dataset'
   parameters:
     DatasetId:
       name: id

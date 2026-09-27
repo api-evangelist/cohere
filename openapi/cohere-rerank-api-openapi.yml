@@ -56,6 +56,28 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    RerankResult:
+      type: object
+      properties:
+        index:
+          type: integer
+          description: The index of the document in the original input list.
+        relevance_score:
+          type: number
+          description: The relevance score assigned to the document for the given query. Higher scores indicate greater relevance.
+        document:
+          type: object
+          description: The document text, returned when return_documents is true.
+          properties:
+            text:
+              type: string
+              description: The text content of the document.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     RerankResponse:
       type: object
       properties:
@@ -77,22 +99,6 @@ components:
                 version:
                   type: string
                   description: The API version used for the request.
-    RerankResult:
-      type: object
-      properties:
-        index:
-          type: integer
-          description: The index of the document in the original input list.
-        relevance_score:
-          type: number
-          description: The relevance score assigned to the document for the given query. Higher scores indicate greater relevance.
-        document:
-          type: object
-          description: The document text, returned when return_documents is true.
-          properties:
-            text:
-              type: string
-              description: The text content of the document.
     RerankRequest:
       type: object
       required:
@@ -127,12 +133,6 @@ components:
           description: Long documents will be automatically truncated to the specified number of tokens. Defaults to 4096.
           default: 4096
           minimum: 1
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http

@@ -126,6 +126,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
+  parameters:
+    EmbedJobId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the embed job.
+      schema:
+        type: string
   schemas:
     EmbedJob:
       type: object
@@ -171,14 +179,12 @@ components:
                 version:
                   type: string
                   description: The API version used.
-    ListEmbedJobsResponse:
+    Error:
       type: object
       properties:
-        embed_jobs:
-          type: array
-          description: A list of embed jobs for the authenticated user.
-          items:
-            $ref: '#/components/schemas/EmbedJob'
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     CreateEmbedJobRequest:
       type: object
       required:
@@ -227,20 +233,14 @@ components:
         job_id:
           type: string
           description: The unique identifier of the created embed job.
-    Error:
+    ListEmbedJobsResponse:
       type: object
       properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
-  parameters:
-    EmbedJobId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the embed job.
-      schema:
-        type: string
+        embed_jobs:
+          type: array
+          description: A list of embed jobs for the authenticated user.
+          items:
+            $ref: '#/components/schemas/EmbedJob'
   securitySchemes:
     bearerAuth:
       type: http

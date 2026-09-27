@@ -50,6 +50,12 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     DetokenizeResponse:
       type: object
       properties:
@@ -81,12 +87,6 @@ components:
           type: string
           description: The name of the model whose tokenizer will be used to detokenize the input tokens.
           example: command-r-plus
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http
