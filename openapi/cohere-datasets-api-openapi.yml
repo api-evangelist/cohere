@@ -182,24 +182,18 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
     CreateDatasetResponse:
       type: object
       properties:
         id:
           type: string
           description: The unique identifier of the created dataset.
-    DatasetUsage:
+    Error:
       type: object
       properties:
-        organization_usage:
-          type: integer
-          description: The total dataset usage in bytes for the organization.
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     Dataset:
       type: object
       properties:
@@ -286,6 +280,12 @@ components:
         keep_fields:
           type: string
           description: Comma-separated list of field names to persist in the dataset.
+    DatasetUsage:
+      type: object
+      properties:
+        organization_usage:
+          type: integer
+          description: The total dataset usage in bytes for the organization.
     ListDatasetsResponse:
       type: object
       properties:

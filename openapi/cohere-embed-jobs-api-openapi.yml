@@ -126,15 +126,69 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
-  parameters:
-    EmbedJobId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the embed job.
-      schema:
-        type: string
   schemas:
+    ListEmbedJobsResponse:
+      type: object
+      properties:
+        embed_jobs:
+          type: array
+          description: A list of embed jobs for the authenticated user.
+          items:
+            $ref: '#/components/schemas/EmbedJob'
+    CreateEmbedJobRequest:
+      type: object
+      required:
+      - model
+      - dataset_id
+      - input_type
+      properties:
+        model:
+          type: string
+          description: The ID of the embedding model to use for the job.
+          example: embed-english-v3.0
+        dataset_id:
+          type: string
+          description: The ID of a dataset of type embed-input. The dataset must have a validation status of Validated.
+        input_type:
+          type: string
+          enum:
+          - search_document
+          - search_query
+          - classification
+          - clustering
+          description: Specifies the type of input. Required for embedding models v3 and higher. Use search_document for vector database storage, search_query for search queries, classification for classifiers, and clustering for clustering tasks.
+        truncate:
+          type: string
+          enum:
+          - START
+          - END
+          description: Specifies how inputs longer than the maximum token length are handled. START discards the beginning, END discards the end.
+        embedding_types:
+          type: array
+          description: Specifies the types of embeddings to generate.
+          items:
+            type: string
+            enum:
+            - float
+            - int8
+            - uint8
+            - binary
+            - base64
+        name:
+          type: string
+          description: An optional name for the embed job.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
+    CreateEmbedJobResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: The unique identifier of the created embed job.
     EmbedJob:
       type: object
       properties:
@@ -179,68 +233,14 @@ components:
                 version:
                   type: string
                   description: The API version used.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
-    CreateEmbedJobRequest:
-      type: object
-      required:
-      - model
-      - dataset_id
-      - input_type
-      properties:
-        model:
-          type: string
-          description: The ID of the embedding model to use for the job.
-          example: embed-english-v3.0
-        dataset_id:
-          type: string
-          description: The ID of a dataset of type embed-input. The dataset must have a validation status of Validated.
-        input_type:
-          type: string
-          enum:
-          - search_document
-          - search_query
-          - classification
-          - clustering
-          description: Specifies the type of input. Required for embedding models v3 and higher. Use search_document for vector database storage, search_query for search queries, classification for classifiers, and clustering for clustering tasks.
-        truncate:
-          type: string
-          enum:
-          - START
-          - END
-          description: Specifies how inputs longer than the maximum token length are handled. START discards the beginning, END discards the end.
-        embedding_types:
-          type: array
-          description: Specifies the types of embeddings to generate.
-          items:
-            type: string
-            enum:
-            - float
-            - int8
-            - uint8
-            - binary
-            - base64
-        name:
-          type: string
-          description: An optional name for the embed job.
-    CreateEmbedJobResponse:
-      type: object
-      properties:
-        job_id:
-          type: string
-          description: The unique identifier of the created embed job.
-    ListEmbedJobsResponse:
-      type: object
-      properties:
-        embed_jobs:
-          type: array
-          description: A list of embed jobs for the authenticated user.
-          items:
-            $ref: '#/components/schemas/EmbedJob'
+  parameters:
+    EmbedJobId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the embed job.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http
