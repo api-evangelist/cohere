@@ -94,88 +94,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    StreamEvent:
-      type: object
-      description: A server-sent event emitted during streaming chat generation. Event types include stream-start, content-delta, citation-start, citation-end, tool-call-start, tool-call-delta, tool-call-end, and stream-end.
-      properties:
-        event_type:
-          type: string
-          enum:
-          - stream-start
-          - content-delta
-          - citation-start
-          - citation-end
-          - tool-call-start
-          - tool-call-delta
-          - tool-call-end
-          - stream-end
-          description: The type of streaming event.
-        delta:
-          type: object
-          description: The incremental content payload for delta events.
-          properties:
-            message:
-              type: object
-              properties:
-                content:
-                  type: object
-                  properties:
-                    text:
-                      type: string
-                      description: The incremental text content.
-    Usage:
-      type: object
-      properties:
-        billed_units:
-          type: object
-          properties:
-            input_tokens:
-              type: integer
-              description: The number of billed input tokens.
-            output_tokens:
-              type: integer
-              description: The number of billed output tokens.
-        tokens:
-          type: object
-          properties:
-            input_tokens:
-              type: integer
-              description: The total number of input tokens processed.
-            output_tokens:
-              type: integer
-              description: The total number of output tokens generated.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
-    Tool:
-      type: object
-      required:
-      - type
-      - function
-      properties:
-        type:
-          type: string
-          enum:
-          - function
-          description: The type of tool. Currently only function is supported.
-        function:
-          type: object
-          required:
-          - name
-          - description
-          properties:
-            name:
-              type: string
-              description: The name of the function to be called.
-            description:
-              type: string
-              description: A description of what the function does.
-            parameters:
-              type: object
-              description: The parameters the function accepts, described as a JSON Schema object.
     ChatRequest:
       type: object
       required:
@@ -233,6 +151,81 @@ components:
           - NONE
           description: Used to select the safety instruction inserted into the prompt. Defaults to CONTEXTUAL.
           default: CONTEXTUAL
+    Tool:
+      type: object
+      required:
+      - type
+      - function
+      properties:
+        type:
+          type: string
+          enum:
+          - function
+          description: The type of tool. Currently only function is supported.
+        function:
+          type: object
+          required:
+          - name
+          - description
+          properties:
+            name:
+              type: string
+              description: The name of the function to be called.
+            description:
+              type: string
+              description: A description of what the function does.
+            parameters:
+              type: object
+              description: The parameters the function accepts, described as a JSON Schema object.
+    StreamEvent:
+      type: object
+      description: A server-sent event emitted during streaming chat generation. Event types include stream-start, content-delta, citation-start, citation-end, tool-call-start, tool-call-delta, tool-call-end, and stream-end.
+      properties:
+        event_type:
+          type: string
+          enum:
+          - stream-start
+          - content-delta
+          - citation-start
+          - citation-end
+          - tool-call-start
+          - tool-call-delta
+          - tool-call-end
+          - stream-end
+          description: The type of streaming event.
+        delta:
+          type: object
+          description: The incremental content payload for delta events.
+          properties:
+            message:
+              type: object
+              properties:
+                content:
+                  type: object
+                  properties:
+                    text:
+                      type: string
+                      description: The incremental text content.
+    ToolCall:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this tool call.
+        type:
+          type: string
+          enum:
+          - function
+          description: The type of tool call.
+        function:
+          type: object
+          properties:
+            name:
+              type: string
+              description: The name of the function to call.
+            arguments:
+              type: string
+              description: The arguments to pass to the function, as a JSON string.
     Message:
       type: object
       required:
@@ -257,26 +250,6 @@ components:
           description: Tool calls generated by the model. Present when role is assistant and the model decided to call tools.
           items:
             $ref: '#/components/schemas/ToolCall'
-    ToolCall:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The unique identifier for this tool call.
-        type:
-          type: string
-          enum:
-          - function
-          description: The type of tool call.
-        function:
-          type: object
-          properties:
-            name:
-              type: string
-              description: The name of the function to call.
-            arguments:
-              type: string
-              description: The arguments to pass to the function, as a JSON string.
     ChatResponse:
       type: object
       properties:
@@ -297,6 +270,33 @@ components:
           $ref: '#/components/schemas/Message'
         usage:
           $ref: '#/components/schemas/Usage'
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
+    Usage:
+      type: object
+      properties:
+        billed_units:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+              description: The number of billed input tokens.
+            output_tokens:
+              type: integer
+              description: The number of billed output tokens.
+        tokens:
+          type: object
+          properties:
+            input_tokens:
+              type: integer
+              description: The total number of input tokens processed.
+            output_tokens:
+              type: integer
+              description: The total number of output tokens generated.
   securitySchemes:
     bearerAuth:
       type: http

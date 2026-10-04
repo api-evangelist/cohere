@@ -56,12 +56,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
     EmbedResponse:
       type: object
       properties:
@@ -120,6 +114,12 @@ components:
                 version:
                   type: string
                   description: The API version used for the request.
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
     EmbedRequest:
       type: object
       required:

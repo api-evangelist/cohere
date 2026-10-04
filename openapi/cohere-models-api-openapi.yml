@@ -95,6 +95,18 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
+    ListModelsResponse:
+      type: object
+      properties:
+        models:
+          type: array
+          description: A list of available models.
+          items:
+            $ref: '#/components/schemas/Model'
+        next_page_token:
+          type: string
+          nullable: true
+          description: A token to retrieve the next page of results. Null if there are no more pages.
     Error:
       type: object
       properties:
@@ -132,18 +144,6 @@ components:
         finetuned:
           type: boolean
           description: Whether the model is a fine-tuned variant.
-    ListModelsResponse:
-      type: object
-      properties:
-        models:
-          type: array
-          description: A list of available models.
-          items:
-            $ref: '#/components/schemas/Model'
-        next_page_token:
-          type: string
-          nullable: true
-          description: A token to retrieve the next page of results. Null if there are no more pages.
   parameters:
     ModelName:
       name: model
