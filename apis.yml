@@ -220,6 +220,10 @@ apis:
     API and is useful for inspecting model outputs at the token level, debugging tokenization behavior,
     and reconstructing text from token representations.
 common:
+- type: Pricing
+  url: https://cohere.com/pricing
+- type: Plans
+  url: plans/cohere-plans-pricing.yml
 - type: Website
   url: https://www.cohere.com/
 - type: AgenticAccess
