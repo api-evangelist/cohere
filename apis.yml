@@ -220,6 +220,10 @@ apis:
     API and is useful for inspecting model outputs at the token level, debugging tokenization behavior,
     and reconstructing text from token representations.
 common:
+- type: RateLimits
+  url: rate-limits/cohere-rate-limits.yml
+- type: FinOps
+  url: finops/cohere-finops.yml
 - type: Pricing
   url: https://cohere.com/pricing
 - type: Plans
