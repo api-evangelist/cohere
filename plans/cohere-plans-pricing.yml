@@ -1,188 +1,373 @@
-specification: API Commons Plans
-specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
-provider: Cohere
-providerId: cohere
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-reconciled: true
-tags:
-  - AI
-  - LLM
-  - Embeddings
-  - Reranker
-description: Cohere per-token pricing across Command and Aya families.
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-07'
+method: searched
+source: https://cohere.com/pricing
 sources:
-  - https://cohere.com/pricing
+- https://cohere.com/pricing
+provenance:
+  tool: all/0-working/economics/harvest_pricing.py
+  run: 20261007T112025
+  grounding: every price_text was found verbatim in the fetched page text
+audience: developer-api
+pricing_basis: usage-other
+delivery:
+  delivery: managed+licensed
+  method: page
+  read: '2026-10-07'
+  evidence: Private Deployments On-prem or isolated VPCs
+  managed_tier: Model Vault
+published: true
+note: Main page prices Model Vault per-instance hourly/monthly rates; enterprise platforms (North, Compass)
+  are custom-quoted. FAQ lists legacy per-token model pricing. Private/on-prem deployments offered at
+  custom pricing.
+plan_count: 24
+currency: USD
 plans:
-  - id: cohere-command
-    name: Command
-    type: usage-based
-    description: Per-token pricing for Command.
-    entries:
-      - label: Input tokens
-        name: input
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '1.00'
-        userMultiplied: false
-      - label: Output tokens
-        name: output
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '2.00'
-        userMultiplied: false
-    elements:
-      - name: Per-token billing
-      - name: Pay as you go
-  - id: cohere-command-light
-    name: Command-light
-    type: usage-based
-    description: Per-token pricing for Command-light.
-    entries:
-      - label: Input tokens
-        name: input
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '0.30'
-        userMultiplied: false
-      - label: Output tokens
-        name: output
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '0.60'
-        userMultiplied: false
-    elements:
-      - name: Per-token billing
-      - name: Pay as you go
-  - id: cohere-command-r-03-2024
-    name: Command R 03-2024
-    type: usage-based
-    description: Per-token pricing for Command R 03-2024.
-    entries:
-      - label: Input tokens
-        name: input
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '0.50'
-        userMultiplied: false
-      - label: Output tokens
-        name: output
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '1.50'
-        userMultiplied: false
-    elements:
-      - name: Per-token billing
-      - name: Pay as you go
-  - id: cohere-command-r-plus-04-2024
-    name: Command R+ 04-2024
-    type: usage-based
-    description: Per-token pricing for Command R+ 04-2024.
-    entries:
-      - label: Input tokens
-        name: input
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '3.00'
-        userMultiplied: false
-      - label: Output tokens
-        name: output
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '15.00'
-        userMultiplied: false
-    elements:
-      - name: Per-token billing
-      - name: Pay as you go
-  - id: cohere-command-r-plus-08-2024
-    name: Command R+ 08-2024
-    type: usage-based
-    description: Per-token pricing for Command R+ 08-2024.
-    entries:
-      - label: Input tokens
-        name: input
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '2.50'
-        userMultiplied: false
-      - label: Output tokens
-        name: output
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '10.00'
-        userMultiplied: false
-    elements:
-      - name: Per-token billing
-      - name: Pay as you go
-  - id: cohere-aya-expanse
-    name: Aya Expanse (8B/32B)
-    type: usage-based
-    description: Per-token pricing for Aya Expanse (8B/32B).
-    entries:
-      - label: Input tokens
-        name: input
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '0.50'
-        userMultiplied: false
-      - label: Output tokens
-        name: output
-        type: metered
-        metric: tokens
-        limit: -1
-        timeFrame: usage
-        geo: global
-        unit: 1000000
-        price: '1.50'
-        userMultiplied: false
-    elements:
-      - name: Per-token billing
-      - name: Pay as you go
+- name: North
+  price_text: Get in touch for custom enterprise pricing.
+  period: none
+- name: Compass
+  price_text: Get in touch for custom enterprise pricing.
+  period: none
+- name: Model Vault — Embed 5 Fast (Small)
+  price_text: $3.00
+  price: 3.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $2,000 monthly rate per instance
+- name: Model Vault — Embed 5 Fast (Medium)
+  price_text: $5.00
+  price: 5.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $3,250 monthly rate per instance
+- name: Model Vault — Embed 5 Pro (Small)
+  price_text: $3.00
+  price: 3.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $2,000 monthly rate per instance
+- name: Model Vault — Embed 5 Pro (Medium)
+  price_text: $5.00
+  price: 5.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $3,250 monthly rate per instance
+- name: Model Vault — Rerank 4 Fast (Medium)
+  price_text: $5.00
+  price: 5.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $3,250 monthly rate per instance
+- name: Model Vault — Rerank 4 Pro (Medium)
+  price_text: $5.00
+  price: 5.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $3,250 monthly rate per instance
+- name: Model Vault — Rerank 4 Pro (Large)
+  price_text: $10.00
+  price: 10.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $6,500 monthly rate per instance
+- name: Model Vault — Rerank 3.5 (Medium)
+  price_text: $5.00
+  price: 5.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $3,250 monthly rate per instance
+- name: Model Vault — Parse 5 (Medium)
+  price_text: $4.00
+  price: 4.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $2,500 monthly rate per instance
+- name: Model Vault — Parse 5 (XL)
+  price_text: $7.00
+  price: 7.0
+  currency: USD
+  period: per-use
+  unit: hourly rate per instance
+  overage: $4,300 monthly rate per instance
+- name: Legacy Command (input)
+  price_text: $1.00/1M tokens
+  price: 1.0
+  currency: USD
+  period: per-use
+  unit: 1M input tokens
+- name: Legacy Command (output)
+  price_text: $2.00/1M tokens
+  price: 2.0
+  currency: USD
+  period: per-use
+  unit: 1M output tokens
+- name: Command-light (input)
+  price_text: $0.30/1M tokens
+  price: 0.3
+  currency: USD
+  period: per-use
+  unit: 1M input tokens
+- name: Command-light (output)
+  price_text: $0.60/1M tokens
+  price: 0.6
+  currency: USD
+  period: per-use
+  unit: 1M output tokens
+- name: Command R 03-2024 (input)
+  price_text: $0.50/1M tokens
+  price: 0.5
+  currency: USD
+  period: per-use
+  unit: 1M input tokens
+- name: Command R 03-2024 (output)
+  price_text: $1.50/1M tokens
+  price: 1.5
+  currency: USD
+  period: per-use
+  unit: 1M output tokens
+- name: Command R+ 04-2024 (input)
+  price_text: $3.00/1M tokens
+  price: 3.0
+  currency: USD
+  period: per-use
+  unit: 1M input tokens
+- name: Command R+ 04-2024 (output)
+  price_text: $15.00/1M tokens
+  price: 15.0
+  currency: USD
+  period: per-use
+  unit: 1M output tokens
+- name: Command R+ 08-2024 (input)
+  price_text: $2.50/1M tokens
+  price: 2.5
+  currency: USD
+  period: per-use
+  unit: 1M input tokens
+- name: Command R+ 08-2024 (output)
+  price_text: $10.00/1M tokens
+  price: 10.0
+  currency: USD
+  period: per-use
+  unit: 1M output tokens
+- name: Aya Expanse (input)
+  price_text: $0.50/1M tokens
+  price: 0.5
+  currency: USD
+  period: per-use
+  unit: 1M input tokens
+- name: Aya Expanse (output)
+  price_text: $1.50/1M tokens
+  price: 1.5
+  currency: USD
+  period: per-use
+  unit: 1M output tokens
+rate_limit_statements:
+- trial keys are rate limited and are not permitted to be used for production or commercial purposes
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - hybrid
+  units:
+  - token
+  plans:
+  - name: North
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Compass
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - none
+  - name: Model Vault — Embed 5 Fast (Small)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Embed 5 Fast (Medium)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Embed 5 Pro (Small)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Embed 5 Pro (Medium)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Rerank 4 Fast (Medium)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Rerank 4 Pro (Medium)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Rerank 4 Pro (Large)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Rerank 3.5 (Medium)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Parse 5 (Medium)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Model Vault — Parse 5 (XL)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - other
+    periods:
+    - other
+  - name: Legacy Command (input)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Legacy Command (output)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command-light (input)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command-light (output)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command R 03-2024 (input)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command R 03-2024 (output)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command R+ 04-2024 (input)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command R+ 04-2024 (output)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command R+ 08-2024 (input)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Command R+ 08-2024 (output)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Aya Expanse (input)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
+  - name: Aya Expanse (output)
+    access: other
+    model: hybrid
+    model_how: derived
+    units:
+    - token
+    periods:
+    - other
