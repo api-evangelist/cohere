@@ -56,50 +56,6 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    Classification:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for this classification result.
-        input:
-          type: string
-          description: The input text that was classified.
-        prediction:
-          type: string
-          description: The predicted label with the highest confidence.
-        predictions:
-          type: array
-          description: All predicted labels ordered by confidence.
-          items:
-            type: string
-        confidence:
-          type: number
-          description: The confidence score for the top prediction.
-          minimum: 0
-          maximum: 1
-        confidences:
-          type: array
-          description: Confidence scores for all predictions.
-          items:
-            type: number
-        labels:
-          type: object
-          description: A map of label names to their confidence scores.
-          additionalProperties:
-            type: object
-            properties:
-              confidence:
-                type: number
-                description: The confidence score for this label.
-                minimum: 0
-                maximum: 1
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
     ClassifyRequest:
       type: object
       required:
@@ -168,6 +124,50 @@ components:
         label:
           type: string
           description: The classification label associated with the example text.
+    Classification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for this classification result.
+        input:
+          type: string
+          description: The input text that was classified.
+        prediction:
+          type: string
+          description: The predicted label with the highest confidence.
+        predictions:
+          type: array
+          description: All predicted labels ordered by confidence.
+          items:
+            type: string
+        confidence:
+          type: number
+          description: The confidence score for the top prediction.
+          minimum: 0
+          maximum: 1
+        confidences:
+          type: array
+          description: Confidence scores for all predictions.
+          items:
+            type: number
+        labels:
+          type: object
+          description: A map of label names to their confidence scores.
+          additionalProperties:
+            type: object
+            properties:
+              confidence:
+                type: number
+                description: The confidence score for this label.
+                minimum: 0
+                maximum: 1
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http

@@ -94,6 +94,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
+  parameters:
+    ModelName:
+      name: model
+      in: path
+      required: true
+      description: The name of the model to retrieve details for.
+      schema:
+        type: string
   schemas:
     ListModelsResponse:
       type: object
@@ -144,14 +152,6 @@ components:
         finetuned:
           type: boolean
           description: Whether the model is a fine-tuned variant.
-  parameters:
-    ModelName:
-      name: model
-      in: path
-      required: true
-      description: The name of the model to retrieve details for.
-      schema:
-        type: string
   securitySchemes:
     bearerAuth:
       type: http

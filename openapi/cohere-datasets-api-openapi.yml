@@ -181,23 +181,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
-  parameters:
-    DatasetId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the dataset.
-      schema:
-        type: string
   schemas:
-    ListDatasetsResponse:
-      type: object
-      properties:
-        datasets:
-          type: array
-          description: A list of datasets for the authenticated user.
-          items:
-            $ref: '#/components/schemas/Dataset'
     CreateDatasetRequest:
       type: object
       required:
@@ -230,12 +214,14 @@ components:
         keep_fields:
           type: string
           description: Comma-separated list of field names to persist in the dataset.
-    DatasetUsage:
+    ListDatasetsResponse:
       type: object
       properties:
-        organization_usage:
-          type: integer
-          description: The total dataset usage in bytes for the organization.
+        datasets:
+          type: array
+          description: A list of datasets for the authenticated user.
+          items:
+            $ref: '#/components/schemas/Dataset'
     Dataset:
       type: object
       properties:
@@ -290,6 +276,12 @@ components:
         meta:
           type: object
           description: Metadata about the dataset.
+    DatasetUsage:
+      type: object
+      properties:
+        organization_usage:
+          type: integer
+          description: The total dataset usage in bytes for the organization.
     Error:
       type: object
       properties:
@@ -302,6 +294,14 @@ components:
         id:
           type: string
           description: The unique identifier of the created dataset.
+  parameters:
+    DatasetId:
+      name: id
+      in: path
+      required: true
+      description: The unique identifier of the dataset.
+      schema:
+        type: string
   securitySchemes:
     bearerAuth:
       type: http
