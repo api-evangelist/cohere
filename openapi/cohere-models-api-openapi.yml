@@ -1,162 +1,527 @@
 openapi: 3.2.0
 info:
-  title: Cohere Chat Models API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  title: Cohere Models API
+  version: 1.0.0
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Models
-  description: Endpoints for listing and retrieving details about available Cohere models.
 paths:
+  /v1/models/{model}:
+    get:
+      operationId: models_get
+      summary: Get a Model
+      description: Returns the details of a model, provided its name.
+      tags:
+      - Models
+      parameters:
+      - name: model
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-modelRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
   /v1/models:
     get:
-      operationId: listModels
-      summary: List available models
-      description: Returns a paginated list of models available for use. Supports filtering by compatible endpoint and default models. Includes details such as model name, supported endpoints, context length, and default status.
+      operationId: models_list
+      summary: List Models
+      description: Returns a list of models available for use.
       tags:
       - Models
       parameters:
       - name: page_size
         in: query
-        description: Maximum number of models to include in a page. Defaults to 20.
+        description: 'Maximum number of models to include in a page
+
+          Defaults to `20`, min value of `1`, max value of `1000`.'
+        required: false
         schema:
-          type: integer
-          minimum: 1
-          maximum: 1000
-          default: 20
+          type: number
+          format: double
       - name: page_token
         in: query
-        description: Page token provided in the next_page_token field of a previous response for pagination.
+        description: Page token provided in the `next_page_token` field of a previous response.
+        required: false
         schema:
           type: string
       - name: endpoint
         in: query
-        description: When provided, filters the list of models to only those compatible with the specified endpoint.
+        description: When provided, filters the list of models to only those that are compatible with the specified endpoint.
+        required: false
         schema:
-          type: string
-          enum:
-          - chat
-          - embed
-          - rerank
-          - classify
+          $ref: '#/components/schemas/CompatibleEndpoint'
       - name: default_only
         in: query
-        description: When true, filters the list of models to only the default model for the specified endpoint.
+        description: When provided, filters the list of models to only the default model to the endpoint. This parameter is only valid when `endpoint` is provided.
+        required: false
         schema:
           type: boolean
       responses:
         '200':
-          description: Successful list of available models
+          description: OK
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ListModelsResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestBadRequestError'
         '401':
-          description: Unauthorized due to missing or invalid API key
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-  /v1/models/{model}:
-    get:
-      operationId: getModel
-      summary: Get model details
-      description: Retrieves detailed information about a specific model, including its name, supported endpoints, context length, tokenizer, and default status.
-      tags:
-      - Models
-      parameters:
-      - $ref: '#/components/parameters/ModelName'
-      responses:
-        '200':
-          description: Successful model details
+                $ref: '#/components/schemas/List-modelsRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Model'
-        '401':
-          description: Unauthorized due to missing or invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/List-modelsRequestForbiddenError'
         '404':
-          description: Model not found
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/List-modelsRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-modelsRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
 components:
-  parameters:
-    ModelName:
-      name: model
-      in: path
-      required: true
-      description: The name of the model to retrieve details for.
-      schema:
-        type: string
   schemas:
+    CompatibleEndpoint:
+      type: string
+      enum:
+      - chat
+      - embed
+      - classify
+      - summarize
+      - rerank
+      - rate
+      - generate
+      description: One of the Cohere API endpoints that the model can be used with.
+      title: CompatibleEndpoint
+    Get-modelRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestUnprocessableEntityError
+    Get-modelRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestBadRequestError
+    List-modelsRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestNotImplementedError
+    Get-modelRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestGatewayTimeoutError
+    Get-modelRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestNotFoundError
+    List-modelsRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestServiceUnavailableError
     ListModelsResponse:
       type: object
       properties:
         models:
           type: array
-          description: A list of available models.
           items:
-            $ref: '#/components/schemas/Model'
+            $ref: '#/components/schemas/GetModelResponse'
         next_page_token:
           type: string
-          nullable: true
-          description: A token to retrieve the next page of results. Null if there are no more pages.
-    Error:
+          description: A token to retrieve the next page of results. Provide in the page_token parameter of the next request.
+      required:
+      - models
+      title: ListModelsResponse
+    Get-modelRequestNotImplementedError:
       type: object
       properties:
         message:
           type: string
-          description: A human-readable error message describing what went wrong.
-    Model:
+        id:
+          type: string
+      title: Get-modelRequestNotImplementedError
+    List-modelsRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestInvalidTokenError
+    Get-modelRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestServiceUnavailableError
+    List-modelsRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestGatewayTimeoutError
+    Get-modelRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestForbiddenError
+    List-modelsRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestUnprocessableEntityError
+    List-modelsRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestInternalServerError
+    List-modelsRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestNotFoundError
+    List-modelsRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestBadRequestError
+    List-modelsRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestForbiddenError
+    GetModelResponse:
       type: object
       properties:
         name:
           type: string
-          description: The name of the model for use in API requests.
+          description: Specify this name in the `model` parameter of API requests to use your chosen model.
+        is_deprecated:
+          type: boolean
+          description: Whether the model is deprecated or not.
         endpoints:
           type: array
-          description: The API endpoints the model is compatible with.
           items:
-            type: string
-            enum:
-            - chat
-            - embed
-            - rerank
-            - classify
-        context_length:
-          type: integer
-          description: The maximum number of tokens the model can process in a single request.
-        tokenizer_url:
-          type: string
-          format: uri
-          description: The URL for the model's tokenizer configuration.
-        default_endpoints:
-          type: array
-          description: The API endpoints for which this model is the default.
-          items:
-            type: string
+            $ref: '#/components/schemas/CompatibleEndpoint'
+          description: The API endpoints that the model is compatible with.
         finetuned:
           type: boolean
-          description: Whether the model is a fine-tuned variant.
+          description: Whether the model has been fine-tuned or not.
+        context_length:
+          type: number
+          format: double
+          description: The maximum number of tokens that the model can process in a single request. Note that not all of these tokens are always available due to special tokens and preambles that Cohere has added by default.
+        tokenizer_url:
+          type: string
+          description: Public URL to the tokenizer's configuration file.
+        default_endpoints:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompatibleEndpoint'
+          description: The API endpoints that the model is default to.
+        features:
+          type: array
+          items:
+            type: string
+          description: The features that the model supports.
+        sampling_defaults:
+          $ref: '#/components/schemas/GetModelResponseSamplingDefaults'
+          description: Default sampling parameters for this model when omitted from API requests.
+      description: Contains information about the model and which API endpoints it can be used with.
+      title: GetModelResponse
+    List-modelsRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestTooManyRequestsError
+    Get-modelRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestInvalidTokenError
+    Get-modelRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestClientClosedRequestError
+    Get-modelRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestTooManyRequestsError
+    Get-modelRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestInternalServerError
+    GetModelResponseSamplingDefaults:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: double
+        k:
+          type: integer
+        p:
+          type: number
+          format: double
+        frequency_penalty:
+          type: number
+          format: double
+        presence_penalty:
+          type: number
+          format: double
+        max_tokens_per_doc:
+          type: integer
+      description: Default sampling parameters for this model when omitted from API requests.
+      title: GetModelResponseSamplingDefaults
+    Get-modelRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-modelRequestUnauthorizedError
+    List-modelsRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestClientClosedRequestError
+    List-modelsRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-modelsRequestUnauthorizedError
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
-externalDocs:
-  description: Cohere Chat API Documentation
-  url: https://docs.cohere.com/reference/chat

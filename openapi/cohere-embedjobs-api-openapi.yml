@@ -1,0 +1,1114 @@
+openapi: 3.2.0
+info:
+  title: Cohere Embed Jobs API
+  version: 1.0.0
+servers:
+- url: https://api.cohere.com
+  description: production
+tags:
+- name: embedJobs
+paths:
+  /v1/embed-jobs:
+    post:
+      operationId: embedJobs_create
+      summary: Create an Embed Job
+      description: This API launches an async Embed job for a Dataset of type `embed-input`. The result of a completed embed job is new Dataset of type `embed-output`, which contains the original text entries and the corresponding embeddings.
+      tags:
+      - embedJobs
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmbedJobResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-embed-jobRequestGatewayTimeoutError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmbedJobRequest'
+      security:
+      - bearerAuth: []
+    get:
+      operationId: embedJobs_list
+      summary: List Embed Jobs
+      description: The list embed job endpoint allows users to view all embed jobs history for that specific user.
+      tags:
+      - embedJobs
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEmbedJobResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-embed-jobsRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
+  /v1/embed-jobs/{id}:
+    get:
+      operationId: embedJobs_get
+      summary: Fetch an Embed Job
+      description: This API retrieves the details about an embed job started by the same user.
+      tags:
+      - embedJobs
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the embed job to retrieve.
+        required: true
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedJob'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-embed-jobRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
+  /v1/embed-jobs/{id}/cancel:
+    post:
+      operationId: embedJobs_cancel
+      summary: Cancel an Embed Job
+      description: This API allows users to cancel an active embed job. Once invoked, the embedding process will be terminated, and users will be charged for the embeddings processed up to the cancellation point. It's important to note that partial results will not be available to users after cancellation.
+      tags:
+      - embedJobs
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the embed job to cancel.
+        required: true
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/embed-jobs_cancel_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cancel-embed-jobRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    embed-jobs_cancel_Response_200:
+      type: object
+      properties: {}
+      description: Empty response body
+      title: embed-jobs_cancel_Response_200
+    List-embed-jobsRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestTooManyRequestsError
+    EmbedJobStatus:
+      type: string
+      enum:
+      - processing
+      - complete
+      - cancelling
+      - cancelled
+      - failed
+      description: The status of the embed job
+      title: EmbedJobStatus
+    Get-embed-jobRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestInternalServerError
+    Get-embed-jobRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestBadRequestError
+    Get-embed-jobRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestGatewayTimeoutError
+    Get-embed-jobRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestUnprocessableEntityError
+    Create-embed-jobRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestTooManyRequestsError
+    Cancel-embed-jobRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestGatewayTimeoutError
+    Get-embed-jobRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestClientClosedRequestError
+    Get-embed-jobRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestForbiddenError
+    EmbeddingType:
+      type: string
+      enum:
+      - float
+      - int8
+      - uint8
+      - binary
+      - ubinary
+      - base64
+      title: EmbeddingType
+    Cancel-embed-jobRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestClientClosedRequestError
+    ListEmbedJobResponse:
+      type: object
+      properties:
+        embed_jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmbedJob'
+      title: ListEmbedJobResponse
+    Cancel-embed-jobRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestTooManyRequestsError
+    List-embed-jobsRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestUnprocessableEntityError
+    Create-embed-jobRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestUnauthorizedError
+    CreateEmbedJobRequestTruncate:
+      type: string
+      enum:
+      - START
+      - END
+      default: END
+      description: 'One of `START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+
+        Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+        '
+      title: CreateEmbedJobRequestTruncate
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
+      required:
+      - version
+      title: ApiMetaApiVersion
+    CreateEmbedJobRequest:
+      type: object
+      properties:
+        model:
+          type: string
+          format: string
+          description: 'ID of the embedding model.
+
+
+            Available models and corresponding embedding dimensions:
+
+
+            - `embed-english-v3.0` : 1024
+
+            - `embed-multilingual-v3.0` : 1024
+
+            - `embed-english-light-v3.0` : 384
+
+            - `embed-multilingual-light-v3.0` : 384
+
+            '
+        dataset_id:
+          type: string
+          description: ID of a [Dataset](https://docs.cohere.com/docs/datasets). The Dataset must be of type `embed-input` and must have a validation status `Validated`
+        input_type:
+          $ref: '#/components/schemas/EmbedInputType'
+        name:
+          type: string
+          description: The name of the embed job.
+        embedding_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmbeddingType'
+          description: 'Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.
+
+
+            * `"float"`: Use this when you want to get back the default float embeddings. Valid for all models.
+
+            * `"int8"`: Use this when you want to get back signed int8 embeddings. Valid for v3 and newer model versions.
+
+            * `"uint8"`: Use this when you want to get back unsigned int8 embeddings. Valid for v3 and newer model versions.
+
+            * `"binary"`: Use this when you want to get back signed binary embeddings. Valid for v3 and newer model versions.
+
+            * `"ubinary"`: Use this when you want to get back unsigned binary embeddings. Valid for v3 and newer model versions.'
+        truncate:
+          $ref: '#/components/schemas/CreateEmbedJobRequestTruncate'
+          default: END
+          description: 'One of `START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+
+            Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+            '
+      required:
+      - model
+      - dataset_id
+      - input_type
+      title: CreateEmbedJobRequest
+    Create-embed-jobRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestBadRequestError
+    CreateEmbedJobResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      required:
+      - job_id
+      description: Response from creating an embed job.
+      title: CreateEmbedJobResponse
+    Cancel-embed-jobRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestBadRequestError
+    EmbedJob:
+      type: object
+      properties:
+        job_id:
+          type: string
+          description: ID of the embed job
+        name:
+          type: string
+          description: The name of the embed job
+        status:
+          $ref: '#/components/schemas/EmbedJobStatus'
+          description: The status of the embed job
+        created_at:
+          type: string
+          format: date-time
+          description: The creation date of the embed job
+        input_dataset_id:
+          type: string
+          description: ID of the input dataset
+        output_dataset_id:
+          type: string
+          description: ID of the resulting output dataset
+        model:
+          type: string
+          description: ID of the model used to embed
+        truncate:
+          $ref: '#/components/schemas/EmbedJobTruncate'
+          description: The truncation option used
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      required:
+      - job_id
+      - status
+      - created_at
+      - input_dataset_id
+      - model
+      - truncate
+      title: EmbedJob
+    Get-embed-jobRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestNotImplementedError
+    Create-embed-jobRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestForbiddenError
+    Cancel-embed-jobRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestInternalServerError
+    List-embed-jobsRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestClientClosedRequestError
+    Cancel-embed-jobRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestNotFoundError
+    Cancel-embed-jobRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestInvalidTokenError
+    Get-embed-jobRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestServiceUnavailableError
+    List-embed-jobsRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestUnauthorizedError
+    List-embed-jobsRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestBadRequestError
+    List-embed-jobsRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestForbiddenError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    Get-embed-jobRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestNotFoundError
+    Cancel-embed-jobRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestUnprocessableEntityError
+    Create-embed-jobRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestInternalServerError
+    EmbedJobTruncate:
+      type: string
+      enum:
+      - START
+      - END
+      description: The truncation option used
+      title: EmbedJobTruncate
+    List-embed-jobsRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestInvalidTokenError
+    List-embed-jobsRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestServiceUnavailableError
+    Cancel-embed-jobRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestUnauthorizedError
+    Cancel-embed-jobRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestServiceUnavailableError
+    List-embed-jobsRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestGatewayTimeoutError
+    Create-embed-jobRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestUnprocessableEntityError
+    Cancel-embed-jobRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestNotImplementedError
+    List-embed-jobsRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestNotImplementedError
+    Create-embed-jobRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestInvalidTokenError
+    Get-embed-jobRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestTooManyRequestsError
+    List-embed-jobsRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestNotFoundError
+    List-embed-jobsRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-embed-jobsRequestInternalServerError
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    Cancel-embed-jobRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Cancel-embed-jobRequestForbiddenError
+    Create-embed-jobRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestServiceUnavailableError
+    Create-embed-jobRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestNotImplementedError
+    Get-embed-jobRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestInvalidTokenError
+    Create-embed-jobRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestClientClosedRequestError
+    EmbedInputType:
+      type: string
+      enum:
+      - search_document
+      - search_query
+      - classification
+      - clustering
+      - image
+      description: 'Specifies the type of input passed to the model. Required for embedding models v3 and higher.
+
+
+        - `"search_document"`: Used for embeddings stored in a vector database for search use-cases.
+
+        - `"search_query"`: Used for embeddings of search queries run against a vector DB to find relevant documents.
+
+        - `"classification"`: Used for embeddings passed through a text classifier.
+
+        - `"clustering"`: Used for the embeddings run through a clustering algorithm.
+
+        - `"image"`: Used for embeddings with image input.
+
+        '
+      title: EmbedInputType
+    Create-embed-jobRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestGatewayTimeoutError
+    Create-embed-jobRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-embed-jobRequestNotFoundError
+    Get-embed-jobRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-embed-jobRequestUnauthorizedError
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

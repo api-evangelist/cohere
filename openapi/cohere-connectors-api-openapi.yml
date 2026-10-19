@@ -1,0 +1,1521 @@
+openapi: 3.2.0
+info:
+  title: Cohere Connectors API
+  version: 1.0.0
+servers:
+- url: https://api.cohere.com
+  description: production
+tags:
+- name: Connectors
+paths:
+  /v1/connectors:
+    get:
+      operationId: connectors_list
+      summary: List Connectors
+      description: Returns a list of connectors ordered by descending creation date (newer first). See 'Managing your Connector' for more information.
+      tags:
+      - Connectors
+      parameters:
+      - name: limit
+        in: query
+        description: Maximum number of connectors to return [0, 100].
+        required: false
+        schema:
+          type: number
+          format: double
+          default: 30
+      - name: offset
+        in: query
+        description: Number of connectors to skip before returning results [0, inf].
+        required: false
+        schema:
+          type: number
+          format: double
+          default: 0
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListConnectorsResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-connectorsRequestGatewayTimeoutError'
+      deprecated: true
+      security:
+      - bearerAuth: []
+    post:
+      operationId: connectors_create
+      summary: Create a Connector
+      description: Creates a new connector. The connector is tested during registration and will cancel registration when the test is unsuccessful. See 'Creating and Deploying a Connector' for more information.
+      tags:
+      - Connectors
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateConnectorResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-connectorRequestGatewayTimeoutError'
+      deprecated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateConnectorRequest'
+      security:
+      - bearerAuth: []
+  /v1/connectors/{id}:
+    get:
+      operationId: connectors_get
+      summary: Get a Connector
+      description: Retrieve a connector by ID. See 'Connectors' for more information.
+      tags:
+      - Connectors
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the connector to retrieve.
+        required: true
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConnectorResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-connectorRequestGatewayTimeoutError'
+      deprecated: true
+      security:
+      - bearerAuth: []
+    patch:
+      operationId: connectors_update
+      summary: Update a Connector
+      description: Update a connector by ID. Omitted fields will not be updated. See 'Managing your Connector' for more information.
+      tags:
+      - Connectors
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the connector to update.
+        required: true
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateConnectorResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Update-connectorRequestGatewayTimeoutError'
+      deprecated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateConnectorRequest'
+      security:
+      - bearerAuth: []
+    delete:
+      operationId: connectors_delete
+      summary: Delete a Connector
+      description: Delete a connector by ID. See 'Connectors' for more information.
+      tags:
+      - Connectors
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the connector to delete.
+        required: true
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteConnectorResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-connectorRequestGatewayTimeoutError'
+      deprecated: true
+      security:
+      - bearerAuth: []
+  /v1/connectors/{id}/oauth/authorize:
+    post:
+      operationId: connectors_oAuthAuthorize
+      summary: Authorize with oAuth
+      description: Authorize the connector with the given ID for the connector oauth app. See 'Connector Authentication' for more information.
+      tags:
+      - Connectors
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the connector to authorize.
+        required: true
+        schema:
+          type: string
+      - name: after_token_redirect
+        in: query
+        description: The URL to redirect to after the connector has been authorized.
+        required: false
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorizeResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthAuthorize-connectorRequestGatewayTimeoutError'
+      deprecated: true
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    OAuthAuthorize-connectorRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestClientClosedRequestError
+    Update-connectorRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestTooManyRequestsError
+    Update-connectorRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestNotImplementedError
+    List-connectorsRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestUnauthorizedError
+    ConnectorAuthStatus:
+      type: string
+      enum:
+      - valid
+      - expired
+      description: The OAuth status for the user making the request. One of ["valid", "expired", ""]. Empty string (field is omitted) means the user has not authorized the connector yet.
+      title: ConnectorAuthStatus
+    Create-connectorRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestClientClosedRequestError
+    ListConnectorsResponse:
+      type: object
+      properties:
+        connectors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Connector'
+        total_count:
+          type: number
+          format: double
+          description: Total number of connectors.
+      required:
+      - connectors
+      title: ListConnectorsResponse
+    Update-connectorRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestUnprocessableEntityError
+    OAuthAuthorizeResponse:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+          description: The OAuth 2.0 redirect url. Redirect the user to this url to authorize the connector.
+      title: OAuthAuthorizeResponse
+    List-connectorsRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestForbiddenError
+    Update-connectorRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestUnauthorizedError
+    Create-connectorRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestForbiddenError
+    List-connectorsRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestNotImplementedError
+    Create-connectorRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestGatewayTimeoutError
+    Update-connectorRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestInternalServerError
+    Get-connectorRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestNotFoundError
+    Delete-connectorRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestBadRequestError
+    Get-connectorRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestNotImplementedError
+    List-connectorsRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestBadRequestError
+    CreateConnectorOAuth:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: The OAuth 2.0 client ID. This fields is encrypted at rest.
+        client_secret:
+          type: string
+          description: The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.
+        authorize_url:
+          type: string
+          description: The OAuth 2.0 /authorize endpoint to use when users authorize the connector.
+        token_url:
+          type: string
+          description: The OAuth 2.0 /token endpoint to use when users authorize the connector.
+        scope:
+          type: string
+          description: The OAuth scopes to request when users authorize the connector.
+      title: CreateConnectorOAuth
+    OAuthAuthorize-connectorRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestGatewayTimeoutError
+    List-connectorsRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestServiceUnavailableError
+    List-connectorsRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestClientClosedRequestError
+    Connector:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'The unique identifier of the connector (used in both `/connectors` & `/chat` endpoints).
+
+            This is automatically created from the name of the connector upon registration.'
+        organization_id:
+          type: string
+          description: 'The organization to which this connector belongs. This is automatically set to
+
+            the organization of the user who created the connector.'
+        name:
+          type: string
+          description: A human-readable name for the connector.
+        description:
+          type: string
+          description: A description of the connector.
+        url:
+          type: string
+          description: The URL of the connector that will be used to search for documents.
+        created_at:
+          type: string
+          format: date-time
+          description: The UTC time at which the connector was created.
+        updated_at:
+          type: string
+          format: date-time
+          description: The UTC time at which the connector was last updated.
+        excludes:
+          type: array
+          items:
+            type: string
+          description: A list of fields to exclude from the prompt (fields remain in the document).
+        auth_type:
+          type: string
+          format: enum
+          description: 'The type of authentication/authorization used by the connector. Possible values: [oauth, service_auth]'
+        oauth:
+          $ref: '#/components/schemas/ConnectorOAuth'
+          description: The OAuth 2.0 configuration for the connector.
+        auth_status:
+          $ref: '#/components/schemas/ConnectorAuthStatus'
+          description: The OAuth status for the user making the request. One of ["valid", "expired", ""]. Empty string (field is omitted) means the user has not authorized the connector yet.
+        active:
+          type: boolean
+          description: Whether the connector is active or not.
+        continue_on_failure:
+          type: boolean
+          description: Whether a chat request should continue or not if the request to this connector fails.
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      description: 'A connector allows you to integrate data sources with the ''/chat'' endpoint to create grounded generations with citations to the data source.
+
+        documents to help answer users.'
+      title: Connector
+    UpdateConnectorResponse:
+      type: object
+      properties:
+        connector:
+          $ref: '#/components/schemas/Connector'
+      required:
+      - connector
+      title: UpdateConnectorResponse
+    ConnectorOAuth:
+      type: object
+      properties:
+        client_id:
+          type: string
+          description: The OAuth 2.0 client ID. This field is encrypted at rest.
+        client_secret:
+          type: string
+          description: The OAuth 2.0 client Secret. This field is encrypted at rest and never returned in a response.
+        authorize_url:
+          type: string
+          description: The OAuth 2.0 /authorize endpoint to use when users authorize the connector.
+        token_url:
+          type: string
+          description: The OAuth 2.0 /token endpoint to use when users authorize the connector.
+        scope:
+          type: string
+          description: The OAuth scopes to request when users authorize the connector.
+      required:
+      - authorize_url
+      - token_url
+      title: ConnectorOAuth
+    OAuthAuthorize-connectorRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestUnauthorizedError
+    Update-connectorRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestInvalidTokenError
+    Get-connectorRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestServiceUnavailableError
+    OAuthAuthorize-connectorRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestNotFoundError
+    Delete-connectorRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestForbiddenError
+    Delete-connectorRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestUnprocessableEntityError
+    Get-connectorRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestForbiddenError
+    List-connectorsRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestNotFoundError
+    OAuthAuthorize-connectorRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestTooManyRequestsError
+    Create-connectorRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestNotFoundError
+    OAuthAuthorize-connectorRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestBadRequestError
+    Get-connectorRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestBadRequestError
+    Get-connectorRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestInvalidTokenError
+    List-connectorsRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestInvalidTokenError
+    OAuthAuthorize-connectorRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestServiceUnavailableError
+    Create-connectorRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestServiceUnavailableError
+    Delete-connectorRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestGatewayTimeoutError
+    List-connectorsRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestGatewayTimeoutError
+    List-connectorsRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestInternalServerError
+    Delete-connectorRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestInternalServerError
+    Create-connectorRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestInvalidTokenError
+    Get-connectorRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestTooManyRequestsError
+    Create-connectorRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestUnprocessableEntityError
+    Update-connectorRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestBadRequestError
+    Create-connectorRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestBadRequestError
+    Create-connectorRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestUnauthorizedError
+    DeleteConnectorResponse:
+      type: object
+      properties: {}
+      title: DeleteConnectorResponse
+    Delete-connectorRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestNotImplementedError
+    GetConnectorResponse:
+      type: object
+      properties:
+        connector:
+          $ref: '#/components/schemas/Connector'
+      required:
+      - connector
+      title: GetConnectorResponse
+    OAuthAuthorize-connectorRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestInvalidTokenError
+    Update-connectorRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestForbiddenError
+    CreateConnectorResponse:
+      type: object
+      properties:
+        connector:
+          $ref: '#/components/schemas/Connector'
+      required:
+      - connector
+      title: CreateConnectorResponse
+    Delete-connectorRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestTooManyRequestsError
+    Update-connectorRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestNotFoundError
+    Delete-connectorRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestUnauthorizedError
+    OAuthAuthorize-connectorRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestNotImplementedError
+    Update-connectorRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestServiceUnavailableError
+    CreateConnectorServiceAuth:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/AuthTokenType'
+        token:
+          type: string
+          description: The token that will be used in the HTTP Authorization header when making requests to the connector. This field is encrypted at rest and never returned in a response.
+      required:
+      - type
+      - token
+      title: CreateConnectorServiceAuth
+    Get-connectorRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestUnauthorizedError
+    Update-connectorRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestClientClosedRequestError
+    AuthTokenType:
+      type: string
+      enum:
+      - bearer
+      - basic
+      - noscheme
+      default: noscheme
+      description: The token_type specifies the way the token is passed in the Authorization header. Valid values are "bearer", "basic", and "noscheme".
+      title: AuthTokenType
+    Delete-connectorRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestNotFoundError
+    Update-connectorRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Update-connectorRequestGatewayTimeoutError
+    Delete-connectorRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestClientClosedRequestError
+    OAuthAuthorize-connectorRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestInternalServerError
+    Get-connectorRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestClientClosedRequestError
+    Get-connectorRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestUnprocessableEntityError
+    Delete-connectorRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestServiceUnavailableError
+    Create-connectorRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestTooManyRequestsError
+    Delete-connectorRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-connectorRequestInvalidTokenError
+    Get-connectorRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestInternalServerError
+    CreateConnectorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A human-readable name for the connector.
+        description:
+          type: string
+          description: A description of the connector.
+        url:
+          type: string
+          description: The URL of the connector that will be used to search for documents.
+        excludes:
+          type: array
+          items:
+            type: string
+          description: A list of fields to exclude from the prompt (fields remain in the document).
+        oauth:
+          $ref: '#/components/schemas/CreateConnectorOAuth'
+          description: The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.
+        active:
+          type: boolean
+          default: true
+          description: Whether the connector is active or not.
+        continue_on_failure:
+          type: boolean
+          default: false
+          description: Whether a chat request should continue or not if the request to this connector fails.
+        service_auth:
+          $ref: '#/components/schemas/CreateConnectorServiceAuth'
+          description: The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.
+      required:
+      - name
+      - url
+      title: CreateConnectorRequest
+    List-connectorsRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestUnprocessableEntityError
+    Get-connectorRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-connectorRequestGatewayTimeoutError
+    List-connectorsRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-connectorsRequestTooManyRequestsError
+    OAuthAuthorize-connectorRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestForbiddenError
+    OAuthAuthorize-connectorRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: OAuthAuthorize-connectorRequestUnprocessableEntityError
+    Create-connectorRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestInternalServerError
+    UpdateConnectorRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: A human-readable name for the connector.
+        url:
+          type: string
+          description: The URL of the connector that will be used to search for documents.
+        excludes:
+          type: array
+          items:
+            type: string
+          description: A list of fields to exclude from the prompt (fields remain in the document).
+        oauth:
+          $ref: '#/components/schemas/CreateConnectorOAuth'
+          description: The OAuth 2.0 configuration for the connector. Cannot be specified if service_auth is specified.
+        active:
+          type: boolean
+          default: true
+        continue_on_failure:
+          type: boolean
+          default: false
+        service_auth:
+          $ref: '#/components/schemas/CreateConnectorServiceAuth'
+          description: The service to service authentication configuration for the connector. Cannot be specified if oauth is specified.
+      title: UpdateConnectorRequest
+    Create-connectorRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-connectorRequestNotImplementedError
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

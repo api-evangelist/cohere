@@ -1,0 +1,229 @@
+openapi: 3.2.0
+info:
+  title: Cohere Check Api Key API
+  version: 1.0.0
+servers:
+- url: https://api.cohere.com
+  description: production
+tags:
+- name: Check Api Key
+paths:
+  /v1/check-api-key:
+    post:
+      operationId: checkAPIKey
+      summary: Check API key
+      description: Checks that the api key in the Authorization header is valid and active
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/checkAPIKey_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAPIKeyRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
+      tags:
+      - Check Api Key
+components:
+  schemas:
+    CheckAPIKeyRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestServiceUnavailableError
+    CheckAPIKeyRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestUnprocessableEntityError
+    CheckAPIKeyRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestInternalServerError
+    CheckAPIKeyRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestNotImplementedError
+    checkAPIKey_Response_200:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        organization_id:
+          type: string
+        owner_id:
+          type: string
+      required:
+      - valid
+      title: checkAPIKey_Response_200
+    CheckAPIKeyRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestForbiddenError
+    CheckAPIKeyRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestGatewayTimeoutError
+    CheckAPIKeyRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestNotFoundError
+    CheckAPIKeyRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestUnauthorizedError
+    CheckAPIKeyRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestClientClosedRequestError
+    CheckAPIKeyRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestInvalidTokenError
+    CheckAPIKeyRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestTooManyRequestsError
+    CheckAPIKeyRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: CheckAPIKeyRequestBadRequestError
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

@@ -1,59 +1,716 @@
 openapi: 3.2.0
 info:
   title: Cohere Chat API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  version: '1.0'
+  description: 'Operations tagged Chat across 2 of this provider''s published API definitions: cohere-openapi.yml, cohere-chat-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Chat
-  description: Endpoints for generating text responses through conversational interactions with Cohere language models.
 paths:
   /v2/chat:
     post:
-      operationId: chat
-      summary: Chat with a Cohere model
-      description: Generates a text response to a user message. Accepts a list of chat messages in chronological order representing a conversation between the user and the model. Messages can include User, Assistant, Tool, and System roles. Supports tool use, retrieval-augmented generation, and structured JSON output.
+      operationId: v2_chat_stream
+      summary: Chat API (v2)
+      description: 'Generates a text response to a user message. To learn how to use the Chat API and RAG follow our Text Generation guides.
+
+
+        Follow the Migration Guide for instructions on moving from API v1 to API v2.'
       tags:
       - Chat
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: 'Generates a text response to a user message. To learn how to use the Chat API and RAG follow our [Text Generation guides](https://docs.cohere.com/v2/docs/chat-api).
+
+
+            Follow the [Migration Guide](https://docs.cohere.com/v2/docs/migrating-v1-to-v2) for instructions on moving from API v1 to API v2.
+
+            '
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/v2_chat_Response_stream_streaming'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Chatv2RequestGatewayTimeoutError'
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChatRequest'
+              type: object
+              properties:
+                stream:
+                  type: boolean
+                  enum:
+                  - true
+                  description: 'Defaults to `false`.
+
+
+                    When `true`, the response will be a SSE stream of events.
+
+
+                    Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.
+
+                    '
+                model:
+                  type: string
+                  description: The name of a compatible [Cohere model](https://docs.cohere.com/v2/docs/models).
+                messages:
+                  $ref: '#/components/schemas/ChatMessages'
+                tools:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ToolV2'
+                  description: 'A list of tools (functions) available to the model. The model response may contain ''tool_calls'' to the specified tools.
+
+
+                    Learn more in the [Tool Use guide](https://docs.cohere.com/docs/tools).
+
+                    '
+                strict_tools:
+                  type: boolean
+                  description: 'When set to `true`, tool calls in the Assistant message will be forced to follow the tool definition strictly. Learn more in the [Structured Outputs (Tools) guide](https://docs.cohere.com/docs/structured-outputs-json#structured-outputs-tools).
+
+
+                    **Note**: The first few requests with a new set of tools will take longer to process.
+
+                    '
+                documents:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V2ChatPostRequestBodyContentApplicationJsonSchemaDocumentsItems'
+                  description: 'A list of relevant documents that the model can cite to generate a more accurate reply. Each document is either a string or document object with content and metadata.
+
+                    '
+                citation_options:
+                  $ref: '#/components/schemas/CitationOptions'
+                response_format:
+                  $ref: '#/components/schemas/ResponseFormatV2'
+                safety_mode:
+                  $ref: '#/components/schemas/V2ChatPostRequestBodyContentApplicationJsonSchemaSafetyMode'
+                  description: 'Used to select the [safety instruction](https://docs.cohere.com/v2/docs/safety-modes) inserted into the prompt. Defaults to `CONTEXTUAL`.
+
+                    When `OFF` is specified, the safety instruction will be omitted.
+
+
+                    Safety modes are not yet configurable in combination with `tools` and `documents` parameters.
+
+
+                    **Note**: This parameter is only compatible newer Cohere models, starting with [Command R 08-2024](https://docs.cohere.com/docs/command-r#august-2024-release) and [Command R+ 08-2024](https://docs.cohere.com/docs/command-r-plus#august-2024-release).
+
+
+                    **Note**: `command-r7b-12-2024` and newer models only support `"CONTEXTUAL"` and `"STRICT"` modes.
+
+                    '
+                max_tokens:
+                  type: integer
+                  description: 'The maximum number of output tokens the model will generate in the response. If not set, `max_tokens` defaults to the model''s maximum output token limit. You can find the maximum output token limits for each model in the [model documentation](https://docs.cohere.com/docs/models).
+
+
+                    **Note**: Setting a low value may result in incomplete generations. In such cases, the `finish_reason` field in the response will be set to `"MAX_TOKENS"`.
+
+
+                    **Note**: If `max_tokens` is set higher than the model''s maximum output token limit, the generation will be capped at that model-specific maximum limit.
+
+                    '
+                stop_sequences:
+                  type: array
+                  items:
+                    type: string
+                  description: 'A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.
+
+                    '
+                temperature:
+                  type: number
+                  format: double
+                  description: 'Defaults to `0.3`.
+
+
+                    A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.
+
+
+                    Randomness can be further maximized by increasing the  value of the `p` parameter.
+
+                    '
+                seed:
+                  type: integer
+                  minimum: 0
+                  maximum: 18446744073709552000
+                  description: 'If specified, the backend will make a best effort to sample tokens
+
+                    deterministically, such that repeated requests with the same
+
+                    seed and parameters should return the same result. However,
+
+                    determinism cannot be totally guaranteed.
+
+                    '
+                frequency_penalty:
+                  type: number
+                  format: double
+                  description: 'Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
+
+                    Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
+
+                    '
+                presence_penalty:
+                  type: number
+                  format: double
+                  description: 'Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
+
+                    Used to reduce repetitiveness of generated tokens. Similar to `frequency_penalty`, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
+
+                    '
+                k:
+                  type: integer
+                  minimum: 0
+                  maximum: 500
+                  default: 0
+                  description: 'Ensures that only the top `k` most likely tokens are considered for generation at each step. When `k` is set to `0`, k-sampling is disabled.
+
+                    Defaults to `0`, min value of `0`, max value of `500`.
+
+                    '
+                p:
+                  type: number
+                  format: double
+                  default: 0.75
+                  description: 'Ensures that only the most likely tokens, with total probability mass of `p`, are considered for generation at each step. If both `k` and `p` are enabled, `p` acts after `k`.
+
+                    Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
+
+                    '
+                logprobs:
+                  type: boolean
+                  description: 'Defaults to `false`. When set to `true`, the log probabilities of the generated tokens will be included in the response.
+
+                    '
+                tool_choice:
+                  $ref: '#/components/schemas/V2ChatPostRequestBodyContentApplicationJsonSchemaToolChoice'
+                  description: 'Used to control whether or not the model will be forced to use a tool when answering. When `REQUIRED` is specified, the model will be forced to use at least one of the user-defined tools, and the `tools` parameter must be passed in the request.
+
+                    When `NONE` is specified, the model will be forced **not** to use one of the specified tools, and give a direct response.
+
+                    If tool_choice isn''t specified, then the model is free to choose whether to use the specified tools or not.
+
+
+                    **Note**: This parameter is only compatible with models [Command-r7b](https://docs.cohere.com/v2/docs/command-r7b) and newer.
+
+                    '
+                thinking:
+                  $ref: '#/components/schemas/Thinking'
+                priority:
+                  type: integer
+                  minimum: 0
+                  maximum: 999
+                  default: 0
+                  description: 'Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.'
+              required:
+              - stream
+              - model
+              - messages
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.cohere.com
+      description: production
+  /v1/chat:
+    post:
+      operationId: chat_stream
+      summary: Chat API (v1)
+      description: 'Generates a streamed text response to a user message.
+
+
+        To learn how to use the Chat API and RAG follow our Text Generation guides.'
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      - name: Accepts
+        in: header
+        description: 'Pass text/event-stream to receive the streamed response as server-sent events. The default is `\n` delimited events.
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/V1ChatPostParametersAccepts'
       responses:
         '200':
-          description: Successful chat completion response
+          description: 'Generates a streamed text response to a user message.
+
+
+            To learn how to use the Chat API and RAG follow our [Text Generation guides](https://docs.cohere.com/docs/chat-api).
+
+            '
           content:
-            application/json:
+            text/event-stream:
               schema:
-                $ref: '#/components/schemas/ChatResponse'
+                $ref: '#/components/schemas/chat_Response_stream_streaming'
         '400':
-          description: Bad request due to invalid parameters
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ChatRequestBadRequestError'
         '401':
-          description: Unauthorized due to missing or invalid API key
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ChatRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestUnprocessableEntityError'
         '429':
-          description: Rate limit exceeded
+          description: Too many requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ChatRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRequestGatewayTimeoutError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 'Text input for the model to respond to.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                model:
+                  type: string
+                  description: 'The name of a compatible [Cohere model](https://docs.cohere.com/docs/models) or the ID of a [fine-tuned](https://docs.cohere.com/docs/chat-fine-tuning) model.
+
+
+                    Compatible Deployments: Cohere Platform, Private Deployments
+
+                    '
+                stream:
+                  type: boolean
+                  enum:
+                  - true
+                  description: 'Defaults to `false`.
+
+
+                    When `true`, the response will be a JSON stream of events. The final event will contain the complete response, and will have an `event_type` of `"stream-end"`.
+
+
+                    Streaming is beneficial for user interfaces that render the contents of the response piece by piece, as it gets generated.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                preamble:
+                  type: string
+                  description: 'When specified, the default Cohere preamble will be replaced with the provided one. Preambles are a part of the prompt used to adjust the model''s overall behavior and conversation style, and use the `SYSTEM` role.
+
+
+                    The `SYSTEM` role is also used for the contents of the optional `chat_history=` parameter. When used with the `chat_history=` parameter it adds content throughout a conversation. Conversely, when used with the `preamble=` parameter it adds content at the start of the conversation only.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                chat_history:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Message'
+                  description: 'A list of previous messages between the user and the model, giving the model conversational context for responding to the user''s `message`.
+
+
+                    Each item represents a single message in the chat history, excluding the current user turn. It has two properties: `role` and `message`. The `role` identifies the sender (`CHATBOT`, `SYSTEM`, or `USER`), while the `message` contains the text content.
+
+
+                    The chat_history parameter should not be used for `SYSTEM` messages in most cases. Instead, to add a `SYSTEM` role message at the beginning of a conversation, the `preamble` parameter should be used.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                conversation_id:
+                  type: string
+                  description: 'An alternative to `chat_history`.
+
+
+                    Providing a `conversation_id` creates or resumes a persisted conversation with the specified ID. The ID can be any non empty string.
+
+
+                    Compatible Deployments: Cohere Platform
+
+                    '
+                prompt_truncation:
+                  $ref: '#/components/schemas/V1ChatPostRequestBodyContentApplicationJsonSchemaPromptTruncation'
+                  description: "Defaults to `AUTO` when `connectors` are specified and `OFF` in all other cases.\n\nDictates how the prompt will be constructed.\n\nWith `prompt_truncation` set to \"AUTO\", some elements from `chat_history` and `documents` will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be changed and ranked by relevance.\n\nWith `prompt_truncation` set to \"AUTO_PRESERVE_ORDER\", some elements from `chat_history` and `documents` will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be preserved as they are inputted into the API.\n\nWith `prompt_truncation` set to \"OFF\", no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a `TooManyTokens` error will be returned.\n\nCompatible Deployments:\n - AUTO: Cohere Platform Only\n - AUTO_PRESERVE_ORDER: Azure, AWS Sagemaker/Bedrock, Private Deployments\n"
+                connectors:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ChatConnector'
+                  description: 'Accepts `{"id": "web-search"}`, and/or the `"id"` for a custom [connector](https://docs.cohere.com/docs/connectors), if you''ve [created](https://docs.cohere.com/v1/docs/creating-and-deploying-a-connector) one.
+
+
+                    When specified, the model''s reply will be enriched with information found by querying each of the connectors (RAG).
+
+
+                    Compatible Deployments: Cohere Platform
+
+                    '
+                  deprecated: true
+                search_queries_only:
+                  type: boolean
+                  description: 'Defaults to `false`.
+
+
+                    When `true`, the response will only contain a list of generated search queries, but no search will take place, and no reply from the model to the user''s `message` will be generated.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                  deprecated: true
+                documents:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ChatDocument'
+                  description: "A list of relevant documents that the model can cite to generate a more accurate reply. Each document is a string-string dictionary.\n\nExample:\n```\n[\n  { \"title\": \"Tall penguins\", \"text\": \"Emperor penguins are the tallest.\" },\n  { \"title\": \"Penguin habitats\", \"text\": \"Emperor penguins only live in Antarctica.\" },\n]\n```\n\nKeys and values from each document will be serialized to a string and passed to the model. The resulting generation will include citations that reference some of these documents.\n\nSome suggested keys are \"text\", \"author\", and \"date\". For better generation quality, it is recommended to keep the total word count of the strings in the dictionary to under 300 words.\n\nAn `id` field (string) can be optionally supplied to identify the document in the citations. This field will not be passed to the model.\n\nAn `_excludes` field (array of strings) can be optionally supplied to omit some key-value pairs from being shown to the model. The omitted fields will still show up in the citation object. The \"_excludes\" field will not be passed to the model.\n\nSee ['Document Mode'](https://docs.cohere.com/docs/retrieval-augmented-generation-rag#document-mode) in the guide for more information.\n\nCompatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments\n"
+                citation_quality:
+                  $ref: '#/components/schemas/V1ChatPostRequestBodyContentApplicationJsonSchemaCitationQuality'
+                  description: 'Defaults to `"enabled"`.
+
+                    Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                temperature:
+                  type: number
+                  format: double
+                  description: 'Defaults to `0.3`.
+
+
+                    A non-negative float that tunes the degree of randomness in generation. Lower temperatures mean less random generations, and higher temperatures mean more random generations.
+
+
+                    Randomness can be further maximized by increasing the  value of the `p` parameter.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                max_tokens:
+                  type: integer
+                  description: 'The maximum number of tokens the model will generate as part of the response. Note: Setting a low value may result in incomplete generations.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                max_input_tokens:
+                  type: integer
+                  description: 'The maximum number of input tokens to send to the model. If not specified, `max_input_tokens` is the model''s context length limit minus a small buffer.
+
+
+                    Input will be truncated according to the `prompt_truncation` parameter.
+
+
+                    Compatible Deployments: Cohere Platform
+
+                    '
+                k:
+                  type: integer
+                  minimum: 0
+                  maximum: 500
+                  default: 0
+                  description: 'Ensures only the top `k` most likely tokens are considered for generation at each step.
+
+                    Defaults to `0`, min value of `0`, max value of `500`.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                p:
+                  type: number
+                  format: double
+                  minimum: 0.01
+                  maximum: 0.99
+                  default: 0.75
+                  description: 'Ensures that only the most likely tokens, with total probability mass of `p`, are considered for generation at each step. If both `k` and `p` are enabled, `p` acts after `k`.
+
+                    Defaults to `0.75`. min value of `0.01`, max value of `0.99`.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                seed:
+                  type: integer
+                  minimum: 0
+                  maximum: 18446744073709552000
+                  description: 'If specified, the backend will make a best effort to sample tokens
+
+                    deterministically, such that repeated requests with the same
+
+                    seed and parameters should return the same result. However,
+
+                    determinism cannot be totally guaranteed.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                stop_sequences:
+                  type: array
+                  items:
+                    type: string
+                  description: 'A list of up to 5 strings that the model will use to stop generation. If the model generates a string that matches any of the strings in the list, it will stop generating tokens and return the generated text up to that point not including the stop sequence.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                frequency_penalty:
+                  type: number
+                  format: double
+                  description: 'Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
+
+
+                    Used to reduce repetitiveness of generated tokens. The higher the value, the stronger a penalty is applied to previously present tokens, proportional to how many times they have already appeared in the prompt or prior generation.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                presence_penalty:
+                  type: number
+                  format: double
+                  description: 'Defaults to `0.0`, min value of `0.0`, max value of `1.0`.
+
+
+                    Used to reduce repetitiveness of generated tokens. Similar to `frequency_penalty`, except that this penalty is applied equally to all tokens that have already appeared, regardless of their exact frequencies.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                raw_prompting:
+                  type: boolean
+                  description: 'When enabled, the user''s prompt will be sent to the model without
+
+                    any pre-processing.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                tools:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Tool'
+                  description: 'A list of available tools (functions) that the model may suggest invoking before producing a text response.
+
+
+                    When `tools` is passed (without `tool_results`), the `text` field in the response will be `""` and the `tool_calls` field in the response will be populated with a list of tool calls that need to be made. If no calls need to be made, the `tool_calls` array will be empty.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+                tool_results:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ToolResult'
+                  description: "A list of results from invoking tools recommended by the model in the previous chat turn. Results are used to produce a text response and will be referenced in citations. When using `tool_results`, `tools` must be passed as well.\nEach tool_result contains information about how it was invoked, as well as a list of outputs in the form of dictionaries.\n\n**Note**: `outputs` must be a list of objects. If your tool returns a single object (eg `{\"status\": 200}`), make sure to wrap it in a list.\n```\ntool_results = [\n  {\n    \"call\": {\n      \"name\": <tool name>,\n      \"parameters\": {\n        <param name>: <param value>\n      }\n    },\n    \"outputs\": [{\n      <key>: <value>\n    }]\n  },\n  ...\n]\n```\n**Note**: Chat calls with `tool_results` should not be included in the Chat history to avoid duplication of the message text.\n\nCompatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments\n"
+                force_single_step:
+                  type: boolean
+                  description: Forces the chat to be single step. Defaults to `false`.
+                response_format:
+                  $ref: '#/components/schemas/ResponseFormat'
+                safety_mode:
+                  $ref: '#/components/schemas/V1ChatPostRequestBodyContentApplicationJsonSchemaSafetyMode'
+                  description: 'Used to select the [safety instruction](https://docs.cohere.com/docs/safety-modes) inserted into the prompt. Defaults to `CONTEXTUAL`.
+
+                    When `NONE` is specified, the safety instruction will be omitted.
+
+
+                    Safety modes are not yet configurable in combination with `tools`, `tool_results` and `documents` parameters.
+
+
+                    **Note**: This parameter is only compatible newer Cohere models, starting with [Command R 08-2024](https://docs.cohere.com/docs/command-r#august-2024-release) and [Command R+ 08-2024](https://docs.cohere.com/docs/command-r-plus#august-2024-release).
+
+
+                    **Note**: `command-r7b-12-2024` and newer models only support `"CONTEXTUAL"` and `"STRICT"` modes.
+
+
+                    Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+                    '
+              required:
+              - message
+              - stream
+      security:
+      - bearerAuth: []
+      tags:
+      - Chat
+    servers:
+    - url: https://api.cohere.com
+      description: production
   /v2/chat/stream:
     post:
       operationId: chatStream
@@ -92,32 +749,2015 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      security:
+      - bearerAuth: []
+    servers:
+    - url: https://api.cohere.com
+      description: Cohere Production Server
 components:
   schemas:
-    Message:
+    ChatCitationType:
+      type: string
+      enum:
+      - TEXT_CONTENT
+      - PLAN
+      description: 'The type of citation which indicates what part of the response the citation is for.
+
+        '
+      title: ChatCitationType
+    Chatv2RequestServiceUnavailableError:
       type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestServiceUnavailableError
+    V1ChatPostRequestBodyContentApplicationJsonSchemaPromptTruncation:
+      type: string
+      enum:
+      - 'OFF'
+      - AUTO
+      - AUTO_PRESERVE_ORDER
+      description: "Defaults to `AUTO` when `connectors` are specified and `OFF` in all other cases.\n\nDictates how the prompt will be constructed.\n\nWith `prompt_truncation` set to \"AUTO\", some elements from `chat_history` and `documents` will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be changed and ranked by relevance.\n\nWith `prompt_truncation` set to \"AUTO_PRESERVE_ORDER\", some elements from `chat_history` and `documents` will be dropped in an attempt to construct a prompt that fits within the model's context length limit. During this process the order of the documents and chat history will be preserved as they are inputted into the API.\n\nWith `prompt_truncation` set to \"OFF\", no elements will be dropped. If the sum of the inputs exceeds the model's context length limit, a `TooManyTokens` error will be returned.\n\nCompatible Deployments:\n - AUTO: Cohere Platform Only\n - AUTO_PRESERVE_ORDER: Azure, AWS Sagemaker/Bedrock, Private Deployments\n"
+      title: V1ChatPostRequestBodyContentApplicationJsonSchemaPromptTruncation
+    ThinkingType:
+      type: string
+      enum:
+      - enabled
+      - disabled
+      description: 'Reasoning is enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
+
+        '
+      title: ThinkingType
+    ImageUrlDetail:
+      type: string
+      enum:
+      - auto
+      - low
+      - high
+      description: 'Controls the level of detail in image processing. `"auto"` is the default and lets the system choose, `"low"` is faster but less detailed, and `"high"` preserves maximum detail. You can save tokens and speed up responses by using detail: `"low"`.
+
+        '
+      title: ImageUrlDetail
+    UsageTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: UsageTokens
+    ChatRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestInvalidTokenError
+    ChatRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestUnprocessableEntityError
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
       required:
-      - role
+      - version
+      title: ApiMetaApiVersion
+    Chatv2RequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestForbiddenError
+    Message:
+      oneOf:
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - CHATBOT
+            description: 'Discriminator value: CHATBOT'
+          message:
+            type: string
+            minLength: 1
+            description: 'Contents of the chat message.
+
+              '
+          tool_calls:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolCall'
+        required:
+        - role
+        - message
+        description: 'Represents a single message in the chat history, excluding the current user turn. It has two properties: `role` and `message`. The `role` identifies the sender (`CHATBOT`, `SYSTEM`, or `USER`), while the `message` contains the text content.
+
+
+          The chat_history parameter should not be used for `SYSTEM` messages in most cases. Instead, to add a `SYSTEM` role message at the beginning of a conversation, the `preamble` parameter should be used.
+
+          '
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - SYSTEM
+            description: 'Discriminator value: SYSTEM'
+          message:
+            type: string
+            minLength: 1
+            description: 'Contents of the chat message.
+
+              '
+          tool_calls:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolCall'
+        required:
+        - role
+        - message
+        description: 'Represents a single message in the chat history, excluding the current user turn. It has two properties: `role` and `message`. The `role` identifies the sender (`CHATBOT`, `SYSTEM`, or `USER`), while the `message` contains the text content.
+
+
+          The chat_history parameter should not be used for `SYSTEM` messages in most cases. Instead, to add a `SYSTEM` role message at the beginning of a conversation, the `preamble` parameter should be used.
+
+          '
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - USER
+            description: 'Discriminator value: USER'
+          message:
+            type: string
+            minLength: 1
+            description: 'Contents of the chat message.
+
+              '
+          tool_calls:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolCall'
+        required:
+        - role
+        - message
+        description: 'Represents a single message in the chat history, excluding the current user turn. It has two properties: `role` and `message`. The `role` identifies the sender (`CHATBOT`, `SYSTEM`, or `USER`), while the `message` contains the text content.
+
+
+          The chat_history parameter should not be used for `SYSTEM` messages in most cases. Instead, to add a `SYSTEM` role message at the beginning of a conversation, the `preamble` parameter should be used.
+
+          '
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - TOOL
+            description: 'Discriminator value: TOOL'
+          tool_results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolResult'
+        required:
+        - role
+        description: 'Represents tool result in the chat history.
+
+          '
+      discriminator:
+        propertyName: role
+      title: Message
+    Usage:
+      type: object
+      properties:
+        billed_units:
+          $ref: '#/components/schemas/UsageBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/UsageTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+      title: Usage
+    ChatMessageV2DiscriminatorMappingUserContent:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingUserContent1'
+      description: 'The content of the message. This can be a string or a list of content blocks.
+
+        If a string is provided, it will be treated as a text content block.
+
+        '
+      title: ChatMessageV2DiscriminatorMappingUserContent
+    JSONResponseFormat-g7xopi:
+      type: object
+      properties: {}
+      description: "A JSON schema object that the output will adhere to. There are some restrictions we have on the schema, refer to [our guide](https://docs.cohere.com/docs/structured-outputs-json#schema-constraints) for more information.\nExample (required name and age object):\n```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\"type\": \"string\"},\n    \"age\": {\"type\": \"integer\"}\n  },\n  \"required\": [\"name\", \"age\"]\n}\n```\n\n**Note**: This field must not be specified when the `type` is set to `\"text\"`.\n"
+      title: JSONResponseFormat-g7xopi
+    v2_chat_Response_stream_streaming:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          id:
+            type: string
+            description: Unique identifier for the generated reply.
+          delta:
+            $ref: '#/components/schemas/ChatMessageStartEventDelta'
+        required:
+        - type
+        description: A streamed event which signifies that a stream has started.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+          delta:
+            $ref: '#/components/schemas/ChatContentStartEventDelta'
+        required:
+        - type
+        description: A streamed delta event which signifies that a new content block has started.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+          delta:
+            $ref: '#/components/schemas/ChatContentDeltaEventDelta'
+          logprobs:
+            $ref: '#/components/schemas/LogprobItem'
+        required:
+        - type
+        description: A streamed delta event which contains a delta of chat text content.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+        required:
+        - type
+        description: A streamed delta event which signifies that the content block has ended.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          delta:
+            $ref: '#/components/schemas/ChatToolPlanDeltaEventDelta'
+        required:
+        - type
+        description: A streamed event which contains a delta of tool plan text.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+          delta:
+            $ref: '#/components/schemas/ChatToolCallStartEventDelta'
+        required:
+        - type
+        description: A streamed event delta which signifies a tool call has started streaming.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+          delta:
+            $ref: '#/components/schemas/ChatToolCallDeltaEventDelta'
+        required:
+        - type
+        description: A streamed event delta which signifies a delta in tool call arguments.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+        required:
+        - type
+        description: A streamed event delta which signifies a tool call has finished streaming.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+          delta:
+            $ref: '#/components/schemas/CitationStartEventDelta'
+        required:
+        - type
+        description: A streamed event which signifies a citation has been created.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          index:
+            type: integer
+        required:
+        - type
+        description: A streamed event which signifies a citation has finished streaming.
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ChatStreamEventTypeType'
+          id:
+            type: string
+          delta:
+            $ref: '#/components/schemas/ChatMessageEndEventDelta'
+        required:
+        - type
+        description: A streamed event which signifies that the chat message has ended.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - debug
+            description: 'Discriminator value: debug'
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          prompt:
+            type: string
+        required:
+        - type
+        - event_type
+        description: debug variant
+      discriminator:
+        propertyName: type
+      description: StreamedChatResponse is returned in streaming mode (specified with `stream=True` in the request).
+      title: v2_chat_Response_stream_streaming
+    ChatStreamEventTypeType:
+      type: string
+      enum:
+      - message-start
+      - content-start
+      - content-delta
+      - content-end
+      - tool-call-start
+      - tool-call-delta
+      - tool-call-end
+      - tool-plan-delta
+      - citation-start
+      - citation-end
+      - message-end
+      title: ChatStreamEventTypeType
+    FinishReason:
+      type: string
+      enum:
+      - COMPLETE
+      - STOP_SEQUENCE
+      - ERROR
+      - ERROR_TOXIC
+      - ERROR_LIMIT
+      - USER_CANCEL
+      - MAX_TOKENS
+      - TIMEOUT
+      title: FinishReason
+    ChatMessageV2DiscriminatorMappingToolContent:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingToolContent1'
+      description: Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks
+      title: ChatMessageV2DiscriminatorMappingToolContent
+    ToolCallV2Function:
+      type: object
+      properties:
+        name:
+          type: string
+        arguments:
+          type: string
+      title: ToolCallV2Function
+    AssistantMessageV2Content:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/AssistantMessageV2Content1'
+      title: AssistantMessageV2Content
+    CitationOptions:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/CitationOptionsMode'
+          description: 'Defaults to `"enabled"`.
+
+            Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
+
+            '
+      description: Options for controlling citation generation.
+      title: CitationOptions
+    ChatStreamEventEventType:
+      type: string
+      enum:
+      - stream-start
+      - search-queries-generation
+      - search-results
+      - text-generation
+      - citation-generation
+      - stream-end
+      - debug
+      title: ChatStreamEventEventType
+    ChatContentDeltaEventDeltaMessageContent:
+      type: object
+      properties:
+        thinking:
+          type: string
+        text:
+          type: string
+      title: ChatContentDeltaEventDeltaMessageContent
+    ChatMessageV2DiscriminatorMappingSystemContent:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingSystemContent1'
+      title: ChatMessageV2DiscriminatorMappingSystemContent
+    ChatToolPlanDeltaEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ChatToolPlanDeltaEventDeltaMessage'
+      title: ChatToolPlanDeltaEventDelta
+    Thinking:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ThinkingType'
+          description: 'Reasoning is enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
+
+            '
+        token_budget:
+          type: integer
+          minimum: 1
+          description: 'The maximum number of tokens the model can use for thinking, which must be set to a positive integer.
+
+            The model will stop thinking if it reaches the thinking token budget and will proceed with the response.
+
+            '
+      required:
+      - type
+      description: 'Configuration for [reasoning features](https://docs.cohere.com/docs/reasoning).
+
+        '
+      title: Thinking
+    ChatContentDeltaEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ChatContentDeltaEventDeltaMessage'
+      title: ChatContentDeltaEventDelta
+    ToolCallDelta:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'Name of the tool call
+
+            '
+        index:
+          type: number
+          format: double
+          description: 'Index of the tool call generated
+
+            '
+        parameters:
+          type: string
+          description: 'Chunk of the tool parameters
+
+            '
+        text:
+          type: string
+          description: 'Chunk of the tool plan text
+
+            '
+      description: 'Contains the chunk of the tool call generation in the stream.
+
+        '
+      title: ToolCallDelta
+    ChatMessageV2DiscriminatorMappingUserContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/Content'
+      title: ChatMessageV2DiscriminatorMappingUserContent1
+    ChatConnector:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          description: 'The identifier of the connector.
+
+            '
+        user_access_token:
+          type: string
+          description: 'When specified, this user access token will be passed to the connector in the Authorization header instead of the Cohere generated one.
+
+            '
+        continue_on_failure:
+          type: boolean
+          description: 'Defaults to `false`.
+
+
+            When `true`, the request will continue if this connector returned an error.
+
+            '
+        options:
+          $ref: '#/components/schemas/ChatConnector-7ur0eu'
+          description: 'Provides the connector with different settings at request time. The key/value pairs of this object are specific to each connector.
+
+
+            For example, the connector `web-search` supports the `site` option, which limits search results to the specified domain.
+
+            '
+      required:
+      - id
+      description: 'The connector used for fetching documents.
+
+        '
+      title: ChatConnector
+    Chatv2RequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestInternalServerError
+    Chatv2RequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestClientClosedRequestError
+    ChatContentStartEventDeltaMessageContentType:
+      type: string
+      enum:
+      - text
+      - thinking
+      title: ChatContentStartEventDeltaMessageContentType
+    ChatDocument:
+      type: object
+      additionalProperties:
+        type: string
+      description: 'Relevant information that could be used by the model to generate a more accurate reply.
+
+        The contents of each document are generally short (under 300 words), and are passed in the form of a
+
+        dictionary of strings. Some suggested keys are "text", "author", "date". Both the key name and the value will be
+
+        passed to the model.
+
+        '
+      title: ChatDocument
+    AssistantMessageV2Content1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingAssistantContentOneOf1Items'
+      title: AssistantMessageV2Content1
+    ToolParameterDefinitions:
+      type: object
+      properties:
+        description:
+          type: string
+          description: 'The description of the parameter.
+
+            '
+        type:
+          type: string
+          description: 'The type of the parameter. Must be a valid Python type.
+
+            '
+        required:
+          type: boolean
+          default: false
+          description: 'Denotes whether the parameter is always present (required) or not. Defaults to not required.
+
+            '
+      required:
+      - type
+      title: ToolParameterDefinitions
+    ChatToolCallDeltaEventDeltaMessageToolCalls:
+      type: object
+      properties:
+        function:
+          $ref: '#/components/schemas/ChatToolCallDeltaEventDeltaMessageToolCallsFunction'
+      title: ChatToolCallDeltaEventDeltaMessageToolCalls
+    CitationStartEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/CitationStartEventDeltaMessage'
+      title: CitationStartEventDelta
+    ChatRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestServiceUnavailableError
+    ChatRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestBadRequestError
+    ChatToolCallDeltaEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ChatToolCallDeltaEventDeltaMessage'
+      title: ChatToolCallDeltaEventDelta
+    ChatRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestTooManyRequestsError
+    ChatSearchResult:
+      type: object
+      properties:
+        search_query:
+          $ref: '#/components/schemas/ChatSearchQuery'
+        connector:
+          $ref: '#/components/schemas/ChatSearchResultConnector'
+          description: 'The connector from which this result comes from.
+
+            '
+        document_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+          description: 'Identifiers of documents found by this search query.
+
+            '
+        error_message:
+          type: string
+          description: 'An error message if the search failed.
+
+            '
+        continue_on_failure:
+          type: boolean
+          description: 'Whether a chat request should continue or not if the request to this connector fails.
+
+            '
+      required:
+      - connector
+      - document_ids
+      title: ChatSearchResult
+    Source:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - tool
+            description: 'Discriminator value: tool'
+          id:
+            type: string
+            description: The unique identifier of the document
+          tool_output:
+            type: object
+            additionalProperties:
+              description: Any type
+        required:
+        - type
+        description: Tool Output variant
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - document
+            description: 'Discriminator value: document'
+          id:
+            type: string
+            description: The unique identifier of the document
+          document:
+            type: object
+            additionalProperties:
+              description: Any type
+        required:
+        - type
+        description: A document source object containing the unique identifier of the document and the document itself.
+      discriminator:
+        propertyName: type
+      description: A source object containing information about the source of the data cited.
+      title: Source
+    ChatMessageStartEventDeltaMessage:
+      type: object
       properties:
         role:
+          $ref: '#/components/schemas/ChatMessageStartEventDeltaMessageRole'
+          description: The role of the message.
+      title: ChatMessageStartEventDeltaMessage
+    ChatRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
           type: string
-          enum:
-          - user
-          - assistant
-          - system
-          - tool
-          description: The role of the message author in the conversation.
-        content:
+        id:
           type: string
-          description: The text content of the message.
-        tool_call_id:
+      title: ChatRequestGatewayTimeoutError
+    Document-qmvpd9:
+      type: object
+      properties: {}
+      description: 'A relevant document that the model can cite to generate a more accurate reply. Each document is a string-any dictionary.
+
+        '
+      title: Document-qmvpd9
+    V1ChatPostParametersAccepts:
+      type: string
+      enum:
+      - text/event-stream
+      title: V1ChatPostParametersAccepts
+    UsageBilledUnits:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+      title: UsageBilledUnits
+    Document:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Document-qmvpd9'
+          description: 'A relevant document that the model can cite to generate a more accurate reply. Each document is a string-any dictionary.
+
+            '
+        id:
           type: string
-          description: The ID of the tool call this message is responding to. Required when role is tool.
+          description: Unique identifier for this document which will be referenced in citations. If not provided an ID will be automatically generated.
+      required:
+      - data
+      description: 'Relevant information that could be used by the model to generate a more accurate reply.
+
+        The content of each document are generally short (should be under 300 words). Metadata should be used to provide additional information, both the key name and the value will be
+
+        passed to the model.
+
+        '
+      title: Document
+    LogprobItem:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text chunk for which the log probabilities was calculated.
+        token_ids:
+          type: array
+          items:
+            type: integer
+          description: The token ids of each token used to construct the text chunk.
+        logprobs:
+          type: array
+          items:
+            type: number
+            format: double
+          description: The log probability of each token used to construct the text chunk.
+      required:
+      - token_ids
+      title: LogprobItem
+    ChatToolPlanDeltaEventDeltaMessage:
+      type: object
+      properties:
+        tool_plan:
+          type: string
+      title: ChatToolPlanDeltaEventDeltaMessage
+    Chatv2RequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestGatewayTimeoutError
+    ChatMessageV2DiscriminatorMappingSystemContentOneOf1Items:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content of the message.
+      discriminator:
+        propertyName: type
+      title: ChatMessageV2DiscriminatorMappingSystemContentOneOf1Items
+    V2ChatPostRequestBodyContentApplicationJsonSchemaToolChoice:
+      type: string
+      enum:
+      - REQUIRED
+      - NONE
+      description: 'Used to control whether or not the model will be forced to use a tool when answering. When `REQUIRED` is specified, the model will be forced to use at least one of the user-defined tools, and the `tools` parameter must be passed in the request.
+
+        When `NONE` is specified, the model will be forced **not** to use one of the specified tools, and give a direct response.
+
+        If tool_choice isn''t specified, then the model is free to choose whether to use the specified tools or not.
+
+
+        **Note**: This parameter is only compatible with models [Command-r7b](https://docs.cohere.com/v2/docs/command-r7b) and newer.
+
+        '
+      title: V2ChatPostRequestBodyContentApplicationJsonSchemaToolChoice
+    ChatSearchQuery:
+      type: object
+      properties:
+        text:
+          type: string
+          description: 'The text of the search query.
+
+            '
+        generation_id:
+          type: string
+          format: uuid
+          description: 'Unique identifier for the generated search query. Useful for submitting feedback.
+
+            '
+      required:
+      - text
+      - generation_id
+      description: 'The generated search query. Contains the text of the query and a unique identifier for the query.
+
+        '
+      title: ChatSearchQuery
+    ToolCall:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the tool to call.
+        parameters:
+          type: object
+          additionalProperties:
+            description: Any type
+          description: The name and value of the parameters to use when invoking a tool.
+      required:
+      - name
+      - parameters
+      description: 'Contains the tool calls generated by the model. Use it to invoke your tools.
+
+        '
+      title: ToolCall
+    ToolV2-6eoehf:
+      type: object
+      properties: {}
+      description: The parameters of the function as a JSON schema.
+      title: ToolV2-6eoehf
+    ChatMessageStartEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ChatMessageStartEventDeltaMessage'
+      title: ChatMessageStartEventDelta
+    NonStreamedChatResponse:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+          description: Contents of the reply generated by the model.
+        generation_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the generated reply. Useful for submitting feedback.
+        response_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the response.
+        citations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatCitation'
+          description: Inline citations for the generated reply.
+        documents:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatDocument'
+          description: Documents seen by the model when generating the reply.
+        is_search_required:
+          type: boolean
+          description: Denotes that a search for documents is required during the RAG flow.
+        search_queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatSearchQuery'
+          description: Generated search queries, meant to be used as part of the RAG flow.
+        search_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChatSearchResult'
+          description: Documents retrieved from each of the conducted searches.
+        finish_reason:
+          $ref: '#/components/schemas/FinishReason'
         tool_calls:
           type: array
-          description: Tool calls generated by the model. Present when role is assistant and the model decided to call tools.
           items:
             $ref: '#/components/schemas/ToolCall'
+        chat_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: 'A list of previous messages between the user and the model, meant to give the model conversational context for responding to the user''s `message`.
+
+            '
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      required:
+      - text
+      title: NonStreamedChatResponse
+    ChatToolCallStartEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ChatToolCallStartEventDeltaMessage'
+      title: ChatToolCallStartEventDelta
+    ResponseFormatV2:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+        required:
+        - type
+        description: text variant
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - json_object
+            description: 'Discriminator value: json_object'
+          json_schema:
+            $ref: '#/components/schemas/JsonResponseFormatV2-uu9wid'
+            description: "A [JSON schema](https://json-schema.org/overview/what-is-jsonschema) object that the output will adhere to. There are some restrictions we have on the schema, refer to [our guide](https://docs.cohere.com/docs/structured-outputs-json#schema-constraints) for more information.\nExample (required name and age object):\n```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\"type\": \"string\"},\n    \"age\": {\"type\": \"integer\"}\n  },\n  \"required\": [\"name\", \"age\"]\n}\n```\n\n**Note**: This field must not be specified when the `type` is set to `\"text\"`.\n"
+        required:
+        - type
+        description: json_object variant
+      discriminator:
+        propertyName: type
+      description: 'Configuration for forcing the model output to adhere to the specified format. Supported on [Command R](https://docs.cohere.com/v2/docs/command-r), [Command R+](https://docs.cohere.com/v2/docs/command-r-plus) and newer models.
+
+
+        The model can be forced into outputting JSON objects by setting `{ "type": "json_object" }`.
+
+
+        A [JSON Schema](https://json-schema.org/) can optionally be provided, to ensure a specific structure.
+
+
+        **Note**: When using  `{ "type": "json_object" }` your `message` should always explicitly instruct the model to generate a JSON (eg: _"Generate a JSON ..."_) . Otherwise the model may end up getting stuck generating an infinite stream of characters and eventually run out of context length.
+
+
+        **Note**: When `json_schema` is not specified, the generated object can have up to 5 layers of nesting.
+
+
+        **Limitation**: The parameter is not supported when used in combinations with the `documents` or `tools` parameters.
+
+        '
+      title: ResponseFormatV2
+    CitationType:
+      type: string
+      enum:
+      - TEXT_CONTENT
+      - THINKING_CONTENT
+      - PLAN
+      description: 'The type of citation which indicates what part of the response the citation is for.
+
+        '
+      title: CitationType
+    Content:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content of the message.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image_url
+            description: 'Discriminator value: image_url'
+          image_url:
+            $ref: '#/components/schemas/ImageUrl'
+        required:
+        - type
+        - image_url
+        description: Image content of the message.
+      discriminator:
+        propertyName: type
+      description: A Content block which contains information about the content type and the content itself.
+      title: Content
+    JsonResponseFormatV2-uu9wid:
+      type: object
+      properties: {}
+      description: "A [JSON schema](https://json-schema.org/overview/what-is-jsonschema) object that the output will adhere to. There are some restrictions we have on the schema, refer to [our guide](https://docs.cohere.com/docs/structured-outputs-json#schema-constraints) for more information.\nExample (required name and age object):\n```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\"type\": \"string\"},\n    \"age\": {\"type\": \"integer\"}\n  },\n  \"required\": [\"name\", \"age\"]\n}\n```\n\n**Note**: This field must not be specified when the `type` is set to `\"text\"`.\n"
+      title: JsonResponseFormatV2-uu9wid
+    ChatRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestNotFoundError
+    ChatMessageV2DiscriminatorMappingSystemContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingSystemContentOneOf1Items'
+      title: ChatMessageV2DiscriminatorMappingSystemContent1
+    ChatMessageEndEventDelta:
+      type: object
+      properties:
+        error:
+          type: string
+          description: 'An error message if an error occurred during the generation.
+
+            '
+        finish_reason:
+          $ref: '#/components/schemas/ChatFinishReason'
+        usage:
+          $ref: '#/components/schemas/Usage'
+      title: ChatMessageEndEventDelta
+    V2ChatPostRequestBodyContentApplicationJsonSchemaSafetyMode:
+      type: string
+      enum:
+      - CONTEXTUAL
+      - STRICT
+      - 'OFF'
+      description: 'Used to select the [safety instruction](https://docs.cohere.com/v2/docs/safety-modes) inserted into the prompt. Defaults to `CONTEXTUAL`.
+
+        When `OFF` is specified, the safety instruction will be omitted.
+
+
+        Safety modes are not yet configurable in combination with `tools` and `documents` parameters.
+
+
+        **Note**: This parameter is only compatible newer Cohere models, starting with [Command R 08-2024](https://docs.cohere.com/docs/command-r#august-2024-release) and [Command R+ 08-2024](https://docs.cohere.com/docs/command-r-plus#august-2024-release).
+
+
+        **Note**: `command-r7b-12-2024` and newer models only support `"CONTEXTUAL"` and `"STRICT"` modes.
+
+        '
+      title: V2ChatPostRequestBodyContentApplicationJsonSchemaSafetyMode
+    ImageUrl:
+      type: object
+      properties:
+        url:
+          type: string
+          description: 'URL of an image. Can be either a base64 data URI or a web URL.
+
+            '
+        detail:
+          $ref: '#/components/schemas/ImageUrlDetail'
+          description: 'Controls the level of detail in image processing. `"auto"` is the default and lets the system choose, `"low"` is faster but less detailed, and `"high"` preserves maximum detail. You can save tokens and speed up responses by using detail: `"low"`.
+
+            '
+      required:
+      - url
+      title: ImageUrl
+    Chatv2RequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestTooManyRequestsError
+    Tool:
+      type: object
+      properties:
+        name:
+          type: string
+          description: 'The name of the tool to be called. Valid names contain only the characters `a-z`, `A-Z`, `0-9`, `_` and must not begin with a digit.
+
+            '
+        description:
+          type: string
+          description: 'The description of what the tool does, the model uses the description to choose when and how to call the function.
+
+            '
+        parameter_definitions:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ToolParameterDefinitions'
+          description: "The input parameters of the tool. Accepts a dictionary where the key is the name of the parameter and the value is the parameter spec. Valid parameter names contain only the characters `a-z`, `A-Z`, `0-9`, `_` and must not begin with a digit.\n```\n{\n  \"my_param\": {\n    \"description\": <string>,\n    \"type\": <string>, // any python data type, such as 'str', 'bool'\n    \"required\": <boolean>\n  }\n}\n```\n"
+      required:
+      - name
+      - description
+      title: Tool
+    ChatMessageStartEventDeltaMessageRole:
+      type: string
+      enum:
+      - assistant
+      description: The role of the message.
+      title: ChatMessageStartEventDeltaMessageRole
+    Chatv2RequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestNotFoundError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    ChatRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestInternalServerError
+    ToolV2Function:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the function.
+        description:
+          type: string
+          description: The description of the function.
+        parameters:
+          $ref: '#/components/schemas/ToolV2-6eoehf'
+          description: The parameters of the function as a JSON schema.
+      required:
+      - name
+      - parameters
+      description: The function to be executed.
+      title: ToolV2Function
+    ChatRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestForbiddenError
+    ChatContentStartEventDeltaMessageContent:
+      type: object
+      properties:
+        thinking:
+          type: string
+        text:
+          type: string
+        type:
+          $ref: '#/components/schemas/ChatContentStartEventDeltaMessageContentType'
+      title: ChatContentStartEventDeltaMessageContent
+    CitationOptionsMode:
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+      - FAST
+      - ACCURATE
+      - 'OFF'
+      description: 'Defaults to `"enabled"`.
+
+        Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
+
+        '
+      title: CitationOptionsMode
+    V1ChatPostRequestBodyContentApplicationJsonSchemaCitationQuality:
+      type: string
+      enum:
+      - ENABLED
+      - DISABLED
+      - FAST
+      - ACCURATE
+      - 'OFF'
+      description: 'Defaults to `"enabled"`.
+
+        Citations are enabled by default for models that support it, but can be turned off by setting `"type": "disabled"`.
+
+
+        Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+        '
+      title: V1ChatPostRequestBodyContentApplicationJsonSchemaCitationQuality
+    ChatRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestClientClosedRequestError
+    chat_Response_stream_streaming:
+      oneOf:
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          generation_id:
+            type: string
+            format: uuid
+            minLength: 1
+            description: 'Unique identifier for the generated reply. Useful for submitting feedback.
+
+              '
+        required:
+        - event_type
+        - generation_id
+        description: stream-start variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          search_queries:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChatSearchQuery'
+            description: Generated search queries, meant to be used as part of the RAG flow.
+        required:
+        - event_type
+        - search_queries
+        description: search-queries-generation variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          search_results:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChatSearchResult'
+            description: 'Conducted searches and the ids of documents retrieved from each of them.
+
+              '
+          documents:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChatDocument'
+            description: 'Documents fetched from searches or provided by the user.
+
+              '
+        required:
+        - event_type
+        description: search-results variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          text:
+            type: string
+            minLength: 1
+            description: 'The next batch of text generated by the model.
+
+              '
+        required:
+        - event_type
+        - text
+        description: text-generation variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          citations:
+            type: array
+            items:
+              $ref: '#/components/schemas/ChatCitation'
+            description: 'Citations for the generated reply.
+
+              '
+        required:
+        - event_type
+        - citations
+        description: citation-generation variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          text:
+            type: string
+            description: 'The text generated related to the tool calls generated
+
+              '
+          tool_calls:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolCall'
+        required:
+        - event_type
+        - tool_calls
+        description: tool-calls-generation variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          finish_reason:
+            $ref: '#/components/schemas/ChatStreamEndEventFinishReason'
+            description: '- `COMPLETE` - the model sent back a finished reply
+
+              - `ERROR_LIMIT` - the reply was cut off because the model reached the maximum number of tokens for its context length
+
+              - `MAX_TOKENS` - the reply was cut off because the model reached the maximum number of tokens specified by the max_tokens parameter
+
+              - `ERROR` - something went wrong when generating the reply
+
+              - `ERROR_TOXIC` - the model generated a reply that was deemed toxic
+
+              '
+          response:
+            $ref: '#/components/schemas/NonStreamedChatResponse'
+            description: 'The consolidated response from the model. Contains the generated reply and all the other information streamed back in the previous events.
+
+              '
+        required:
+        - event_type
+        - finish_reason
+        - response
+        description: stream-end variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          tool_call_delta:
+            $ref: '#/components/schemas/ToolCallDelta'
+          text:
+            type: string
+        required:
+        - event_type
+        - tool_call_delta
+        description: tool-calls-chunk variant
+      - type: object
+        properties:
+          event_type:
+            $ref: '#/components/schemas/ChatStreamEventEventType'
+          prompt:
+            type: string
+        required:
+        - event_type
+        description: debug variant
+      discriminator:
+        propertyName: event_type
+      description: StreamedChatResponse is returned in streaming mode (specified with `stream=True` in the request).
+      title: chat_Response_stream_streaming
+    ChatMessageV2DiscriminatorMappingAssistantContentOneOf1Items:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content of the message.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - thinking
+            description: 'Discriminator value: thinking'
+          thinking:
+            type: string
+        required:
+        - type
+        - thinking
+        description: Thinking content of the message. This will be present when `thinking` is enabled, and will contain the models internal reasoning.
+      discriminator:
+        propertyName: type
+      title: ChatMessageV2DiscriminatorMappingAssistantContentOneOf1Items
+    ToolCallV2Type:
+      type: string
+      enum:
+      - function
+      title: ToolCallV2Type
+    ChatToolCallDeltaEventDeltaMessageToolCallsFunction:
+      type: object
+      properties:
+        arguments:
+          type: string
+      title: ChatToolCallDeltaEventDeltaMessageToolCallsFunction
+    ToolContent:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        - text
+        description: Text content of the message.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - document
+            description: 'Discriminator value: document'
+          document:
+            $ref: '#/components/schemas/Document'
+        required:
+        - type
+        - document
+        description: Document content.
+      discriminator:
+        propertyName: type
+      description: A content block which contains information about the content of a tool result
+      title: ToolContent
+    ChatToolCallStartEventDeltaMessage:
+      type: object
+      properties:
+        tool_calls:
+          $ref: '#/components/schemas/ToolCallV2'
+      title: ChatToolCallStartEventDeltaMessage
+    Chatv2RequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestNotImplementedError
+    ChatMessageV2:
+      oneOf:
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - user
+            description: 'Discriminator value: user'
+          content:
+            $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingUserContent'
+            description: 'The content of the message. This can be a string or a list of content blocks.
+
+              If a string is provided, it will be treated as a text content block.
+
+              '
+        required:
+        - role
+        - content
+        description: A message from the user.
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - assistant
+            description: 'Discriminator value: assistant'
+          tool_calls:
+            type: array
+            items:
+              $ref: '#/components/schemas/ToolCallV2'
+          tool_plan:
+            type: string
+            description: A chain-of-thought style reflection and plan that the model generates when working with Tools.
+          content:
+            $ref: '#/components/schemas/AssistantMessageV2Content'
+          citations:
+            type: array
+            items:
+              $ref: '#/components/schemas/Citation'
+        required:
+        - role
+        description: A message from the assistant role can contain text and tool call information.
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - system
+            description: 'Discriminator value: system'
+          content:
+            $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingSystemContent'
+        required:
+        - role
+        - content
+        description: A message from the system.
+      - type: object
+        properties:
+          role:
+            type: string
+            enum:
+            - tool
+            description: 'Discriminator value: tool'
+          tool_call_id:
+            type: string
+            description: The id of the associated tool call that has provided the given content
+          content:
+            $ref: '#/components/schemas/ChatMessageV2DiscriminatorMappingToolContent'
+            description: Outputs from a tool. The content should formatted as a JSON object string, or a list of tool content blocks
+        required:
+        - role
+        - tool_call_id
+        - content
+        description: A message with Tool outputs.
+      discriminator:
+        propertyName: role
+      description: Represents a single message in the chat history from a given role.
+      title: ChatMessageV2
+    ChatStreamEndEventFinishReason:
+      type: string
+      enum:
+      - COMPLETE
+      - ERROR_LIMIT
+      - MAX_TOKENS
+      - ERROR
+      - ERROR_TOXIC
+      description: '- `COMPLETE` - the model sent back a finished reply
+
+        - `ERROR_LIMIT` - the reply was cut off because the model reached the maximum number of tokens for its context length
+
+        - `MAX_TOKENS` - the reply was cut off because the model reached the maximum number of tokens specified by the max_tokens parameter
+
+        - `ERROR` - something went wrong when generating the reply
+
+        - `ERROR_TOXIC` - the model generated a reply that was deemed toxic
+
+        '
+      title: ChatStreamEndEventFinishReason
+    Chatv2RequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestBadRequestError
+    ChatFinishReason:
+      type: string
+      enum:
+      - COMPLETE
+      - STOP_SEQUENCE
+      - MAX_TOKENS
+      - TOOL_CALL
+      - ERROR
+      - TIMEOUT
+      description: 'The reason a chat request has finished.
+
+
+        - **complete**: The model finished sending a complete message.
+
+        - **max_tokens**: The number of generated tokens exceeded the model''s context length or the value specified via the `max_tokens` parameter.
+
+        - **stop_sequence**: One of the provided `stop_sequence` entries was reached in the model''s generation.
+
+        - **tool_call**: The model generated a Tool Call and is expecting a Tool Message in return
+
+        - **error**: The generation failed due to an internal error
+
+        - **timeout**: The generation was stopped because it exceeded the allowed time limit.
+
+        '
+      title: ChatFinishReason
+    Citation:
+      type: object
+      properties:
+        start:
+          type: integer
+          description: Start index of the cited snippet in the original source text.
+        end:
+          type: integer
+          description: End index of the cited snippet in the original source text.
+        text:
+          type: string
+          description: Text snippet that is being cited.
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/Source'
+        content_index:
+          type: integer
+          description: Index of the content block in which this citation appears.
+        type:
+          $ref: '#/components/schemas/CitationType'
+      description: Citation information containing sources and the text cited.
+      title: Citation
+    V2ChatPostRequestBodyContentApplicationJsonSchemaDocumentsItems:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/Document'
+      title: V2ChatPostRequestBodyContentApplicationJsonSchemaDocumentsItems
+    ChatCitation:
+      type: object
+      properties:
+        start:
+          type: integer
+          description: 'The index of text that the citation starts at, counting from zero. For example, a generation of `Hello, world!` with a citation on `world` would have a start value of `7`. This is because the citation starts at `w`, which is the seventh character.
+
+            '
+        end:
+          type: integer
+          description: 'The index of text that the citation ends after, counting from zero. For example, a generation of `Hello, world!` with a citation on `world` would have an end value of `11`. This is because the citation ends after `d`, which is the eleventh character.
+
+            '
+        text:
+          type: string
+          minLength: 1
+          description: 'The text of the citation. For example, a generation of `Hello, world!` with a citation of `world` would have a text value of `world`.
+
+            '
+        document_ids:
+          type: array
+          items:
+            type: string
+          description: 'Identifiers of documents cited by this section of the generated reply.
+
+            '
+        type:
+          $ref: '#/components/schemas/ChatCitationType'
+          description: 'The type of citation which indicates what part of the response the citation is for.
+
+            '
+      required:
+      - start
+      - end
+      - text
+      - document_ids
+      description: 'A section of the generated reply which cites external knowledge.
+
+        '
+      title: ChatCitation
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    ChatContentStartEventDeltaMessage:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/ChatContentStartEventDeltaMessageContent'
+      title: ChatContentStartEventDeltaMessage
+    ToolResult:
+      type: object
+      properties:
+        call:
+          $ref: '#/components/schemas/ToolCall'
+        outputs:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              description: Any type
+      required:
+      - call
+      - outputs
+      title: ToolResult
+    Chatv2RequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestUnauthorizedError
+    ToolV2Type:
+      type: string
+      enum:
+      - function
+      title: ToolV2Type
+    ChatToolCallDeltaEventDeltaMessage:
+      type: object
+      properties:
+        tool_calls:
+          $ref: '#/components/schemas/ChatToolCallDeltaEventDeltaMessageToolCalls'
+      title: ChatToolCallDeltaEventDeltaMessage
+    ChatContentDeltaEventDeltaMessage:
+      type: object
+      properties:
+        content:
+          $ref: '#/components/schemas/ChatContentDeltaEventDeltaMessageContent'
+      title: ChatContentDeltaEventDeltaMessage
+    ChatMessages:
+      type: array
+      items:
+        $ref: '#/components/schemas/ChatMessageV2'
+      description: 'A list of chat messages in chronological order, representing a conversation between the user and the model.
+
+
+        Messages can be from `User`, `Assistant`, `Tool` and `System` roles. Learn more about messages and roles in [the Chat API guide](https://docs.cohere.com/v2/docs/chat-api).
+
+        '
+      title: ChatMessages
+    V1ChatPostRequestBodyContentApplicationJsonSchemaSafetyMode:
+      type: string
+      enum:
+      - CONTEXTUAL
+      - STRICT
+      - NONE
+      description: 'Used to select the [safety instruction](https://docs.cohere.com/docs/safety-modes) inserted into the prompt. Defaults to `CONTEXTUAL`.
+
+        When `NONE` is specified, the safety instruction will be omitted.
+
+
+        Safety modes are not yet configurable in combination with `tools`, `tool_results` and `documents` parameters.
+
+
+        **Note**: This parameter is only compatible newer Cohere models, starting with [Command R 08-2024](https://docs.cohere.com/docs/command-r#august-2024-release) and [Command R+ 08-2024](https://docs.cohere.com/docs/command-r-plus#august-2024-release).
+
+
+        **Note**: `command-r7b-12-2024` and newer models only support `"CONTEXTUAL"` and `"STRICT"` modes.
+
+
+        Compatible Deployments: Cohere Platform, Azure, AWS Sagemaker/Bedrock, Private Deployments
+
+        '
+      title: V1ChatPostRequestBodyContentApplicationJsonSchemaSafetyMode
+    CitationStartEventDeltaMessage:
+      type: object
+      properties:
+        citations:
+          $ref: '#/components/schemas/Citation'
+      title: CitationStartEventDeltaMessage
+    ResponseFormat:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+        required:
+        - type
+        description: Text Response variant
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - json_object
+            description: 'Discriminator value: json_object'
+          schema:
+            $ref: '#/components/schemas/JSONResponseFormat-g7xopi'
+            description: "A JSON schema object that the output will adhere to. There are some restrictions we have on the schema, refer to [our guide](https://docs.cohere.com/docs/structured-outputs-json#schema-constraints) for more information.\nExample (required name and age object):\n```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": {\"type\": \"string\"},\n    \"age\": {\"type\": \"integer\"}\n  },\n  \"required\": [\"name\", \"age\"]\n}\n```\n\n**Note**: This field must not be specified when the `type` is set to `\"text\"`.\n"
+        required:
+        - type
+        description: JSON Object Response variant
+      discriminator:
+        propertyName: type
+      description: 'Configuration for forcing the model output to adhere to the specified format. Supported on [Command R 03-2024](https://docs.cohere.com/docs/command-r), [Command R+ 04-2024](https://docs.cohere.com/docs/command-r-plus) and newer models.
+
+
+        The model can be forced into outputting JSON objects (with up to 5 levels of nesting) by setting `{ "type": "json_object" }`.
+
+
+        A [JSON Schema](https://json-schema.org/) can optionally be provided, to ensure a specific structure.
+
+
+        **Note**: When using  `{ "type": "json_object" }` your `message` should always explicitly instruct the model to generate a JSON (eg: _"Generate a JSON ..."_) . Otherwise the model may end up getting stuck generating an infinite stream of characters and eventually run out of context length.
+
+        **Limitation**: The parameter is not supported in RAG mode (when any of `connectors`, `documents`, `tools`, `tool_results` are provided).
+
+        '
+      title: ResponseFormat
+    ToolV2:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ToolV2Type'
+        function:
+          $ref: '#/components/schemas/ToolV2Function'
+          description: The function to be executed.
+      required:
+      - type
+      title: ToolV2
+    ChatRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestNotImplementedError
+    ChatSearchResultConnector:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          description: 'The identifier of the connector.
+
+            '
+      required:
+      - id
+      description: 'The connector used for fetching documents.
+
+        '
+      title: ChatSearchResultConnector
+    ChatContentStartEventDelta:
+      type: object
+      properties:
+        message:
+          $ref: '#/components/schemas/ChatContentStartEventDeltaMessage'
+      title: ChatContentStartEventDelta
+    ChatRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ChatRequestUnauthorizedError
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    ChatMessageV2DiscriminatorMappingToolContent1:
+      type: array
+      items:
+        $ref: '#/components/schemas/ToolContent'
+      title: ChatMessageV2DiscriminatorMappingToolContent1
+    ChatConnector-7ur0eu:
+      type: object
+      properties: {}
+      description: 'Provides the connector with different settings at request time. The key/value pairs of this object are specific to each connector.
+
+
+        For example, the connector `web-search` supports the `site` option, which limits search results to the specified domain.
+
+        '
+      title: ChatConnector-7ur0eu
+    Chatv2RequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestInvalidTokenError
+    ToolCallV2:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/ToolCallV2Type'
+        function:
+          $ref: '#/components/schemas/ToolCallV2Function'
+      required:
+      - id
+      - type
+      description: An array of tool calls to be made.
+      title: ToolCallV2
+    Chatv2RequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Chatv2RequestUnprocessableEntityError
     StreamEvent:
       type: object
       description: A server-sent event emitted during streaming chat generation. Event types include stream-start, content-delta, citation-start, citation-end, tool-call-start, tool-call-delta, tool-call-end, and stream-end.
@@ -147,27 +2787,56 @@ components:
                     text:
                       type: string
                       description: The incremental text content.
-    Usage:
+    Tool_2:
       type: object
+      required:
+      - type
+      - function
       properties:
-        billed_units:
+        type:
+          type: string
+          enum:
+          - function
+          description: The type of tool. Currently only function is supported.
+        function:
           type: object
+          required:
+          - name
+          - description
           properties:
-            input_tokens:
-              type: integer
-              description: The number of billed input tokens.
-            output_tokens:
-              type: integer
-              description: The number of billed output tokens.
-        tokens:
-          type: object
-          properties:
-            input_tokens:
-              type: integer
-              description: The total number of input tokens processed.
-            output_tokens:
-              type: integer
-              description: The total number of output tokens generated.
+            name:
+              type: string
+              description: The name of the function to be called.
+            description:
+              type: string
+              description: A description of what the function does.
+            parameters:
+              type: object
+              description: The parameters the function accepts, described as a JSON Schema object.
+    Message_2:
+      type: object
+      required:
+      - role
+      properties:
+        role:
+          type: string
+          enum:
+          - user
+          - assistant
+          - system
+          - tool
+          description: The role of the message author in the conversation.
+        content:
+          type: string
+          description: The text content of the message.
+        tool_call_id:
+          type: string
+          description: The ID of the tool call this message is responding to. Required when role is tool.
+        tool_calls:
+          type: array
+          description: Tool calls generated by the model. Present when role is assistant and the model decided to call tools.
+          items:
+            $ref: '#/components/schemas/ToolCall_2'
     ChatRequest:
       type: object
       required:
@@ -182,12 +2851,12 @@ components:
           type: array
           description: A list of chat messages in chronological order representing a conversation between the user and the model. Messages can be from User, Assistant, Tool, and System roles.
           items:
-            $ref: '#/components/schemas/Message'
+            $ref: '#/components/schemas/Message_2'
         tools:
           type: array
           description: A list of tools (functions) available to the model. The model may choose to call these tools during generation. Each tool is defined with a name, description, and JSON schema for parameters.
           items:
-            $ref: '#/components/schemas/Tool'
+            $ref: '#/components/schemas/Tool_2'
         max_tokens:
           type: integer
           description: The maximum number of output tokens the model will generate in the response. If not set, defaults to the model's maximum output token limit.
@@ -225,53 +2894,13 @@ components:
           - NONE
           description: Used to select the safety instruction inserted into the prompt. Defaults to CONTEXTUAL.
           default: CONTEXTUAL
-    Tool:
-      type: object
-      required:
-      - type
-      - function
-      properties:
-        type:
-          type: string
-          enum:
-          - function
-          description: The type of tool. Currently only function is supported.
-        function:
-          type: object
-          required:
-          - name
-          - description
-          properties:
-            name:
-              type: string
-              description: The name of the function to be called.
-            description:
-              type: string
-              description: A description of what the function does.
-            parameters:
-              type: object
-              description: The parameters the function accepts, described as a JSON Schema object.
-    ChatResponse:
+    Error:
       type: object
       properties:
-        id:
-          type: string
-          description: Unique identifier for the chat completion.
-        finish_reason:
-          type: string
-          enum:
-          - complete
-          - max_tokens
-          - stop_sequence
-          - tool_call
-          - error
-          - timeout
-          description: The reason the chat request finished. Values include complete, max_tokens, stop_sequence, tool_call, error, and timeout.
         message:
-          $ref: '#/components/schemas/Message'
-        usage:
-          $ref: '#/components/schemas/Usage'
-    ToolCall:
+          type: string
+          description: A human-readable error message describing what went wrong.
+    ToolCall_2:
       type: object
       properties:
         id:
@@ -291,17 +2920,13 @@ components:
             arguments:
               type: string
               description: The arguments to pass to the function, as a JSON string.
-    Error:
-      type: object
-      properties:
-        message:
-          type: string
-          description: A human-readable error message describing what went wrong.
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
 externalDocs:
   description: Cohere Chat API Documentation
   url: https://docs.cohere.com/reference/chat
+x-refined-from:
+- cohere-openapi.yml
+- cohere-chat-api-openapi.yml

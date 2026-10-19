@@ -1,0 +1,655 @@
+openapi: 3.2.0
+info:
+  title: Cohere Parse API
+  version: 1.0.0
+servers:
+- url: https://api.cohere.com
+  description: production
+tags:
+- name: Parse
+paths:
+  /v2/parse:
+    post:
+      operationId: v2_parse
+      summary: Parse API (v2)
+      description: 'Parse a document image into structured output. Use `output_format` to select
+
+        blocks or markdown (default).
+
+
+        Currently supports `document.type = image_url` only (data URI or remote http(s)
+
+        image URL). PDF / file URL inputs are not yet supported.
+
+
+        Image limits: 20 MB file size; 50 megapixels or 200 MB decoded (whichever is
+
+        exceeded first).'
+      tags:
+      - Parse
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Parsev2RequestGatewayTimeoutError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  description: The name of a compatible Cohere parse model.
+                document:
+                  $ref: '#/components/schemas/ParseDocument'
+                output_format:
+                  $ref: '#/components/schemas/ParseOutputFormat'
+                  default: markdown
+              required:
+              - model
+              - document
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    ParseOutputFormat:
+      type: string
+      enum:
+      - blocks
+      - markdown
+      default: markdown
+      description: "Selects the page payload shape in the response. Defaults to `\"markdown\"`.\n\n- `\"markdown\"`: each page includes markdown content. Tables are inlined as\n  HTML, and images are referenced as `![<description>](<image_id>)` with\n  matching entries in `page.markdown.images`.\n- `\"blocks\"`: each page includes an ordered `blocks` array of text, image,\n  and table content regions, including bounding boxes where available.\n"
+      title: ParseOutputFormat
+    Parsev2RequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestBadRequestError
+    ParseDocumentType:
+      type: string
+      enum:
+      - image_url
+      description: Discriminator for the document payload.
+      title: ParseDocumentType
+    ParseBoundingBoxNormalized:
+      type: object
+      properties:
+        top_left_x:
+          type: number
+          format: double
+          description: Normalized X coordinate of the top-left corner.
+        top_left_y:
+          type: number
+          format: double
+          description: Normalized Y coordinate of the top-left corner.
+        bottom_right_x:
+          type: number
+          format: double
+          description: Normalized X coordinate of the bottom-right corner.
+        bottom_right_y:
+          type: number
+          format: double
+          description: Normalized Y coordinate of the bottom-right corner.
+      required:
+      - top_left_x
+      - top_left_y
+      - bottom_right_x
+      - bottom_right_y
+      description: 'A bounding box with coordinates in [0, 1] relative to the source page (model
+
+        coordinates are thousandths of page width/height).
+
+        '
+      title: ParseBoundingBoxNormalized
+    ParseMarkdownPage:
+      type: object
+      properties:
+        content:
+          type: string
+          description: 'Page content as markdown. Images are embedded as
+
+            `![<description>](<image_id>)`. Tables are inlined as HTML.
+
+            '
+        images:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParseImageBlock'
+          description: Image metadata referenced from `content`.
+      required:
+      - content
+      description: Markdown output payload for a parsed page.
+      title: ParseMarkdownPage
+    Parsev2RequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestUnprocessableEntityError
+    ChatFinishReason:
+      type: string
+      enum:
+      - COMPLETE
+      - STOP_SEQUENCE
+      - MAX_TOKENS
+      - TOOL_CALL
+      - ERROR
+      - TIMEOUT
+      description: 'The reason a chat request has finished.
+
+
+        - **complete**: The model finished sending a complete message.
+
+        - **max_tokens**: The number of generated tokens exceeded the model''s context length or the value specified via the `max_tokens` parameter.
+
+        - **stop_sequence**: One of the provided `stop_sequence` entries was reached in the model''s generation.
+
+        - **tool_call**: The model generated a Tool Call and is expecting a Tool Message in return
+
+        - **error**: The generation failed due to an internal error
+
+        - **timeout**: The generation was stopped because it exceeded the allowed time limit.
+
+        '
+      title: ChatFinishReason
+    Parsev2RequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestGatewayTimeoutError
+    ParseResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the parse response.
+        pages:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParsePage'
+          description: Parsed pages in document order.
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+        finish_reason:
+          $ref: '#/components/schemas/ChatFinishReason'
+          description: 'The reason parsing finished. For Parse, this is only ever `COMPLETE` or
+
+            `MAX_TOKENS`; `MAX_TOKENS` indicates the output was truncated because it
+
+            exceeded the maximum output token limit.
+
+            '
+      required:
+      - id
+      - pages
+      description: Response from the v2 parse endpoint.
+      title: ParseResponse
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    ParseTableBlock:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseTableContentType'
+        html:
+          type: string
+          description: Table content as HTML.
+        title:
+          type: string
+          description: Optional table title when detected.
+        description:
+          type: string
+          description: Optional table description when detected.
+        bounding_box:
+          $ref: '#/components/schemas/ParseBoundingBox'
+        bounding_box_normalized:
+          $ref: '#/components/schemas/ParseBoundingBoxNormalized'
+      required:
+      - type
+      - html
+      - bounding_box
+      - bounding_box_normalized
+      description: Payload for a table block.
+      title: ParseTableBlock
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
+      required:
+      - version
+      title: ApiMetaApiVersion
+    ParseTableContentType:
+      type: string
+      enum:
+      - html
+      description: Table serialization format.
+      title: ParseTableContentType
+    ParseImageCategory:
+      type: string
+      enum:
+      - other
+      - flowchart
+      - logo
+      - signature
+      description: Image element category.
+      title: ParseImageCategory
+    Parsev2RequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestNotFoundError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    Parsev2RequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestForbiddenError
+    Parsev2RequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestInvalidTokenError
+    ParseBlock:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            $ref: '#/components/schemas/ParseTextBlock'
+        required:
+        - type
+        - text
+        description: A text content block.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - image
+            description: 'Discriminator value: image'
+          image:
+            $ref: '#/components/schemas/ParseImageBlock'
+        required:
+        - type
+        - image
+        description: An image content block.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - table
+            description: 'Discriminator value: table'
+          table:
+            $ref: '#/components/schemas/ParseTableBlock'
+        required:
+        - type
+        - table
+        description: A table content block.
+      discriminator:
+        propertyName: type
+      description: A content block on a parsed page.
+      title: ParseBlock
+    ParsePage:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - blocks
+            description: 'Discriminator value: blocks'
+          index:
+            type: integer
+            description: Zero-based page index.
+          blocks:
+            type: array
+            items:
+              $ref: '#/components/schemas/ParseBlock'
+            description: Ordered content blocks extracted from the page.
+        required:
+        - type
+        - index
+        - blocks
+        description: A parsed page with structured content blocks.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - markdown
+            description: 'Discriminator value: markdown'
+          index:
+            type: integer
+            description: Zero-based page index.
+          markdown:
+            $ref: '#/components/schemas/ParseMarkdownPage'
+        required:
+        - type
+        - index
+        - markdown
+        description: A parsed page with markdown content.
+      discriminator:
+        propertyName: type
+      description: A single parsed page. The payload shape depends on `output_format`.
+      title: ParsePage
+    Parsev2RequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestTooManyRequestsError
+    Parsev2RequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestInternalServerError
+    ParseBoundingBox:
+      type: object
+      properties:
+        top_left_x:
+          type: integer
+          description: X coordinate of the top-left corner.
+        top_left_y:
+          type: integer
+          description: Y coordinate of the top-left corner.
+        bottom_right_x:
+          type: integer
+          description: X coordinate of the bottom-right corner.
+        bottom_right_y:
+          type: integer
+          description: Y coordinate of the bottom-right corner.
+      required:
+      - top_left_x
+      - top_left_y
+      - bottom_right_x
+      - bottom_right_y
+      description: A bounding box with pixel coordinates on the source document image.
+      title: ParseBoundingBox
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    Parsev2RequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestNotImplementedError
+    Parsev2RequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestUnauthorizedError
+    ParseImageBlock:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the image within the page (for example `img-0`).
+        description:
+          type: string
+          description: Model-generated description of the image.
+        category:
+          $ref: '#/components/schemas/ParseImageCategory'
+        bounding_box:
+          $ref: '#/components/schemas/ParseBoundingBox'
+        bounding_box_normalized:
+          $ref: '#/components/schemas/ParseBoundingBoxNormalized'
+      required:
+      - id
+      - description
+      - category
+      - bounding_box
+      - bounding_box_normalized
+      description: Payload for an image block.
+      title: ParseImageBlock
+    ParseTextBlock:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Extracted text content.
+      required:
+      - content
+      description: Payload for a text block.
+      title: ParseTextBlock
+    ParseDocument:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseDocumentType'
+          description: Discriminator for the document payload.
+        image_url:
+          type: string
+          description: "Image URL or base64 data URI to parse.\n\nLimits:\n- Maximum file size: 20 MB (compressed upload, download, or decoded\n  data-URI payload)\n- Maximum decoded size: 50 megapixels or 200 MB decompressed\n  (whichever is exceeded first)\n"
+      required:
+      - type
+      - image_url
+      description: 'Document to parse. Currently only `image_url` documents are supported.
+
+        '
+      title: ParseDocument
+    Parsev2RequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestServiceUnavailableError
+    Parsev2RequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Parsev2RequestClientClosedRequestError
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

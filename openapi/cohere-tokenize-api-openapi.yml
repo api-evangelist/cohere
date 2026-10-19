@@ -1,104 +1,347 @@
 openapi: 3.2.0
 info:
-  title: Cohere Chat Tokenize API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  title: Cohere Tokenize API
+  version: 1.0.0
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Tokenize
-  description: Endpoints for splitting text into tokens using byte-pair encoding for a specified Cohere model.
 paths:
   /v1/tokenize:
     post:
       operationId: tokenize
-      summary: Tokenize text
-      description: Splits input text into smaller units called tokens using byte-pair encoding (BPE) for the specified model. Returns both the token strings and their corresponding integer token IDs. The text must be between 1 and 65536 characters.
-      tags:
-      - Tokenize
+      summary: Tokenize
+      description: This endpoint splits input text into smaller units called tokens using byte-pair encoding (BPE). To learn more about tokenization and byte pair encoding, see the tokens page.
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tokenize_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenizeRequestGatewayTimeoutError'
       requestBody:
-        required: true
+        description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TokenizeRequest'
-      responses:
-        '200':
-          description: Successful tokenization response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenizeResponse'
-        '400':
-          description: Bad request due to invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized due to missing or invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+              type: object
+              properties:
+                text:
+                  type: string
+                  minLength: 1
+                  maxLength: 65536
+                  description: The string to be tokenized, the minimum text length is 1 character, and the maximum text length is 65536 characters.
+                model:
+                  type: string
+                  description: The input will be tokenized by the tokenizer that is used by this model.
+              required:
+              - text
+              - model
+      security:
+      - bearerAuth: []
+      tags:
+      - Tokenize
 components:
   schemas:
-    Error:
+    TokenizeRequestForbiddenError:
       type: object
       properties:
         message:
           type: string
-          description: A human-readable error message describing what went wrong.
-    TokenizeResponse:
+        id:
+          type: string
+      title: TokenizeRequestForbiddenError
+    TokenizeRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestBadRequestError
+    TokenizeRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestTooManyRequestsError
+    TokenizeRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestClientClosedRequestError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
+      required:
+      - version
+      title: ApiMetaApiVersion
+    TokenizeRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestInternalServerError
+    TokenizeRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestInvalidTokenError
+    TokenizeRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestNotFoundError
+    tokenize_Response_200:
       type: object
       properties:
         tokens:
           type: array
-          description: An array of token strings resulting from tokenizing the input text.
           items:
-            type: string
+            type: integer
+          description: An array of tokens, where each token is an integer.
         token_strings:
           type: array
-          description: An array of token strings corresponding to each token.
           items:
             type: string
         meta:
-          type: object
-          description: Metadata about the API request.
-          properties:
-            api_version:
-              type: object
-              properties:
-                version:
-                  type: string
-                  description: The API version used for the request.
-    TokenizeRequest:
-      type: object
+          $ref: '#/components/schemas/ApiMeta'
       required:
-      - text
-      - model
+      - tokens
+      - token_strings
+      title: tokenize_Response_200
+    TokenizeRequestUnauthorizedError:
+      type: object
       properties:
-        text:
+        message:
           type: string
-          description: The string to be tokenized. Must be between 1 and 65536 characters.
-          minLength: 1
-          maxLength: 65536
-        model:
+        id:
           type: string
-          description: The name of the model whose tokenizer will be used to tokenize the input text.
-          example: command-r-plus
+      title: TokenizeRequestUnauthorizedError
+    TokenizeRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestGatewayTimeoutError
+    TokenizeRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestNotImplementedError
+    TokenizeRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestUnprocessableEntityError
+    TokenizeRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: TokenizeRequestServiceUnavailableError
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
-externalDocs:
-  description: Cohere Chat API Documentation
-  url: https://docs.cohere.com/reference/chat

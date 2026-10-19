@@ -1,0 +1,241 @@
+openapi: 3.2.0
+info:
+  title: Cohere Transcriptions API
+  version: 1.0.0
+servers:
+- url: https://api.cohere.com
+  description: production
+tags:
+- name: transcriptions
+paths:
+  /v2/audio/transcriptions:
+    post:
+      operationId: transcriptions_create
+      summary: Create a transcription
+      description: Transcribe an audio file.
+      tags:
+      - transcriptions
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/audio_transcriptions_create_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-transcriptionRequestGatewayTimeoutError'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  description: ID of the model to use.
+                language:
+                  type: string
+                  description: The language of the input audio, supplied in [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes) format.
+                temperature:
+                  type: number
+                  format: double
+                  description: The sampling temperature, between 0 and 1. Higher values like 0.8 make the output more random, while lower values like 0.2 make it more focused and deterministic.
+                file:
+                  type: string
+                  format: binary
+                  description: The audio file object to transcribe. Supported file extensions are flac, mp3, mpeg, mpga, ogg, and wav.
+              required:
+              - model
+              - language
+              - file
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    Create-transcriptionRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestServiceUnavailableError
+    Create-transcriptionRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestTooManyRequestsError
+    Create-transcriptionRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestBadRequestError
+    Create-transcriptionRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestInternalServerError
+    Create-transcriptionRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestInvalidTokenError
+    audio_transcriptions_create_Response_200:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The transcribed text.
+      required:
+      - text
+      title: audio_transcriptions_create_Response_200
+    Create-transcriptionRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestNotImplementedError
+    Create-transcriptionRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestForbiddenError
+    Create-transcriptionRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestGatewayTimeoutError
+    Create-transcriptionRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestUnprocessableEntityError
+    Create-transcriptionRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestUnauthorizedError
+    Create-transcriptionRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestNotFoundError
+    Create-transcriptionRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-transcriptionRequestClientClosedRequestError
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

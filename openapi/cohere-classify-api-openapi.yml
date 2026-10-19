@@ -1,178 +1,447 @@
 openapi: 3.2.0
 info:
-  title: Cohere Chat Classify API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  title: Cohere Classify API
+  version: 1.0.0
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Classify
-  description: Endpoints for performing text classification using labeled examples and Cohere language models.
 paths:
   /v1/classify:
     post:
       operationId: classify
-      summary: Classify text inputs
-      description: Makes a prediction about which label fits the specified text inputs best. Requires a set of labeled examples to provide context to the model. Each unique label requires at least 2 examples. Supports up to 96 text inputs and 2500 examples per request.
-      tags:
-      - Classify
+      summary: Classify
+      description: 'This endpoint makes a prediction about which label fits the specified text inputs best. To make a prediction, Classify uses the provided `examples` of text + label pairs as a reference.
+
+        Note: Fine-tuned models trained on classification examples don''t require the `examples` parameter to be passed in explicitly.'
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/classify_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassifyRequestGatewayTimeoutError'
+      deprecated: true
       requestBody:
-        required: true
+        description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClassifyRequest'
-      responses:
-        '200':
-          description: Successful classification response with predictions
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassifyResponse'
-        '400':
-          description: Bad request due to invalid parameters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized due to missing or invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '429':
-          description: Rate limit exceeded
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-components:
-  schemas:
-    ClassifyRequest:
-      type: object
-      required:
-      - inputs
-      - examples
-      properties:
-        inputs:
-          type: array
-          description: A list of up to 96 texts to be classified. Each must be a non-empty string.
-          items:
-            type: string
-            minLength: 1
-          maxItems: 96
-          minItems: 1
-        examples:
-          type: array
-          description: An array of labeled examples providing context to the model. Each unique label requires at least 2 examples. Maximum of 2500 examples, each with a maximum length of 512 tokens.
-          items:
-            $ref: '#/components/schemas/ClassifyExample'
-          maxItems: 2500
-          minItems: 2
-        model:
-          type: string
-          description: The name of a compatible Cohere model to use for classification.
-        preset:
-          type: string
-          description: The ID of a custom playground preset.
-        truncate:
-          type: string
-          enum:
-          - NONE
-          - START
-          - END
-          description: Specifies how the API handles inputs longer than the maximum token length. START discards the beginning, END discards the end. NONE returns an error if the input is too long.
-    ClassifyResponse:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for the classification request.
-        classifications:
-          type: array
-          description: An array of classification results, one per input text.
-          items:
-            $ref: '#/components/schemas/Classification'
-        meta:
-          type: object
-          description: Metadata about the API request.
-          properties:
-            api_version:
               type: object
               properties:
-                version:
+                inputs:
+                  type: array
+                  items:
+                    type: string
+                  description: 'A list of up to 96 texts to be classified. Each one must be a non-empty string.
+
+                    There is, however, no consistent, universal limit to the length a particular input can be. We perform classification on the first `x` tokens of each input, and `x` varies depending on which underlying model is powering classification. The maximum token length for each model is listed in the "max tokens" column [here](https://docs.cohere.com/docs/models).
+
+                    Note: by default the `truncate` parameter is set to `END`, so tokens exceeding the limit will be automatically dropped. This behavior can be disabled by setting `truncate` to `NONE`, which will result in validation errors for longer texts.'
+                examples:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ClassifyExample'
+                  description: 'An array of examples to provide context to the model. Each example is a text string and its associated label/class. Each unique label requires at least 2 examples associated with it; the maximum number of examples is 2500, and each example has a maximum length of 512 tokens. The values should be structured as `{text: "...",label: "..."}`.
+
+                    Note: [Fine-tuned Models](https://docs.cohere.com/docs/classify-fine-tuning) trained on classification examples don''t require the `examples` parameter to be passed in explicitly.'
+                model:
                   type: string
-                  description: The API version used for the request.
-    ClassifyExample:
-      type: object
-      required:
-      - text
-      - label
-      properties:
-        text:
-          type: string
-          description: The example text content.
-          maxLength: 512
-        label:
-          type: string
-          description: The classification label associated with the example text.
-    Classification:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier for this classification result.
-        input:
-          type: string
-          description: The input text that was classified.
-        prediction:
-          type: string
-          description: The predicted label with the highest confidence.
-        predictions:
-          type: array
-          description: All predicted labels ordered by confidence.
-          items:
-            type: string
-        confidence:
-          type: number
-          description: The confidence score for the top prediction.
-          minimum: 0
-          maximum: 1
-        confidences:
-          type: array
-          description: Confidence scores for all predictions.
-          items:
-            type: number
-        labels:
-          type: object
-          description: A map of label names to their confidence scores.
-          additionalProperties:
-            type: object
-            properties:
-              confidence:
-                type: number
-                description: The confidence score for this label.
-                minimum: 0
-                maximum: 1
-    Error:
+                  description: ID of a [Fine-tuned](https://docs.cohere.com/v2/docs/classify-starting-the-training) Classify model
+                preset:
+                  type: string
+                  description: The ID of a custom playground preset. You can create presets in the [playground](https://dashboard.cohere.com/playground). If you use a preset, all other parameters become optional, and any included parameters will override the preset's parameters.
+                  deprecated: true
+                truncate:
+                  $ref: '#/components/schemas/V1ClassifyPostRequestBodyContentApplicationJsonSchemaTruncate'
+                  default: END
+                  description: 'One of `NONE|START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+                    Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+                    If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.'
+              required:
+              - inputs
+      security:
+      - bearerAuth: []
+      tags:
+      - Classify
+components:
+  schemas:
+    ClassifyRequestForbiddenError:
       type: object
       properties:
         message:
           type: string
-          description: A human-readable error message describing what went wrong.
+        id:
+          type: string
+      title: ClassifyRequestForbiddenError
+    V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItemsClassificationType:
+      type: string
+      enum:
+      - single-label
+      - multi-label
+      description: The type of classification performed
+      title: V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItemsClassificationType
+    V1ClassifyPostRequestBodyContentApplicationJsonSchemaTruncate:
+      type: string
+      enum:
+      - NONE
+      - START
+      - END
+      default: END
+      description: 'One of `NONE|START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+        Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+        If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.'
+      title: V1ClassifyPostRequestBodyContentApplicationJsonSchemaTruncate
+    V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItems:
+      type: object
+      properties:
+        id:
+          type: string
+        input:
+          type: string
+          description: The input text that was classified
+        prediction:
+          type: string
+          description: The predicted label for the associated query (only filled for single-label models)
+          deprecated: true
+        predictions:
+          type: array
+          items:
+            type: string
+          description: An array containing the predicted labels for the associated query (only filled for single-label classification)
+        confidence:
+          type: number
+          format: double
+          description: The confidence score for the top predicted class (only filled for single-label classification)
+          deprecated: true
+        confidences:
+          type: array
+          items:
+            type: number
+            format: double
+          description: An array containing the confidence scores of all the predictions in the same order
+        labels:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItemsLabels'
+          description: A map containing each label and its confidence score according to the classifier. All the confidence scores add up to 1 for single-label classification. For multi-label classification the label confidences are independent of each other, so they don't have to sum up to 1.
+        classification_type:
+          $ref: '#/components/schemas/V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItemsClassificationType'
+          description: The type of classification performed
+      required:
+      - id
+      - predictions
+      - confidences
+      - labels
+      - classification_type
+      title: V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItems
+    V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItemsLabels:
+      type: object
+      properties:
+        confidence:
+          type: number
+          format: double
+      title: V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItemsLabels
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
+      required:
+      - version
+      title: ApiMetaApiVersion
+    ClassifyRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestServiceUnavailableError
+    ClassifyRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestNotFoundError
+    ClassifyRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestUnprocessableEntityError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    classify_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+        classifications:
+          type: array
+          items:
+            $ref: '#/components/schemas/V1ClassifyPostResponsesContentApplicationJsonSchemaClassificationsItems'
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      required:
+      - id
+      - classifications
+      title: classify_Response_200
+    ClassifyRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestUnauthorizedError
+    ClassifyRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestInvalidTokenError
+    ClassifyRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestTooManyRequestsError
+    ClassifyExample:
+      type: object
+      properties:
+        text:
+          type: string
+        label:
+          type: string
+      title: ClassifyExample
+    ClassifyRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestGatewayTimeoutError
+    ClassifyRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestBadRequestError
+    ClassifyRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestClientClosedRequestError
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    ClassifyRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestInternalServerError
+    ClassifyRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: ClassifyRequestNotImplementedError
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
-externalDocs:
-  description: Cohere Chat API Documentation
-  url: https://docs.cohere.com/reference/chat

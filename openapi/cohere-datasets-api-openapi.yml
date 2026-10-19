@@ -1,312 +1,1407 @@
 openapi: 3.2.0
 info:
-  title: Cohere Chat Datasets API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  title: Cohere Datasets API
+  version: 1.0.0
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Datasets
-  description: Endpoints for creating, listing, retrieving, and deleting datasets used with Cohere services.
 paths:
   /v1/datasets:
     post:
-      operationId: createDataset
-      summary: Create a dataset
-      description: Creates a new dataset by uploading data files. Supports multipart form uploads with configurable delimiters for CSV files. The dataset is validated after upload and rows with malformed input can optionally be dropped instead of failing validation.
+      operationId: datasets_create
+      summary: Create a Dataset
+      description: Create a dataset by uploading a file. See 'Dataset Creation' for more information.
       tags:
       - Datasets
-      requestBody:
+      parameters:
+      - name: name
+        in: query
+        description: The name of the uploaded dataset.
         required: true
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: The dataset type, which is used to validate the data. The only valid type is `embed-input` used in conjunction with the Embed Jobs API.
+        required: true
+        schema:
+          $ref: '#/components/schemas/DatasetType'
+      - name: keep_original_file
+        in: query
+        description: Indicates if the original file should be stored.
+        required: false
+        schema:
+          type: boolean
+      - name: skip_malformed_input
+        in: query
+        description: Indicates whether rows with malformed input should be dropped (instead of failing the validation check). Dropped rows will be returned in the warnings field.
+        required: false
+        schema:
+          type: boolean
+      - name: keep_fields
+        in: query
+        description: List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the [schema for the corresponding Dataset type](https://docs.cohere.com/docs/datasets#dataset-types). For example, datasets of type `embed-input` will drop all fields other than the required `text` field. If any of the fields in `keep_fields` are missing from the uploaded file, Dataset validation will fail.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: optional_fields
+        in: query
+        description: List of names of fields that will be persisted in the Dataset. By default the Dataset will retain only the required fields indicated in the [schema for the corresponding Dataset type](https://docs.cohere.com/docs/datasets#dataset-types). For example, Datasets of type `embed-input` will drop all fields other than the required `text` field. If any of the fields in `optional_fields` are missing from the uploaded file, Dataset validation will pass.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: text_separator
+        in: query
+        description: Raw .txt uploads will be split into entries using the text_separator value.
+        required: false
+        schema:
+          type: string
+      - name: csv_delimiter
+        in: query
+        description: The delimiter used for .csv uploads.
+        required: false
+        schema:
+          type: string
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/datasets_create_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Create-datasetRequestGatewayTimeoutError'
+      requestBody:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateDatasetRequest'
-      responses:
-        '200':
-          description: Dataset created successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CreateDatasetResponse'
-        '400':
-          description: Bad request due to invalid parameters or data
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '401':
-          description: Unauthorized due to missing or invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+              type: object
+              properties:
+                data:
+                  type: string
+                  format: binary
+                  description: The file to upload
+                eval_data:
+                  type: string
+                  format: binary
+                  description: An optional evaluation file to upload
+              required:
+              - data
+      security:
+      - bearerAuth: []
     get:
-      operationId: listDatasets
-      summary: List datasets
-      description: Returns a list of datasets for the authenticated user. Supports filtering by dataset type, date range, and validation status with pagination controls.
+      operationId: datasets_list
+      summary: List Datasets
+      description: List datasets that have been created.
       tags:
       - Datasets
       parameters:
       - name: datasetType
         in: query
-        description: Filter datasets by type.
+        description: optional filter by dataset type
+        required: false
         schema:
           type: string
       - name: before
         in: query
-        description: Filter datasets created before this date.
+        description: optional filter before a date
+        required: false
         schema:
           type: string
           format: date-time
       - name: after
         in: query
-        description: Filter datasets created after this date.
+        description: optional filter after a date
+        required: false
         schema:
           type: string
           format: date-time
       - name: limit
         in: query
-        description: Maximum number of datasets to return.
+        description: optional limit to number of results
+        required: false
         schema:
-          type: integer
-          minimum: 1
+          type: number
+          format: double
       - name: offset
         in: query
-        description: Offset to start returning datasets from.
+        description: optional offset to start of results
+        required: false
         schema:
-          type: integer
-          minimum: 0
+          type: number
+          format: double
       - name: validationStatus
         in: query
-        description: Filter datasets by validation status.
+        description: optional filter by validation status
+        required: false
+        schema:
+          $ref: '#/components/schemas/DatasetValidationStatus'
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
         schema:
           type: string
-          enum:
-          - Unknown
-          - Queued
-          - Processing
-          - Validated
-          - Skipped
-          - Failed
       responses:
         '200':
-          description: Successful list of datasets
+          description: A successful response.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ListDatasetsResponse'
+                $ref: '#/components/schemas/datasets_list_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestBadRequestError'
         '401':
-          description: Unauthorized due to missing or invalid API key
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-  /v1/datasets/{id}:
-    get:
-      operationId: getDataset
-      summary: Get a dataset
-      description: Retrieves metadata and details about a specific dataset by its identifier.
-      tags:
-      - Datasets
-      parameters:
-      - $ref: '#/components/parameters/DatasetId'
-      responses:
-        '200':
-          description: Successful dataset details
+                $ref: '#/components/schemas/List-datasetsRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Dataset'
-        '401':
-          description: Unauthorized due to missing or invalid API key
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/List-datasetsRequestForbiddenError'
         '404':
-          description: Dataset not found
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      operationId: deleteDataset
-      summary: Delete a dataset
-      description: Deletes a dataset by its identifier. Datasets are automatically deleted after 30 days but can also be deleted manually using this endpoint.
-      tags:
-      - Datasets
-      parameters:
-      - $ref: '#/components/parameters/DatasetId'
-      responses:
-        '200':
-          description: Dataset deleted successfully
-        '401':
-          description: Unauthorized due to missing or invalid API key
+                $ref: '#/components/schemas/List-datasetsRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
-        '404':
-          description: Dataset not found
+                $ref: '#/components/schemas/List-datasetsRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/List-datasetsRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/List-datasetsRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
   /v1/datasets/usage:
     get:
-      operationId: getDatasetUsage
-      summary: Get dataset usage
-      description: Retrieves the total dataset usage for the authenticated organization.
+      operationId: datasets_getUsage
+      summary: Get Dataset Usage
+      description: View the dataset storage usage for your Organization. Each Organization can have up to 10GB of storage across all their users.
       tags:
       - Datasets
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
-          description: Successful dataset usage response
+          description: A successful response.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DatasetUsage'
+                $ref: '#/components/schemas/datasets_getUsage_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestBadRequestError'
         '401':
-          description: Unauthorized due to missing or invalid API key
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/Get-dataset-usageRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-dataset-usageRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
+  /v1/datasets/{id}:
+    get:
+      operationId: datasets_get
+      summary: Get a Dataset
+      description: Retrieve a dataset by ID. See 'Datasets' for more information.
+      tags:
+      - Datasets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^(?!usage$).*$
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/datasets_get_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Get-datasetRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
+    delete:
+      operationId: datasets_delete
+      summary: Delete a Dataset
+      description: Delete a dataset by ID. Datasets are automatically deleted after 30 days, but they can also be deleted manually.
+      tags:
+      - Datasets
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          pattern: ^(?!usage$).*$
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/datasets_delete_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Delete-datasetRequestGatewayTimeoutError'
+      security:
+      - bearerAuth: []
 components:
   schemas:
-    CreateDatasetRequest:
+    Get-dataset-usageRequestClientClosedRequestError:
       type: object
-      required:
-      - name
-      - type
-      - data
       properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestClientClosedRequestError
+    List-datasetsRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestForbiddenError
+    Get-dataset-usageRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestForbiddenError
+    Get-dataset-usageRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestUnauthorizedError
+    Get-datasetRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestInternalServerError
+    Create-datasetRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestInvalidTokenError
+    DatasetType:
+      type: string
+      enum:
+      - embed-input
+      - embed-result
+      - cluster-result
+      - cluster-outliers
+      - reranker-finetune-input
+      - single-label-classification-finetune-input
+      - chat-finetune-input
+      - multi-label-classification-finetune-input
+      - batch-chat-input
+      - batch-openai-chat-input
+      - batch-embed-v2-input
+      - batch-chat-v2-input
+      description: The type of the dataset
+      title: DatasetType
+    DatasetPart:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The dataset part ID
         name:
           type: string
-          description: The name of the dataset.
-        type:
+          description: The name of the dataset part
+        url:
           type: string
-          description: The type of dataset. Currently embed-input is the primary type used with the Embed Jobs API.
-          enum:
-          - embed-input
-          - reranker-finetune-input
-          - prompt-completion-finetune-input
-          - single-label-classification-finetune-input
-          - chat-finetune-input
-        data:
+          description: The download url of the file
+        index:
+          type: integer
+          description: The index of the file
+        size_bytes:
+          type: integer
+          description: The size of the file in bytes
+        num_rows:
+          type: integer
+          description: The number of rows in the file
+        original_url:
           type: string
-          format: binary
-          description: The data file to upload.
+          description: The download url of the original file
+        samples:
+          type: array
+          items:
+            type: string
+          description: The first few rows of the parsed file
+      required:
+      - id
+      - name
+      title: DatasetPart
+    List-datasetsRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestServiceUnavailableError
+    RerankerDataMetrics:
+      type: object
+      properties:
+        num_train_queries:
+          type: integer
+          format: int64
+          description: The number of training queries.
+        num_train_relevant_passages:
+          type: integer
+          format: int64
+          description: The sum of all relevant passages of valid training examples.
+        num_train_hard_negatives:
+          type: integer
+          format: int64
+          description: The sum of all hard negatives of valid training examples.
+        num_eval_queries:
+          type: integer
+          format: int64
+          description: The number of evaluation queries.
+        num_eval_relevant_passages:
+          type: integer
+          format: int64
+          description: The sum of all relevant passages of valid eval examples.
+        num_eval_hard_negatives:
+          type: integer
+          format: int64
+          description: The sum of all hard negatives of valid eval examples.
+      title: RerankerDataMetrics
+    Get-dataset-usageRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestNotImplementedError
+    Get-dataset-usageRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestInternalServerError
+    Delete-datasetRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestServiceUnavailableError
+    List-datasetsRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestInvalidTokenError
+    LabelMetric:
+      type: object
+      properties:
+        total_examples:
+          type: integer
+          format: int64
+          description: Total number of examples for this label
+        label:
+          type: string
+          description: value of the label
+        samples:
+          type: array
+          items:
+            type: string
+          description: samples for this label
+      title: LabelMetric
+    Delete-datasetRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestBadRequestError
+    Delete-datasetRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestNotImplementedError
+    ChatDataMetrics:
+      type: object
+      properties:
+        num_train_turns:
+          type: integer
+          format: int64
+          description: The sum of all turns of valid train examples.
+        num_eval_turns:
+          type: integer
+          format: int64
+          description: The sum of all turns of valid eval examples.
+        preamble:
+          type: string
+          description: The preamble of this dataset.
+      title: ChatDataMetrics
+    Get-datasetRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestForbiddenError
+    Create-datasetRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestServiceUnavailableError
+    List-datasetsRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestTooManyRequestsError
+    Create-datasetRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestBadRequestError
+    Delete-datasetRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestClientClosedRequestError
+    Create-datasetRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestInternalServerError
+    Delete-datasetRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestForbiddenError
+    Delete-datasetRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestTooManyRequestsError
+    List-datasetsRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestGatewayTimeoutError
+    Get-datasetRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestUnprocessableEntityError
+    Get-datasetRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestNotImplementedError
+    FinetuneDatasetMetrics:
+      type: object
+      properties:
+        trainable_token_count:
+          type: integer
+          format: int64
+          description: The number of tokens of valid examples that can be used for training.
+        total_examples:
+          type: integer
+          format: int64
+          description: The overall number of examples.
+        train_examples:
+          type: integer
+          format: int64
+          description: The number of training examples.
+        train_size_bytes:
+          type: integer
+          format: int64
+          description: The size in bytes of all training examples.
+        eval_examples:
+          type: integer
+          format: int64
+          description: Number of evaluation examples.
+        eval_size_bytes:
+          type: integer
+          format: int64
+          description: The size in bytes of all eval examples.
+        reranker_data_metrics:
+          $ref: '#/components/schemas/RerankerDataMetrics'
+        chat_data_metrics:
+          $ref: '#/components/schemas/ChatDataMetrics'
+        classify_data_metrics:
+          $ref: '#/components/schemas/ClassifyDataMetrics'
+      title: FinetuneDatasetMetrics
+    Delete-datasetRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestNotFoundError
+    List-datasetsRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestUnprocessableEntityError
+    Get-dataset-usageRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestGatewayTimeoutError
+    Delete-datasetRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestInternalServerError
+    List-datasetsRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestBadRequestError
+    Get-dataset-usageRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestNotFoundError
+    Create-datasetRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestNotFoundError
+    datasets_get_Response_200:
+      type: object
+      properties:
+        dataset:
+          $ref: '#/components/schemas/Dataset'
+      required:
+      - dataset
+      title: datasets_get_Response_200
+    DatasetValidationStatus:
+      type: string
+      enum:
+      - unknown
+      - queued
+      - processing
+      - failed
+      - validated
+      - skipped
+      description: The validation status of the dataset
+      title: DatasetValidationStatus
+    ParseInfo:
+      type: object
+      properties:
+        separator:
+          type: string
         delimiter:
           type: string
-          description: The delimiter used for CSV file uploads.
-        dry_run:
-          type: boolean
-          description: When true, validates the data without creating the dataset.
-        keep_fields:
+      title: ParseInfo
+    Delete-datasetRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
           type: string
-          description: Comma-separated list of field names to persist in the dataset.
-    ListDatasetsResponse:
+        id:
+          type: string
+      title: Delete-datasetRequestGatewayTimeoutError
+    Get-datasetRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestInvalidTokenError
+    Create-datasetRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestClientClosedRequestError
+    Get-dataset-usageRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestTooManyRequestsError
+    List-datasetsRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestUnauthorizedError
+    Create-datasetRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestUnauthorizedError
+    Get-datasetRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestUnauthorizedError
+    List-datasetsRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestClientClosedRequestError
+    datasets_list_Response_200:
       type: object
       properties:
         datasets:
           type: array
-          description: A list of datasets for the authenticated user.
           items:
             $ref: '#/components/schemas/Dataset'
+      title: datasets_list_Response_200
+    Get-dataset-usageRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestBadRequestError
+    Delete-datasetRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestUnauthorizedError
+    Metrics:
+      type: object
+      properties:
+        finetune_dataset_metrics:
+          $ref: '#/components/schemas/FinetuneDatasetMetrics'
+      title: Metrics
+    ClassifyDataMetrics:
+      type: object
+      properties:
+        label_metrics:
+          type: array
+          items:
+            $ref: '#/components/schemas/LabelMetric'
+      title: ClassifyDataMetrics
+    Get-datasetRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestGatewayTimeoutError
+    Get-datasetRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestTooManyRequestsError
+    Delete-datasetRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestUnprocessableEntityError
+    Create-datasetRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestUnprocessableEntityError
+    datasets_create_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The dataset ID
+      title: datasets_create_Response_200
+    Delete-datasetRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Delete-datasetRequestInvalidTokenError
+    Get-datasetRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestNotFoundError
+    datasets_getUsage_Response_200:
+      type: object
+      properties:
+        organization_usage:
+          type: integer
+          format: int64
+          description: The total number of bytes used by the organization.
+      title: datasets_getUsage_Response_200
+    Create-datasetRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestGatewayTimeoutError
+    datasets_delete_Response_200:
+      type: object
+      properties: {}
+      title: datasets_delete_Response_200
+    Get-datasetRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestClientClosedRequestError
+    Create-datasetRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestNotImplementedError
+    List-datasetsRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestNotFoundError
+    Get-datasetRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestBadRequestError
+    Get-dataset-usageRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestInvalidTokenError
+    Create-datasetRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestForbiddenError
+    List-datasetsRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: List-datasetsRequestNotImplementedError
+    Get-dataset-usageRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestUnprocessableEntityError
     Dataset:
       type: object
       properties:
         id:
           type: string
-          description: The unique identifier of the dataset.
+          description: The dataset ID
         name:
           type: string
-          description: The name of the dataset.
-        dataset_type:
-          type: string
-          description: The type of dataset.
-        validation_status:
-          type: string
-          enum:
-          - Unknown
-          - Queued
-          - Processing
-          - Validated
-          - Skipped
-          - Failed
-          description: The current validation status of the dataset.
+          description: The name of the dataset
         created_at:
           type: string
           format: date-time
-          description: The timestamp when the dataset was created.
+          description: The creation date
         updated_at:
           type: string
           format: date-time
-          description: The timestamp when the dataset was last updated.
+          description: The last update date
+        dataset_type:
+          $ref: '#/components/schemas/DatasetType'
+        validation_status:
+          $ref: '#/components/schemas/DatasetValidationStatus'
+        validation_error:
+          type: string
+          description: Errors found during validation
         schema:
           type: string
-          description: The expected schema for the dataset.
+          description: the avro schema of the dataset
         required_fields:
           type: array
-          description: The required fields in the dataset schema.
           items:
             type: string
         preserve_fields:
           type: array
-          description: The fields that are preserved in the dataset.
           items:
             type: string
-        validation_error:
-          type: string
-          description: The validation error message if validation failed.
+        dataset_parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetPart'
+          description: the underlying files that make up the dataset
         validation_warnings:
           type: array
-          description: Validation warnings for rows that were dropped.
           items:
             type: string
-        meta:
-          type: object
-          description: Metadata about the dataset.
-    DatasetUsage:
-      type: object
-      properties:
-        organization_usage:
-          type: integer
-          description: The total dataset usage in bytes for the organization.
-    Error:
+          description: warnings found during validation
+        parse_info:
+          $ref: '#/components/schemas/ParseInfo'
+        metrics:
+          $ref: '#/components/schemas/Metrics'
+      required:
+      - id
+      - name
+      - created_at
+      - updated_at
+      - dataset_type
+      - validation_status
+      title: Dataset
+    List-datasetsRequestInternalServerError:
       type: object
       properties:
         message:
           type: string
-          description: A human-readable error message describing what went wrong.
-    CreateDatasetResponse:
-      type: object
-      properties:
         id:
           type: string
-          description: The unique identifier of the created dataset.
-  parameters:
-    DatasetId:
-      name: id
-      in: path
-      required: true
-      description: The unique identifier of the dataset.
-      schema:
-        type: string
+      title: List-datasetsRequestInternalServerError
+    Get-dataset-usageRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-dataset-usageRequestServiceUnavailableError
+    Get-datasetRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Get-datasetRequestServiceUnavailableError
+    Create-datasetRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Create-datasetRequestTooManyRequestsError
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
-externalDocs:
-  description: Cohere Chat API Documentation
-  url: https://docs.cohere.com/reference/chat

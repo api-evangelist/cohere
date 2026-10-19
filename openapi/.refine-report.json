@@ -1,34 +1,73 @@
 {
   "provider": "cohere",
   "sources": [
-    "cohere-chat-api-openapi.yml",
-    "cohere-classify-api-openapi.yml",
-    "cohere-datasets-api-openapi.yml",
-    "cohere-detokenize-api-openapi.yml",
-    "cohere-embed-api-openapi.yml",
-    "cohere-embed-jobs-api-openapi.yml",
-    "cohere-models-api-openapi.yml",
-    "cohere-rerank-api-openapi.yml",
-    "cohere-tokenize-api-openapi.yml"
+    "_original/cohere-openapi.yml",
+    "cohere-chat-api-openapi.yml"
   ],
   "outputs": [
+    "cohere-finetuning-api-openapi.yml",
     "cohere-chat-api-openapi.yml",
+    "cohere-check-api-key-api-openapi.yml",
     "cohere-classify-api-openapi.yml",
-    "cohere-datasets-api-openapi.yml",
     "cohere-detokenize-api-openapi.yml",
     "cohere-embed-api-openapi.yml",
-    "cohere-embed-jobs-api-openapi.yml",
-    "cohere-models-api-openapi.yml",
+    "cohere-generate-api-openapi.yml",
+    "cohere-parse-api-openapi.yml",
     "cohere-rerank-api-openapi.yml",
-    "cohere-tokenize-api-openapi.yml"
+    "cohere-summarize-api-openapi.yml",
+    "cohere-tokenize-api-openapi.yml",
+    "cohere-batches-api-openapi.yml",
+    "cohere-connectors-api-openapi.yml",
+    "cohere-datasets-api-openapi.yml",
+    "cohere-embedjobs-api-openapi.yml",
+    "cohere-models-api-openapi.yml",
+    "cohere-transcriptions-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [
-    "no openapi/_original/ archive: this run re-split PREVIOUSLY REFINED output, so any base URL it carries is inherited from an earlier pass rather than read from a document the provider published"
+    "cohere-chat-api-openapi.yml: previously refined output kept for 1 operation(s) no archived document covers (e.g. /v2/chat/stream post); its other 1 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
   ],
   "notes": [
-    "apis.yml register: already-registered"
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "cohere-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "cohere-openapi.yml: tagged paths POST /v2/chat -> Chat",
+    "cohere-openapi.yml: tagged paths POST /v2/rerank -> Rerank",
+    "cohere-openapi.yml: tagged paths POST /v2/embed -> Embed",
+    "cohere-openapi.yml: tagged paths POST /v2/parse -> Parse",
+    "cohere-openapi.yml: tagged paths POST /v1/chat -> Chat",
+    "cohere-openapi.yml: tagged paths POST /v1/rerank -> Rerank",
+    "cohere-openapi.yml: tagged paths POST /v1/embed -> Embed",
+    "cohere-openapi.yml: tagged paths POST /v1/tokenize -> Tokenize",
+    "cohere-openapi.yml: tagged paths POST /v1/detokenize -> Detokenize",
+    "cohere-openapi.yml: tagged paths POST /v1/classify -> Classify",
+    "cohere-openapi.yml: tagged paths POST /v1/generate -> Generate",
+    "cohere-openapi.yml: tagged paths POST /v1/summarize -> Summarize",
+    "cohere-openapi.yml: tagged paths POST /v1/check-api-key -> Check Api Key",
+    "cohere-openapi.yml: declared missing tag: Chat",
+    "cohere-openapi.yml: declared missing tag: Check Api Key",
+    "cohere-openapi.yml: declared missing tag: Classify",
+    "cohere-openapi.yml: declared missing tag: Detokenize",
+    "cohere-openapi.yml: declared missing tag: Embed",
+    "cohere-openapi.yml: declared missing tag: Generate",
+    "cohere-openapi.yml: declared missing tag: Parse",
+    "cohere-openapi.yml: declared missing tag: Rerank",
+    "cohere-openapi.yml: declared missing tag: Summarize",
+    "cohere-openapi.yml: declared missing tag: Tokenize",
+    "tag 'Chat' spans 2 source specs (cohere-openapi.yml, cohere-chat-api-openapi.yml): per-path servers applied",
+    "superseded outputs removed: cohere-embed-jobs-api-openapi.yml",
+    "apis.yml register: written (+9 apis, 17 total)"
   ],
-  "skipped": []
+  "skipped": [
+    "cohere-classify-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-datasets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-detokenize-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-embed-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-embed-jobs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-models-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-rerank-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "cohere-tokenize-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

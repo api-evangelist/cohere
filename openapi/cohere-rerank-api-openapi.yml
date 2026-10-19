@@ -1,143 +1,684 @@
 openapi: 3.2.0
 info:
-  title: Cohere Chat Rerank API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  title: Cohere Rerank API
+  version: 1.0.0
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Rerank
-  description: Endpoints for reranking documents by relevance to a query using Cohere reranking models.
 paths:
   /v2/rerank:
     post:
-      operationId: rerank
-      summary: Rerank documents by relevance
-      description: Takes a query and a list of text documents and returns them ordered by relevance with assigned relevance scores. It is recommended not to send more than 1000 documents in a single request. Long documents are automatically truncated to the value of max_tokens_per_doc. Structured data should be formatted as YAML strings for best performance.
+      operationId: v2_rerank
+      summary: Rerank API (v2)
+      description: This endpoint takes in a query and a list of texts and produces an ordered array with each text assigned a relevance score.
       tags:
       - Rerank
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/v2_rerank_Response_200'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rerankv2RequestGatewayTimeoutError'
       requestBody:
-        required: true
+        description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RerankRequest'
+              type: object
+              properties:
+                model:
+                  type: string
+                  description: The identifier of the model to use, eg `rerank-v3.5`.
+                query:
+                  type: string
+                  description: The search query
+                documents:
+                  type: array
+                  items:
+                    type: string
+                  description: 'A list of texts that will be compared to the `query`.
+
+                    For optimal performance we recommend against sending more than 1,000 documents in a single request.
+
+
+                    **Note**: long documents will automatically be truncated to the value of `max_tokens_per_doc`.
+
+
+                    **Note**: structured data should be formatted as YAML strings for best performance.'
+                top_n:
+                  type: integer
+                  minimum: 1
+                  description: Limits the number of returned rerank results to the specified value. If not passed, all the rerank results will be returned.
+                max_tokens_per_doc:
+                  type: integer
+                  description: Defaults to `4096`. Long documents will be automatically truncated to the specified number of tokens.
+                priority:
+                  type: integer
+                  minimum: 0
+                  maximum: 999
+                  default: 0
+                  description: 'Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.'
+              required:
+              - model
+              - query
+              - documents
+      security:
+      - bearerAuth: []
+  /v1/rerank:
+    post:
+      operationId: rerank
+      summary: Rerank API (v1)
+      description: This endpoint takes in a query and a list of texts and produces an ordered array with each text assigned a relevance score.
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
-          description: Successful rerank response with scored documents
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RerankResponse'
+                $ref: '#/components/schemas/rerank_Response_200'
         '400':
-          description: Bad request due to invalid parameters
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/RerankRequestBadRequestError'
         '401':
-          description: Unauthorized due to missing or invalid API key
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/RerankRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestUnprocessableEntityError'
         '429':
-          description: Rate limit exceeded
+          description: Too many requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/RerankRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RerankRequestGatewayTimeoutError'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model:
+                  type: string
+                  description: The identifier of the model to use, eg `rerank-v3.5`.
+                query:
+                  type: string
+                  description: The search query
+                documents:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/V1RerankPostRequestBodyContentApplicationJsonSchemaDocumentsItems'
+                  description: 'A list of document objects or strings to rerank.
+
+                    If a document is provided the text fields is required and all other fields will be preserved in the response.
+
+
+                    The total max chunks (length of documents * max_chunks_per_doc) must be less than 10000.
+
+
+                    We recommend a maximum of 1,000 documents for optimal endpoint performance.'
+                top_n:
+                  type: integer
+                  minimum: 1
+                  description: The number of most relevant documents or indices to return, defaults to the length of the documents
+                rank_fields:
+                  type: array
+                  items:
+                    type: string
+                  description: If a JSON object is provided, you can specify which keys you would like to have considered for reranking. The model will rerank based on order of the fields passed in (i.e. rank_fields=['title','author','text'] will rerank using the values in title, author, text  sequentially. If the length of title, author, and text exceeds the context length of the model, the chunking will not re-consider earlier fields). If not provided, the model will use the default text field for ranking.
+                return_documents:
+                  type: boolean
+                  default: false
+                  description: '- If false, returns results without the doc text - the api will return a list of {index, relevance score} where index is inferred from the list passed into the request.
+
+                    - If true, returns results with the doc text passed in - the api will return an ordered list of {index, text, relevance score} where index + text refers to the list passed into the request.'
+                max_chunks_per_doc:
+                  type: integer
+                  default: 10
+                  description: The maximum number of chunks to produce internally from a document
+              required:
+              - query
+              - documents
+      security:
+      - bearerAuth: []
+      tags:
+      - Rerank
 components:
   schemas:
-    Error:
+    Rerankv2RequestTooManyRequestsError:
       type: object
       properties:
         message:
           type: string
-          description: A human-readable error message describing what went wrong.
-    RerankResult:
-      type: object
-      properties:
-        index:
-          type: integer
-          description: The index of the document in the original input list.
-        relevance_score:
-          type: number
-          description: The relevance score assigned to the document for the given query. Higher scores indicate greater relevance.
-        document:
-          type: object
-          description: The document text, returned when return_documents is true.
-          properties:
-            text:
-              type: string
-              description: The text content of the document.
-    RerankResponse:
+        id:
+          type: string
+      title: Rerankv2RequestTooManyRequestsError
+    v2_rerank_Response_200:
       type: object
       properties:
         id:
           type: string
-          description: Unique identifier for the rerank request.
         results:
           type: array
-          description: An ordered array of documents with relevance scores, sorted from most to least relevant.
           items:
-            $ref: '#/components/schemas/RerankResult'
+            $ref: '#/components/schemas/V2RerankPostResponsesContentApplicationJsonSchemaResultsItems'
+          description: An ordered list of ranked documents
         meta:
-          type: object
-          description: Metadata about the API request.
-          properties:
-            api_version:
-              type: object
-              properties:
-                version:
-                  type: string
-                  description: The API version used for the request.
-    RerankRequest:
-      type: object
+          $ref: '#/components/schemas/ApiMeta'
       required:
-      - model
-      - query
-      - documents
+      - results
+      title: v2_rerank_Response_200
+    RerankRequestUnprocessableEntityError:
+      type: object
       properties:
-        model:
+        message:
           type: string
-          description: The name of the reranking model to use.
-          example: rerank-english-v3.0
-        query:
+        id:
           type: string
-          description: The search query to compare documents against.
-        documents:
+      title: RerankRequestUnprocessableEntityError
+    RerankRequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestNotFoundError
+    Rerankv2RequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestInvalidTokenError
+    Rerankv2RequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestGatewayTimeoutError
+    Rerankv2RequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestInternalServerError
+    RerankRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestGatewayTimeoutError
+    RerankRequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestClientClosedRequestError
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    rerank_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+        results:
           type: array
-          description: A list of document texts to be ranked against the query. Maximum recommended is 1000 documents per request.
           items:
-            oneOf:
-            - type: string
-            - type: object
-              properties:
-                text:
-                  type: string
-                  description: The text content of the document.
-        top_n:
+            $ref: '#/components/schemas/V1RerankPostResponsesContentApplicationJsonSchemaResultsItems'
+          description: An ordered list of ranked documents
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      required:
+      - results
+      title: rerank_Response_200
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
+      required:
+      - version
+      title: ApiMetaApiVersion
+    RerankRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestUnauthorizedError
+    Rerankv2RequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestServiceUnavailableError
+    Rerankv2RequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestForbiddenError
+    RerankRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestServiceUnavailableError
+    RerankResponseResultsItemDocument:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text of the document to rerank
+      required:
+      - text
+      description: If `return_documents` is set as `false` this will return none, if `true` it will return the documents passed in
+      title: RerankResponseResultsItemDocument
+    RerankRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestBadRequestError
+    V1RerankPostResponsesContentApplicationJsonSchemaResultsItems:
+      type: object
+      properties:
+        document:
+          $ref: '#/components/schemas/RerankResponseResultsItemDocument'
+          description: If `return_documents` is set as `false` this will return none, if `true` it will return the documents passed in
+        index:
           type: integer
-          description: Limits the number of returned results to the specified value. If not provided, all documents are returned with scores.
-          minimum: 1
-        max_tokens_per_doc:
+          description: Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the `results` object has an `index` value of 3, it means in the list of documents passed in, the document at `index=3` had the highest relevance)
+        relevance_score:
+          type: number
+          format: double
+          description: Relevance scores are normalized to be in the range `[0, 1]`. Scores close to `1` indicate a high relevance to the query, and scores closer to `0` indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45
+      required:
+      - index
+      - relevance_score
+      title: V1RerankPostResponsesContentApplicationJsonSchemaResultsItems
+    Rerankv2RequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestUnauthorizedError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    Rerankv2RequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestClientClosedRequestError
+    RerankDocument:
+      type: object
+      additionalProperties:
+        type: string
+      title: RerankDocument
+    Rerankv2RequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestNotImplementedError
+    RerankRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestTooManyRequestsError
+    RerankRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestNotImplementedError
+    RerankRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestInvalidTokenError
+    Rerankv2RequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestNotFoundError
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    Rerankv2RequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestUnprocessableEntityError
+    V2RerankPostResponsesContentApplicationJsonSchemaResultsItems:
+      type: object
+      properties:
+        index:
           type: integer
-          description: Long documents will be automatically truncated to the specified number of tokens. Defaults to 4096.
-          default: 4096
-          minimum: 1
+          description: Corresponds to the index in the original list of documents to which the ranked document belongs. (i.e. if the first value in the `results` object has an `index` value of 3, it means in the list of documents passed in, the document at `index=3` had the highest relevance)
+        relevance_score:
+          type: number
+          format: double
+          description: Relevance scores are normalized to be in the range `[0, 1]`. Scores close to `1` indicate a high relevance to the query, and scores closer to `0` indicate low relevance. It is not accurate to assume a score of 0.9 means the document is 2x more relevant than a document with a score of 0.45
+      required:
+      - index
+      - relevance_score
+      title: V2RerankPostResponsesContentApplicationJsonSchemaResultsItems
+    RerankRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestInternalServerError
+    Rerankv2RequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Rerankv2RequestBadRequestError
+    RerankRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: RerankRequestForbiddenError
+    V1RerankPostRequestBodyContentApplicationJsonSchemaDocumentsItems:
+      oneOf:
+      - type: string
+      - $ref: '#/components/schemas/RerankDocument'
+      title: V1RerankPostRequestBodyContentApplicationJsonSchemaDocumentsItems
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
-externalDocs:
-  description: Cohere Chat API Documentation
-  url: https://docs.cohere.com/reference/chat

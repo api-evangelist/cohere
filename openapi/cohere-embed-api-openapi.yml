@@ -1,177 +1,945 @@
 openapi: 3.2.0
 info:
-  title: Cohere Chat Embed API
-  description: The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
-  version: '2.0'
-  contact:
-    name: Cohere Support
-    url: https://support.cohere.com
-  termsOfService: https://cohere.com/terms-of-use
+  title: Cohere Embed API
+  version: 1.0.0
 servers:
 - url: https://api.cohere.com
-  description: Cohere Production Server
-security:
-- bearerAuth: []
+  description: production
 tags:
 - name: Embed
-  description: Endpoints for generating vector embeddings from text and image inputs using Cohere embedding models.
 paths:
   /v2/embed:
     post:
-      operationId: embed
-      summary: Generate embeddings
-      description: Returns vector embeddings for the provided text or image inputs. The embeddings capture semantic information about the content and can be used for semantic search, clustering, classification, and other tasks requiring similarity comparisons. Requires specifying an input_type for embedding models v3 and higher.
+      operationId: v2_embed
+      summary: Embed API (v2)
+      description: 'This endpoint returns text embeddings. An embedding is a list of floating point numbers that captures semantic information about the text that it represents.
+
+
+        Embeddings can be used to create text classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.
+
+
+        If you want to learn more how to use the embedding model, have a look at the Semantic Search Guide.'
       tags:
       - Embed
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedByTypeResponse'
+        '400':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestBadRequestError'
+        '401':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestUnprocessableEntityError'
+        '429':
+          description: Too many requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Embedv2RequestGatewayTimeoutError'
       requestBody:
-        required: true
+        description: ''
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EmbedRequest'
+              type: object
+              properties:
+                texts:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of strings for the model to embed. Maximum number of texts per call is `96`.
+                images:
+                  type: array
+                  items:
+                    type: string
+                  description: 'An array of image data URIs for the model to embed.
+
+
+                    The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format.
+
+
+                    Image embeddings are supported with Embed v3.0 and newer models.
+
+
+                    For **Embed v3.x** models, the maximum number of images per call is `1`, and each image has a maximum size of `5MB`.
+
+
+                    For **Embed v4.0 and newer** models, there is no limit on the number of images per call. The combined size of all images in the request must be at most `20MB`.'
+                model:
+                  type: string
+                  description: ID of one of the available [Embedding models](https://docs.cohere.com/docs/cohere-embed).
+                input_type:
+                  $ref: '#/components/schemas/EmbedInputType'
+                inputs:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EmbedInput'
+                  description: An array of inputs for the model to embed. Maximum number of inputs per call is `96`. An input can contain a mix of text and image components.
+                max_tokens:
+                  type: integer
+                  description: The maximum number of tokens to embed per input. If the input text is longer than this, it will be truncated according to the `truncate` parameter.
+                output_dimension:
+                  type: integer
+                  description: 'The number of dimensions of the output embedding. This is only available for `embed-v4` and newer models.
+
+                    For supported dimensions, please refer to the [Embed models](https://docs.cohere.com/docs/cohere-embed) page.'
+                embedding_types:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EmbeddingType'
+                  default:
+                  - float
+                  description: 'Specifies the types of embeddings you want to get back. Can be one or more of the following types.
+
+
+                    * `"float"`: Use this when you want to get back the default float embeddings. Supported with all Embed models.
+
+                    * `"int8"`: Use this when you want to get back signed int8 embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"uint8"`: Use this when you want to get back unsigned int8 embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"binary"`: Use this when you want to get back signed binary embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"ubinary"`: Use this when you want to get back unsigned binary embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"base64"`: Use this when you want to get back base64 embeddings. Supported with Embed v3.0 and newer Embed models.'
+                truncate:
+                  $ref: '#/components/schemas/V2EmbedPostRequestBodyContentApplicationJsonSchemaTruncate'
+                  default: END
+                  description: 'One of `NONE|START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+
+                    Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+
+                    If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.'
+                priority:
+                  type: integer
+                  minimum: 0
+                  maximum: 999
+                  default: 0
+                  description: 'Controls how early the request is handled. Lower numbers indicate higher priority (default: 0, the highest). When the system is under load, higher-priority requests are processed first and are the least likely to be dropped.'
+              required:
+              - model
+              - input_type
+      security:
+      - bearerAuth: []
+  /v1/embed:
+    post:
+      operationId: embed
+      summary: Embed API (v1)
+      description: 'This endpoint returns text and image embeddings. An embedding is a list of floating point numbers that captures semantic information about the content that it represents.
+
+
+        Embeddings can be used to create classifiers as well as empower semantic search. To learn more about embeddings, see the embedding page.
+
+
+        If you want to learn more how to use the embedding model, have a look at the Semantic Search Guide.'
+      parameters:
+      - name: X-Client-Name
+        in: header
+        description: 'The name of the project that is making the request.
+
+          '
+        required: false
+        schema:
+          type: string
       responses:
         '200':
-          description: Successful embedding response
+          description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/EmbedResponse'
+                $ref: '#/components/schemas/embed_Response_200'
         '400':
-          description: Bad request due to invalid parameters
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/EmbedRequestBadRequestError'
         '401':
-          description: Unauthorized due to missing or invalid API key
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/EmbedRequestUnauthorizedError'
+        '403':
+          description: "This error indicates that the operation attempted to be performed is not allowed. This could be because:\n  - The api token is invalid\n  - The user does not have the necessary permissions\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestForbiddenError'
+        '404':
+          description: "This error is returned when a resource is not found. This could be because:\n  - The endpoint does not exist\n  - The resource does not exist eg model id, dataset id\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestNotFoundError'
+        '422':
+          description: "This error is returned when the request is not well formed. This could be because:\n  - JSON is invalid\n  - The request is missing required fields\n  - The request contains an invalid combination of fields\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestUnprocessableEntityError'
         '429':
-          description: Rate limit exceeded
+          description: Too many requests
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/EmbedRequestTooManyRequestsError'
+        '498':
+          description: 'This error is returned when a request or response contains a deny-listed token.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestInvalidTokenError'
+        '499':
+          description: 'This error is returned when a request is cancelled by the user.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestClientClosedRequestError'
+        '500':
+          description: 'This error is returned when an uncategorised internal server error occurs.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestInternalServerError'
+        '501':
+          description: 'This error is returned when the requested feature is not implemented.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestNotImplementedError'
+        '503':
+          description: "This error is returned when the service is unavailable. This could be due to:\n  - Too many users trying to access the service at the same time\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestServiceUnavailableError'
+        '504':
+          description: "This error is returned when a request to the server times out. This could be due to:\n  - An internal services taking too long to respond\n"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmbedRequestGatewayTimeoutError'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                texts:
+                  type: array
+                  items:
+                    type: string
+                  description: An array of strings for the model to embed. Maximum number of texts per call is `96`.
+                images:
+                  type: array
+                  items:
+                    type: string
+                  description: 'An array of image data URIs for the model to embed.
+
+
+                    The image must be a valid [data URI](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data). The image must be in either `image/jpeg`, `image/png`, `image/webp`, or `image/gif` format.
+
+
+                    Image embeddings are supported with Embed v3.0 and newer models.
+
+
+                    For **Embed v3.x** models, the maximum number of images per call is `1`, and each image has a maximum size of `5MB`.
+
+
+                    For **Embed v4.0 and newer** models, there is no limit on the number of images per call. The combined size of all images in the request must be at most `20MB`.'
+                model:
+                  type: string
+                  description: ID of one of the available [Embedding models](https://docs.cohere.com/docs/cohere-embed).
+                input_type:
+                  $ref: '#/components/schemas/EmbedInputType'
+                embedding_types:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EmbeddingType'
+                  description: 'Specifies the types of embeddings you want to get back. Not required and default is None, which returns the Embed Floats response type. Can be one or more of the following types.
+
+
+                    * `"float"`: Use this when you want to get back the default float embeddings. Supported with all Embed models.
+
+                    * `"int8"`: Use this when you want to get back signed int8 embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"uint8"`: Use this when you want to get back unsigned int8 embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"binary"`: Use this when you want to get back signed binary embeddings. Supported with Embed v3.0 and newer Embed models.
+
+                    * `"ubinary"`: Use this when you want to get back unsigned binary embeddings. Supported with Embed v3.0 and newer Embed models.'
+                truncate:
+                  $ref: '#/components/schemas/V1EmbedPostRequestBodyContentApplicationJsonSchemaTruncate'
+                  default: END
+                  description: 'One of `NONE|START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+
+                    Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+
+                    If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.'
+      security:
+      - bearerAuth: []
+      tags:
+      - Embed
 components:
   schemas:
-    Error:
+    EmbedImageUrl:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+      - url
+      description: Base64 url of image.
+      title: EmbedImageUrl
+    EmbedRequestClientClosedRequestError:
       type: object
       properties:
         message:
           type: string
-          description: A human-readable error message describing what went wrong.
-    EmbedResponse:
+        id:
+          type: string
+      title: EmbedRequestClientClosedRequestError
+    EmbedRequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestUnprocessableEntityError
+    EmbedRequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestBadRequestError
+    EmbedByTypeResponse:
       type: object
       properties:
         id:
           type: string
-          description: Unique identifier for the embedding request.
         embeddings:
-          type: object
-          description: An object containing the generated embeddings organized by embedding type. Each type maps to an array of embedding vectors corresponding to the input texts.
-          properties:
-            float:
-              type: array
-              description: Float embeddings for each input.
-              items:
-                type: array
-                items:
-                  type: number
-            int8:
-              type: array
-              description: Signed int8 embeddings for each input.
-              items:
-                type: array
-                items:
-                  type: integer
-            uint8:
-              type: array
-              description: Unsigned int8 embeddings for each input.
-              items:
-                type: array
-                items:
-                  type: integer
-            binary:
-              type: array
-              description: Signed binary embeddings for each input.
-              items:
-                type: array
-                items:
-                  type: integer
-            base64:
-              type: array
-              description: Base64-encoded embeddings for each input.
-              items:
-                type: string
+          $ref: '#/components/schemas/EmbedByTypeResponseEmbeddings'
+          description: An object with different embedding types. The length of each embedding type array will be the same as the length of the original `texts` array.
         texts:
           type: array
+          items:
+            type: string
           description: The text entries for which embeddings were returned.
-          items:
-            type: string
-        meta:
-          type: object
-          description: Metadata about the API request.
-          properties:
-            api_version:
-              type: object
-              properties:
-                version:
-                  type: string
-                  description: The API version used for the request.
-    EmbedRequest:
-      type: object
-      required:
-      - model
-      - input_type
-      properties:
-        model:
-          type: string
-          description: The name of the embedding model to use.
-          example: embed-english-v3.0
-        texts:
-          type: array
-          description: An array of strings for the model to embed. Maximum number of texts per call depends on the model.
-          items:
-            type: string
         images:
           type: array
-          description: An array of image data for the model to embed. Used with models that support image embedding.
+          items:
+            $ref: '#/components/schemas/Image'
+          description: The image entries for which embeddings were returned.
+        meta:
+          $ref: '#/components/schemas/ApiMeta'
+      required:
+      - id
+      - embeddings
+      title: EmbedByTypeResponse
+    EmbedRequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestNotImplementedError
+    EmbedInput:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmbedContent'
+          description: An array of objects containing the input data for the model to embed.
+      required:
+      - content
+      title: EmbedInput
+    Embedv2RequestUnprocessableEntityError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestUnprocessableEntityError
+    Embedv2RequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestForbiddenError
+    EmbeddingType:
+      type: string
+      enum:
+      - float
+      - int8
+      - uint8
+      - binary
+      - ubinary
+      - base64
+      title: EmbeddingType
+    EmbedRequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestGatewayTimeoutError
+    V1EmbedPostRequestBodyContentApplicationJsonSchemaTruncate:
+      type: string
+      enum:
+      - NONE
+      - START
+      - END
+      default: END
+      description: 'One of `NONE|START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+
+        Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+
+        If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.'
+      title: V1EmbedPostRequestBodyContentApplicationJsonSchemaTruncate
+    EmbedRequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestInternalServerError
+    Embedv2RequestUnauthorizedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestUnauthorizedError
+    ApiMetaBilledUnits:
+      type: object
+      properties:
+        images:
+          type: number
+          format: double
+          description: 'The number of billed images.
+
+            '
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of billed input tokens.
+
+            '
+        image_tokens:
+          type: number
+          format: double
+          description: 'The number of billed image tokens.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of billed output tokens.
+
+            '
+        search_units:
+          type: number
+          format: double
+          description: 'The number of billed search units.
+
+            '
+        classifications:
+          type: number
+          format: double
+          description: 'The number of billed classifications units.
+
+            '
+        pages:
+          type: number
+          format: double
+          description: 'The number of billed pages parsed.
+
+            '
+      title: ApiMetaBilledUnits
+    ApiMetaApiVersion:
+      type: object
+      properties:
+        version:
+          type: string
+        is_deprecated:
+          type: boolean
+        is_experimental:
+          type: boolean
+      required:
+      - version
+      title: ApiMetaApiVersion
+    Embedv2RequestNotImplementedError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestNotImplementedError
+    EmbedByTypeResponseEmbeddings:
+      type: object
+      properties:
+        float:
+          type: array
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+          description: An array of float embeddings.
+        int8:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+          description: An array of signed int8 embeddings. Each value is between -128 and 127.
+        uint8:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+          description: An array of unsigned int8 embeddings. Each value is between 0 and 255.
+        binary:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+          description: An array of packed signed binary embeddings. The length of each binary embedding is 1/8 the length of the float embeddings of the provided model. Each value is between -128 and 127.
+        ubinary:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+          description: An array of packed unsigned binary embeddings. The length of each binary embedding is 1/8 the length of the float embeddings of the provided model. Each value is between 0 and 255.
+        base64:
+          type: array
           items:
             type: string
-        input_type:
+          description: An array of base64 embeddings. Each string is the result of appending the float embedding bytes together and base64 encoding that.
+      description: An object with different embedding types. The length of each embedding type array will be the same as the length of the original `texts` array.
+      title: EmbedByTypeResponseEmbeddings
+    EmbedRequestNotFoundError:
+      type: object
+      properties:
+        message:
           type: string
-          enum:
-          - search_document
-          - search_query
-          - classification
-          - clustering
-          - image
-          description: Specifies the type of input passed to the model. Required for embedding models v3 and higher. Use search_document for embeddings stored in a vector database, search_query for search queries, classification for text classifiers, clustering for clustering tasks, and image for image inputs.
-        embedding_types:
-          type: array
-          description: Specifies the types of embeddings to return. Can include one or more of float, int8, uint8, binary, and base64.
-          items:
+        id:
+          type: string
+      title: EmbedRequestNotFoundError
+    Embedv2RequestClientClosedRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestClientClosedRequestError
+    EmbedRequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestServiceUnavailableError
+    ApiMetaTokens:
+      type: object
+      properties:
+        input_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens used as input to the model.
+
+            '
+        output_tokens:
+          type: number
+          format: double
+          description: 'The number of tokens produced by the model.
+
+            '
+      title: ApiMetaTokens
+    V2EmbedPostRequestBodyContentApplicationJsonSchemaTruncate:
+      type: string
+      enum:
+      - NONE
+      - START
+      - END
+      default: END
+      description: 'One of `NONE|START|END` to specify how the API will handle inputs longer than the maximum token length.
+
+
+        Passing `START` will discard the start of the input. `END` will discard the end of the input. In both cases, input is discarded until the remaining input is exactly the maximum input token length for the model.
+
+
+        If `NONE` is selected, when the input exceeds the maximum input token length an error will be returned.'
+      title: V2EmbedPostRequestBodyContentApplicationJsonSchemaTruncate
+    EmbedContent:
+      oneOf:
+      - type: object
+        properties:
+          type:
             type: string
             enum:
-            - float
-            - int8
-            - uint8
-            - binary
-            - base64
-        truncate:
+            - image_url
+            description: 'Discriminator value: image_url'
+          image_url:
+            $ref: '#/components/schemas/EmbedImageUrl'
+        required:
+        - type
+        description: Image content of the input. Supported with Embed v3.0 and newer models.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - text
+            description: 'Discriminator value: text'
+          text:
+            type: string
+        required:
+        - type
+        description: Text content of the input.
+      discriminator:
+        propertyName: type
+      title: EmbedContent
+    EmbedRequestUnauthorizedError:
+      type: object
+      properties:
+        message:
           type: string
-          enum:
-          - NONE
-          - START
-          - END
-          description: Specifies how the API handles inputs longer than the maximum token length. START discards the beginning, END discards the end. NONE returns an error if the input is too long.
+        id:
+          type: string
+      title: EmbedRequestUnauthorizedError
+    EmbedRequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestTooManyRequestsError
+    Embedv2RequestNotFoundError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestNotFoundError
+    Embedv2RequestTooManyRequestsError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestTooManyRequestsError
+    embed_Response_200:
+      oneOf:
+      - type: object
+        properties:
+          response_type:
+            type: string
+            enum:
+            - embeddings_floats
+            description: 'Discriminator value: embeddings_floats'
+          id:
+            type: string
+          embeddings:
+            type: array
+            items:
+              type: array
+              items:
+                type: number
+                format: double
+            description: An array of embeddings, where each embedding is an array of floats. The length of the `embeddings` array will be the same as the length of the original `texts` array.
+          texts:
+            type: array
+            items:
+              type: string
+            description: The text entries for which embeddings were returned.
+          images:
+            type: array
+            items:
+              $ref: '#/components/schemas/Image'
+            description: The image entries for which embeddings were returned.
+          meta:
+            $ref: '#/components/schemas/ApiMeta'
+        required:
+        - response_type
+        - id
+        - embeddings
+        - texts
+        description: embeddings_floats variant
+      - type: object
+        properties:
+          response_type:
+            type: string
+            enum:
+            - embeddings_by_type
+            description: 'Discriminator value: embeddings_by_type'
+          id:
+            type: string
+          embeddings:
+            $ref: '#/components/schemas/EmbedByTypeResponseEmbeddings'
+            description: An object with different embedding types. The length of each embedding type array will be the same as the length of the original `texts` array.
+          texts:
+            type: array
+            items:
+              type: string
+            description: The text entries for which embeddings were returned.
+          images:
+            type: array
+            items:
+              $ref: '#/components/schemas/Image'
+            description: The image entries for which embeddings were returned.
+          meta:
+            $ref: '#/components/schemas/ApiMeta'
+        required:
+        - response_type
+        - id
+        - embeddings
+        description: embeddings_by_type variant
+      discriminator:
+        propertyName: response_type
+      title: embed_Response_200
+    Embedv2RequestServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestServiceUnavailableError
+    Embedv2RequestBadRequestError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestBadRequestError
+    ApiMeta:
+      type: object
+      properties:
+        api_version:
+          $ref: '#/components/schemas/ApiMetaApiVersion'
+        billed_units:
+          $ref: '#/components/schemas/ApiMetaBilledUnits'
+        tokens:
+          $ref: '#/components/schemas/ApiMetaTokens'
+        cached_tokens:
+          type: number
+          format: double
+          description: 'The number of prompt tokens that hit the inference cache.
+
+            '
+        warnings:
+          type: array
+          items:
+            type: string
+      title: ApiMeta
+    EmbedRequestForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestForbiddenError
+    EmbedInputType:
+      type: string
+      enum:
+      - search_document
+      - search_query
+      - classification
+      - clustering
+      - image
+      description: 'Specifies the type of input passed to the model. Required for embedding models v3 and higher.
+
+
+        - `"search_document"`: Used for embeddings stored in a vector database for search use-cases.
+
+        - `"search_query"`: Used for embeddings of search queries run against a vector DB to find relevant documents.
+
+        - `"classification"`: Used for embeddings passed through a text classifier.
+
+        - `"clustering"`: Used for the embeddings run through a clustering algorithm.
+
+        - `"image"`: Used for embeddings with image input.
+
+        '
+      title: EmbedInputType
+    Image:
+      type: object
+      properties:
+        width:
+          type: integer
+          format: int64
+          description: Width of the image in pixels
+        height:
+          type: integer
+          format: int64
+          description: Height of the image in pixels
+        format:
+          type: string
+          description: Format of the image
+        bit_depth:
+          type: integer
+          format: int64
+          description: Bit depth of the image
+      required:
+      - width
+      - height
+      - format
+      - bit_depth
+      title: Image
+    EmbedRequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: EmbedRequestInvalidTokenError
+    Embedv2RequestInvalidTokenError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestInvalidTokenError
+    Embedv2RequestGatewayTimeoutError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestGatewayTimeoutError
+    Embedv2RequestInternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+        id:
+          type: string
+      title: Embedv2RequestInternalServerError
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Bearer authentication using a Cohere API key. Pass the API key in the Authorization header as Bearer <token>.
-externalDocs:
-  description: Cohere Chat API Documentation
-  url: https://docs.cohere.com/reference/chat
