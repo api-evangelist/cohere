@@ -37,19 +37,6 @@
   relationship: system-coverage
   status: not-a-workflow
   arazzo: null
-- slug: cohere-slack-own
-  label: Slack (own)
-  partner: slack
-  partner_name: Slack (own)
-  category: Slack app
-  type: marketplace
-  marketplace: own
-  channel: partner-built
-  evidence: https://slack.com/marketplace/A056U9XEQ1W-cohere-ai
-  source: edge
-  relationship: platform-app
-  status: not-a-workflow
-  arazzo: null
 - slug: cohere-openrouter
   label: OpenRouter
   partner: openrouter
@@ -171,5 +158,31 @@
     detected_by: sweep-vc-portfolios.py
     detected: '2026-10-21'
     sector: aiml
+  status: not-a-workflow
+  arazzo: null
+- slug: cohere-slack-own
+  label: Slack (own)
+  partner: slack
+  partner_name: Slack (own)
+  category: Slack app
+  type: marketplace
+  marketplace: own
+  channel: partner-built
+  evidence: https://slack.com/marketplace/A056U9XEQ1W-cohere-ai
+  source: edge
+  relationship: platform-app
+  status: not-a-workflow
+  arazzo: null
+- slug: cohere-hugging-face-hugging-face-hub
+  label: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_name: Hugging Face (hugging-face-hub)
+  category: Hugging Face Hub datasets
+  type: marketplace
+  marketplace: hugging-face-hub
+  channel: partner-built
+  evidence: https://huggingface.co/Cohere
+  source: edge
+  relationship: platform-app
   status: not-a-workflow
   arazzo: null

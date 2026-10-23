@@ -18,6 +18,7 @@ checked:
 - https://www.indexventures.com/companies/
 - https://www.sequoiacap.com/our-companies/
 - https://www.sequoiacap.com/sitemap.xml
+- hugging-face/integrations/hugging-face-integration-edges.yml
 marketplace_apps: []
 edges:
 - partner_name: Microsoft Azure Marketplace
@@ -80,23 +81,6 @@ edges:
   matched_by: verified-domain-table
   detected_by: sweep-rag-vector.py
   first_seen: '2026-10-15'
-- partner_name: Slack (own)
-  partner: slack
-  partner_match: mirror
-  mirror_match: domain
-  type: marketplace
-  relationship: platform-app
-  direction: third-party
-  channel: partner-built
-  marketplace: own
-  evidence: https://slack.com/marketplace/A056U9XEQ1W-cohere-ai
-  mirror_of: slack/integrations/slack-integration-edges.yml
-  apps:
-  - Cohere AI
-  listing_count: 1
-  detected: '2026-10-18'
-  detected_by: mirror-platform-listings.py
-  category: Slack app
 - partner_name: OpenRouter
   partner: openrouter
   partner_match: router
@@ -259,6 +243,64 @@ edges:
     sector: aiml
   detected_by: sweep-vc-portfolios.py
   first_seen: '2026-10-21'
+- partner_name: Slack (own)
+  partner: slack
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: own
+  evidence: https://slack.com/marketplace/A056U9XEQ1W-cohere-ai
+  mirror_of: slack/integrations/slack-integration-edges.yml
+  apps:
+  - Cohere AI
+  listing_count: 1
+  detected: '2026-10-18'
+  detected_by: mirror-platform-listings.py
+  category: Slack app
+- partner_name: Hugging Face (hugging-face-hub)
+  partner: hugging-face
+  partner_match: mirror
+  mirror_match: domain
+  type: marketplace
+  relationship: platform-app
+  direction: third-party
+  channel: partner-built
+  marketplace: hugging-face-hub
+  evidence: https://huggingface.co/Cohere
+  mirror_of: hugging-face/integrations/hugging-face-integration-edges.yml
+  apps:
+  - CohereLabs/xP3x
+  - CohereLabs/Global-MMLU
+  - CohereLabs/aya_dataset
+  - CohereLabs/aya_collection
+  - CohereLabs/Global-MMLU-Lite
+  - CohereLabs/aya_collection_language_split
+  - CohereLabs/include-base-44
+  - CohereLabs/black-box-api-challenges
+  - CohereLabs/cohere-transcribe-arabic-07-2026
+  - CohereLabs/cohere-transcribe-03-2026
+  - CohereLabs/North-Micro-Vision-Instruct
+  - CohereLabs/command-a-plus-05-2026-bf16
+  - CohereLabs/aya-expanse-8b
+  - CohereLabs/command-a-vision-07-2025
+  - CohereLabs/Cohere-embed-multilingual-v3.0
+  - CohereLabs/tiny-aya-global
+  - CohereLabs/c4ai-command
+  - CohereLabs/aya_expanse
+  - CohereLabs/Cohere-Transcribe-WebGPU
+  - CohereLabs/tiny-aya
+  - CohereLabs/North-Mini-Code-1.0
+  - CohereLabs/command-a-plus-05-2026
+  - CohereLabs/command-a-vision
+  listing_count: 3
+  detected: '2026-10-23'
+  detected_by: mirror-platform-listings.py
+  category: Hugging Face Hub datasets
+  badges:
+  - Verified publisher (Hugging Face verified organisation)
 source:
 - https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
 - https://zapier.com/api/v4/apps/
