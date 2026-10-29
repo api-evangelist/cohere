@@ -1,4 +1,4 @@
-# cohere (cohere)
+# Cohere
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,214 +66,215 @@
 
 Generates a text response to a user message and streams it down, token by token.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/cohere/refs/heads/main/apis.yml)
+**Areas:** Artificial Intelligence · Natural Language Processing · Embeddings · Vector Search · LLM · Canada · Foundation Models
 
-## Timestamps
+## Cohere on APIs.io
 
-- **Modified:** 2026-05-29
+Everything profiled for Cohere is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cohere/](https://apis.io/providers/cohere/)** — or go straight to one of the APIs or properties below.
 
-## APIs
+### APIs (9)
 
-### Cohere Chat API
+- [Cohere Chat API](https://apis.io/apis/cohere/chat-api/) — The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational…
+- [Cohere Embed API](https://apis.io/apis/cohere/embed-api/) — The Cohere Embed API generates vector embeddings from text and images, enabling semantic search, clustering, and classification use cases. It supports…
+- [Cohere Rerank API](https://apis.io/apis/cohere/rerank-api/) — The Cohere Rerank API takes a query and a list of text documents and returns them ordered by relevance with assigned relevance scores. It is commonly used…
+- [Cohere Classify API](https://apis.io/apis/cohere/classify-api/) — The Cohere Classify API performs text classification by assigning labels to input text based on provided examples. It can be used for sentiment analysis,…
+- [Cohere Embed Jobs API](https://apis.io/apis/cohere/embed-jobs-api/) — The Cohere Embed Jobs API allows developers to create and manage batch embedding jobs for processing large volumes of text data asynchronously. Rather than…
+- [Cohere Datasets API](https://apis.io/apis/cohere/datasets-api/) — The Cohere Datasets API provides endpoints for uploading, managing, and retrieving datasets used with other Cohere services such as fine-tuning and embed…
+- [Cohere Models API](https://apis.io/apis/cohere/models-api/) — The Cohere Models API allows developers to list and retrieve information about available Cohere models, including the Command, Embed, and Rerank model…
+- [Cohere Tokenize API](https://apis.io/apis/cohere/tokenize-api/) — The Cohere Tokenize API splits input text into tokens using the tokenizer associated with a specified model. It returns both the token strings and their…
+- [Cohere Detokenize API](https://apis.io/apis/cohere/detokenize-api/) — The Cohere Detokenize API converts a sequence of token IDs back into their corresponding text string using the tokenizer for a specified model. It is the…
 
-The Cohere Chat API enables developers to integrate large language model text generation capabilities into their applications through a conversational interface. It supports multi-turn conversations, tool use with JSON schema definitions, retrieval-augmented generation, and streaming responses. The API is available via the v2 endpoint and works with Cohere's Command family of models.
+### Published properties
 
-- **Human URL:** [https://docs.cohere.com/reference/chat](https://docs.cohere.com/reference/chat)
-- **Base URL:** `https://api.cohere.com`
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-#### Tags
+#### AsyncAPI (1)
 
-- Artificial Intelligence
-- Chat
-- Conversational AI
-- Large Language Models
-- Text Generation
+Event-driven and webhook contracts.
 
-#### Properties
+- [Cohere Streaming API](https://apis.io/asyncapis/cohere/cohere-asyncapi/)
 
-- [Documentation](https://docs.cohere.com/reference/chat)
-- [OpenAPI](openapi/cohere-chat-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-chat-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-chat-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [AsyncAPI](asyncapi/cohere-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
+#### Event channels (3)
 
-### Cohere Embed API
+Individual events and webhooks the provider emits.
 
-The Cohere Embed API generates vector embeddings from text and images, enabling semantic search, clustering, and classification use cases. It supports multilingual content and can process both text and image inputs using the Embed v3 model family. Developers can use these embeddings to build retrieval systems, recommendation engines, and other applications that require understanding semantic similarity between content.
+- [/v1/chat](https://apis.io/channels/cohere/v1-chat/)
+- [/v1/generate](https://apis.io/channels/cohere/v1-generate/)
+- [/v2/chat](https://apis.io/channels/cohere/v2-chat/)
 
-- **Human URL:** [https://docs.cohere.com/reference/embed](https://docs.cohere.com/reference/embed)
-- **Base URL:** `https://api.cohere.com`
+#### GraphQL (1)
 
-#### Tags
+GraphQL schemas.
 
-- Artificial Intelligence
-- Embeddings
-- Natural Language Processing
-- Semantic Search
-- Vector Search
+- [Moved to /providers/cohere/](https://apis.io/graphqls/cohere/cohere-graphql/)
 
-#### Properties
+#### MCP servers (1)
 
-- [Documentation](https://docs.cohere.com/reference/embed)
-- [OpenAPI](openapi/cohere-embed-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-embed-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-embed-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Model Context Protocol servers that expose the API to agents.
 
-### Cohere Rerank API
+- [cohere](https://apis.io/servers/cohere/cohere/)
 
-The Cohere Rerank API takes a query and a list of text documents and returns them ordered by relevance with assigned relevance scores. It is commonly used as a second-stage ranker in retrieval-augmented generation pipelines to improve the quality of search results before passing them to a language model. The API supports multilingual reranking and can significantly improve the precision of search and retrieval systems.
+#### Agentic access (1)
 
-- **Human URL:** [https://docs.cohere.com/reference/rerank](https://docs.cohere.com/reference/rerank)
-- **Base URL:** `https://api.cohere.com`
+Which operations an agent can call, which act, and which need a human in the loop.
 
-#### Tags
+- [Cohere Agentic Access](https://apis.io/agentic-access/cohere/cohere-agentic-access/)
 
-- Artificial Intelligence
-- Information Retrieval
-- Relevance
-- Reranking
-- Search
+#### JSON Schema (34)
 
-#### Properties
+The data models the API reads and writes.
 
-- [Documentation](https://docs.cohere.com/reference/rerank)
-- [OpenAPI](openapi/cohere-rerank-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-rerank-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-rerank-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Cohere Chat Message](https://apis.io/schemas/cohere/cohere-chat-message/)
+- [ChatRequest](https://apis.io/schemas/cohere/cohere-chatrequest/)
+- [ChatResponse](https://apis.io/schemas/cohere/cohere-chatresponse/)
+- [Classification](https://apis.io/schemas/cohere/cohere-classification/)
+- [ClassifyExample](https://apis.io/schemas/cohere/cohere-classifyexample/)
+- [ClassifyRequest](https://apis.io/schemas/cohere/cohere-classifyrequest/)
+- [ClassifyResponse](https://apis.io/schemas/cohere/cohere-classifyresponse/)
+- [CreateDatasetRequest](https://apis.io/schemas/cohere/cohere-createdatasetrequest/)
+- [CreateDatasetResponse](https://apis.io/schemas/cohere/cohere-createdatasetresponse/)
+- [CreateEmbedJobRequest](https://apis.io/schemas/cohere/cohere-createembedjobrequest/)
+- [CreateEmbedJobResponse](https://apis.io/schemas/cohere/cohere-createembedjobresponse/)
+- [Cohere Dataset](https://apis.io/schemas/cohere/cohere-dataset/)
+- [DatasetUsage](https://apis.io/schemas/cohere/cohere-datasetusage/)
+- [DetokenizeRequest](https://apis.io/schemas/cohere/cohere-detokenizerequest/)
+- [DetokenizeResponse](https://apis.io/schemas/cohere/cohere-detokenizeresponse/)
+- [Cohere Embedding](https://apis.io/schemas/cohere/cohere-embedding/)
+- [EmbedJob](https://apis.io/schemas/cohere/cohere-embedjob/)
+- [EmbedRequest](https://apis.io/schemas/cohere/cohere-embedrequest/)
+- [EmbedResponse](https://apis.io/schemas/cohere/cohere-embedresponse/)
+- [Error](https://apis.io/schemas/cohere/cohere-error/)
+- [ListDatasetsResponse](https://apis.io/schemas/cohere/cohere-listdatasetsresponse/)
+- [ListEmbedJobsResponse](https://apis.io/schemas/cohere/cohere-listembedjobsresponse/)
+- [ListModelsResponse](https://apis.io/schemas/cohere/cohere-listmodelsresponse/)
+- [Message](https://apis.io/schemas/cohere/cohere-message/)
+- [Cohere Model](https://apis.io/schemas/cohere/cohere-model/)
+- …and 9 more published on APIs.io
 
-### Cohere Classify API
+#### JSON Structure (1)
 
-The Cohere Classify API performs text classification by assigning labels to input text based on provided examples. It can be used for sentiment analysis, content moderation, topic categorization, and other classification tasks. Developers provide a set of labeled examples along with texts to classify, and the API returns predicted labels with confidence scores for each input.
+Data models expressed in JSON Structure.
 
-- **Human URL:** [https://docs.cohere.com/reference/classify](https://docs.cohere.com/reference/classify)
-- **Base URL:** `https://api.cohere.com`
+- [Cohere Structure](https://apis.io/json-structure/cohere/cohere-structure/)
 
-#### Tags
+#### JSON-LD (1)
 
-- Artificial Intelligence
-- Classification
-- Natural Language Processing
-- Text Analysis
+Linked-data contexts for the provider's vocabulary.
 
-#### Properties
+- [Cohere Context](https://apis.io/jsonld/cohere/cohere-context/)
 
-- [Documentation](https://docs.cohere.com/reference/classify)
-- [OpenAPI](openapi/cohere-classify-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-classify-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-classify-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Vocabulary (1)
 
-### Cohere Embed Jobs API
+The provider's domain terms, defined.
 
-The Cohere Embed Jobs API allows developers to create and manage batch embedding jobs for processing large volumes of text data asynchronously. Rather than embedding texts one at a time, developers can submit datasets for bulk embedding and monitor job progress. This is useful for initializing vector databases, processing large document collections, and other scenarios where embedding large amounts of content is needed.
+- [Cohere Domain Vocabulary](https://apis.io/vocabularies/cohere/cohere-vocabulary/)
 
-- **Human URL:** [https://docs.cohere.com/reference/list-embed-jobs](https://docs.cohere.com/reference/list-embed-jobs)
-- **Base URL:** `https://api.cohere.com`
+#### Collections (9)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Artificial Intelligence
-- Batch Processing
-- Embeddings
-- Vector Search
+- [Cohere Chat API](https://apis.io/collections/cohere/open-cohere-chat-api/)
+- [Cohere Chat Classify API](https://apis.io/collections/cohere/open-cohere-classify-api/)
+- [Cohere Chat Datasets API](https://apis.io/collections/cohere/open-cohere-datasets-api/)
+- [Cohere Chat Detokenize API](https://apis.io/collections/cohere/open-cohere-detokenize-api/)
+- [Cohere Chat Embed API](https://apis.io/collections/cohere/open-cohere-embed-api/)
+- [Cohere Chat Embed Jobs API](https://apis.io/collections/cohere/open-cohere-embed-jobs-api/)
+- [Cohere Chat Models API](https://apis.io/collections/cohere/open-cohere-models-api/)
+- [Cohere Chat Rerank API](https://apis.io/collections/cohere/open-cohere-rerank-api/)
+- [Cohere Chat Tokenize API](https://apis.io/collections/cohere/open-cohere-tokenize-api/)
 
-#### Properties
+#### Governance rules (2)
 
-- [Documentation](https://docs.cohere.com/reference/list-embed-jobs)
-- [OpenAPI](openapi/cohere-embed-jobs-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-embed-jobs-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-embed-jobs-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+Spectral rulesets for the provider's contracts.
 
-### Cohere Datasets API
+- [Cohere — asyncapi rules](https://apis.io/rules/cohere/cohere-asyncapi-spectral-rules/)
+- [Cohere — jsonschema rules](https://apis.io/rules/cohere/cohere-jsonschema-spectral-rules/)
 
-The Cohere Datasets API provides endpoints for uploading, managing, and retrieving datasets used with other Cohere services such as fine-tuning and embed jobs. Developers can create datasets from files, list existing datasets, retrieve dataset metadata, and delete datasets they no longer need. The API supports various data formats and validates uploaded data against expected schemas.
+#### Security (2)
 
-- **Human URL:** [https://docs.cohere.com/reference/list-datasets](https://docs.cohere.com/reference/list-datasets)
-- **Base URL:** `https://api.cohere.com`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Cohere Authentication](https://apis.io/security/cohere/cohere-authentication/)
+- [Cohere Domain Security](https://apis.io/security/cohere/cohere-domain-security/)
 
-- Artificial Intelligence
-- Data Management
-- Datasets
-- Fine-Tuning
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://docs.cohere.com/reference/list-datasets)
-- [OpenAPI](openapi/cohere-datasets-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-datasets-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-datasets-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Cohere Plans Pricing](https://apis.io/plans/cohere/cohere-plans-pricing/)
 
-### Cohere Models API
+#### Rate limits (1)
 
-The Cohere Models API allows developers to list and retrieve information about available Cohere models, including the Command, Embed, and Rerank model families. It provides details such as model names, versions, supported endpoints, context lengths, and capabilities. This API is useful for programmatically discovering which models are available and selecting the appropriate model for a given task.
+Published request limits.
 
-- **Human URL:** [https://docs.cohere.com/reference/list-models](https://docs.cohere.com/reference/list-models)
-- **Base URL:** `https://api.cohere.com`
+- [Cohere Rate Limits](https://apis.io/rate-limits/cohere/cohere-rate-limits/)
 
-#### Tags
+#### FinOps (1)
 
-- Artificial Intelligence
-- Machine Learning
-- Models
+What the API costs to run, by operation.
 
-#### Properties
+- [Cohere Finops](https://apis.io/finops/cohere/cohere-finops/)
 
-- [Documentation](https://docs.cohere.com/reference/list-models)
-- [OpenAPI](openapi/cohere-models-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-models-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-models-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+## Where to find this API
 
-### Cohere Tokenize API
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-The Cohere Tokenize API splits input text into tokens using the tokenizer associated with a specified model. It returns both the token strings and their corresponding token IDs. This is useful for understanding how text will be processed by Cohere models, estimating token counts for billing purposes, and debugging input formatting issues.
+- [Website](https://www.cohere.com/)
+- [Pricing](https://cohere.com/pricing)
+- [Blog](https://cohere.com/blog)
+- [GitHub](https://github.com/cohere-ai)
 
-- **Human URL:** [https://docs.cohere.com/reference/tokenize](https://docs.cohere.com/reference/tokenize)
-- **Base URL:** `https://api.cohere.com`
+## API Evangelist rating
 
-#### Tags
+**Kin Score 38.0** — thin · rubric 0.25.0 · scored 2026-10-23
 
-- Artificial Intelligence
-- Natural Language Processing
-- Text Processing
-- Tokenization
+| Facet | Score |
+|---|---|
+| Discoverability | 66.7 |
+| Contract quality | 64.8 |
+| Contract governance | 13.6 |
+| Operational transparency | 10.5 |
+| Developer ergonomics | 23.8 |
+| Access clarity | 42.1 |
 
-#### Properties
+**Agent readiness 36.5** — agent-ready
 
-- [Documentation](https://docs.cohere.com/reference/tokenize)
-- [OpenAPI](openapi/cohere-tokenize-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-tokenize-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-tokenize-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | verified |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
 
-### Cohere Detokenize API
+**Regulatory alignment 15.5** — AI & Biometrics
 
-The Cohere Detokenize API converts a sequence of token IDs back into their corresponding text string using the tokenizer for a specified model. It is the inverse operation of the Tokenize API and is useful for inspecting model outputs at the token level, debugging tokenization behavior, and reconstructing text from token representations.
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cohere/](https://apis.io/providers/cohere/).
 
-- **Human URL:** [https://docs.cohere.com/reference/detokenize](https://docs.cohere.com/reference/detokenize)
-- **Base URL:** `https://api.cohere.com`
+## How this profile is made
 
-#### Tags
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
 
-- Artificial Intelligence
-- Natural Language Processing
-- Text Processing
-- Tokenization
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Cohere: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
 
-#### Properties
+## Open an issue
 
-- [Documentation](https://docs.cohere.com/reference/detokenize)
-- [OpenAPI](openapi/cohere-detokenize-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/cohere-detokenize-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/cohere-detokenize-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [GitHub Organization](https://github.com/cohere-ai)
-- [LinkedIn](https://www.linkedin.com/company/cohere-ai)
-- [JSON-LD](json-ld/cohere-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [JSON Schema](json-schema/cohere-chat-message-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/cohere-embedding-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/cohere-model-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/cohere-dataset-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [Features](undefined)
-- [L L Ms Txt](https://docs.cohere.com/llms.txt)
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cohere/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
